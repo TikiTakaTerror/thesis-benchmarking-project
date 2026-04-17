@@ -5,5 +5,7 @@ This directory is reserved for small utility scripts such as:
 - dataset preparation helpers
 - repeatable run commands
 
-No scripts are implemented in Phase 0.
+Current scripts:
+- `bootstrap_env.sh`: create `.venv`, install dependencies, and run the environment smoke check
+- `check_environment.py`: verify Python version, import core dependencies, and confirm required project directories exist
 

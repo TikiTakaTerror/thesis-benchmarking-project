@@ -20,3 +20,7 @@ results/plots/*
 !results/plots/README.md
 results/*.sqlite3
 
+# Test and coverage artifacts
+.coverage
+htmlcov/
+

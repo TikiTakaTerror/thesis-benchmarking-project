@@ -7,6 +7,7 @@ Current scope:
 - architecture notes
 - progress log
 - configuration placeholders
+- environment setup files
 
 Not implemented yet:
 - dataset loading
@@ -17,4 +18,7 @@ Not implemented yet:
 Key docs:
 - `docs/architecture.md`
 - `docs/progress-log.md`
+- `docs/environment-setup.md`
 
+Recommended next step:
+- set up the Phase 1 Python environment using the instructions in `docs/environment-setup.md`
