@@ -12,10 +12,11 @@ Current scope:
 - shared encoder and common model foundations
 - custom concept-first symbolic pipeline
 - shared evaluation engine and metric computation
+- LTNtorch model-family integration
 
 Not implemented yet:
-- model training
-- evaluation logic
+- DeepProbLog integration
+- run management and result storage
 - API or UI behavior
 
 Key docs:
@@ -26,6 +27,7 @@ Key docs:
 - `docs/model-foundations.md`
 - `docs/pipeline-model.md`
 - `docs/evaluation-engine.md`
+- `docs/ltn-model.md`
 
 Recommended next step:
-- verify the Phase 5 evaluation engine using the instructions in `docs/evaluation-engine.md`
+- verify the Phase 6 LTN model using the instructions in `docs/ltn-model.md`

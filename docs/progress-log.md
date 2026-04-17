@@ -12,7 +12,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 3 | Shared encoder and common model interfaces | Completed |
 | 4 | Custom concept-first symbolic pipeline | Completed |
 | 5 | Evaluation engine and metric computation | Completed |
-| 6 | LTNtorch integration | Pending |
+| 6 | LTNtorch integration | Completed |
 | 7 | DeepProbLog integration | Pending |
 | 8 | Run management and result storage | Pending |
 | 9 | Backend API | Pending |
@@ -150,3 +150,27 @@ Completed:
 Notes:
 - run storage, summaries, and comparison tables are still deferred to Phase 8
 - ablation and intervention metrics are still deferred to Phase 12
+
+## 2026-04-17 - Phase 6
+
+Goal:
+- integrate the LTNtorch model family
+- keep the shared encoder policy aligned with the other families
+- use logical constraints as differentiable supervision
+- make final prediction influenced by logical satisfaction
+
+Completed:
+- installed and pinned the official `LTNtorch` dependency
+- added typed LTN model-family config parsing for concepts, labels, logic rules, formulas, and training defaults
+- replaced the LTN family stub with a real `LTNModelAdapter`
+- implemented concept and label neural heads on top of the shared encoder
+- implemented LTN predicates, connectives, quantification, and satisfaction aggregation using the real `ltn` package
+- implemented LTN-specific training with task loss, concept loss, and logical satisfaction loss
+- implemented logic-influenced final prediction by blending neural label probabilities with logic-derived label scores
+- implemented checkpoint save/load for the LTN family
+- added `scripts/check_ltn_model.py` for end-to-end synthetic verification
+- added `docs/ltn-model.md` with exact installation and verification instructions
+
+Notes:
+- this phase uses the official PyPI `LTNtorch` package instead of the placeholder `external/LTNtorch/` folder
+- DeepProbLog remains deferred to Phase 7

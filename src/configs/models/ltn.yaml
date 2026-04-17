@@ -9,14 +9,75 @@ shared_encoder:
   feature_dim: 128
   dropout: 0.1
 
+heads:
+  concept_head:
+    hidden_dim: 64
+    dropout: 0.1
+  label_head:
+    hidden_dim: 64
+    dropout: 0.1
+
+concepts:
+  - has_triangle
+  - is_red
+  - count_is_two
+
+labels:
+  - id: 0
+    name: negative
+    description: Example negative label used for LTN smoke checks.
+  - id: 1
+    name: positive
+    description: Example positive label used for LTN smoke checks.
+
 logic_constraints:
-  file: null
-  weight: null
+  satisfaction_weight: 1.0
+  final_prediction_logic_blend: 0.5
+  aggregator_p: 2
+  label_logic_rules:
+    negative:
+      op: not
+      args:
+        - op: and
+          args:
+            - concept: has_triangle
+            - concept: is_red
+    positive:
+      op: and
+      args:
+        - concept: has_triangle
+        - concept: is_red
+  formulas:
+    - name: positive_matches_triangle_and_red
+      expression:
+        op: equiv
+        args:
+          - label: positive
+          - op: and
+            args:
+              - concept: has_triangle
+              - concept: is_red
+    - name: negative_matches_not_positive
+      expression:
+        op: equiv
+        args:
+          - label: negative
+          - op: not
+            args:
+              - label: positive
+    - name: positive_implies_count_is_two
+      expression:
+        op: implies
+        args:
+          - label: positive
+          - concept: count_is_two
 
 training_defaults:
-  batch_size: null
-  learning_rate: null
-  max_epochs: null
+  batch_size: 16
+  learning_rate: 0.003
+  max_epochs: 24
+  label_loss_weight: 1.0
+  concept_loss_weight: 2.0
 
 notes:
-  status: Shared encoder defaults added in Phase 3. Integration is planned for Phase 6.
+  status: Implemented in Phase 6 using the official LTNtorch package and differentiable logical satisfaction loss.

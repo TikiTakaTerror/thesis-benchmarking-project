@@ -60,12 +60,12 @@ It can be used for:
 ## Family Adapter Status
 
 Added stubs:
-- `LTNModelAdapter`
 - `DeepProbLogModelAdapter`
 
 Current status:
 - `PipelineModelAdapter` was implemented in Phase 4
-- `LTNModelAdapter` and `DeepProbLogModelAdapter` still intentionally raise `NotImplementedError` until their implementation phases
+- `LTNModelAdapter` was implemented in Phase 6
+- `DeepProbLogModelAdapter` still intentionally raises `NotImplementedError` until Phase 7
 
 ## Exact Verification Steps
 

@@ -151,7 +151,8 @@ def _collect_evaluation_tensors(
                 batch_concept_predictions = (batch_concept_probabilities >= 0.5).float()
 
             batch_symbolic_label_predictions = outputs.extras.get(
-                "hard_label_predictions"
+                "symbolic_label_predictions",
+                outputs.extras.get("hard_label_predictions"),
             )
             batch_hard_rule_scores = outputs.extras.get("hard_rule_scores")
             batch_soft_rule_scores = outputs.extras.get("soft_rule_scores")
