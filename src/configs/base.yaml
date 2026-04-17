@@ -1,6 +1,6 @@
 project:
   name: thesis-benchmarking-project
-  phase: 8
+  phase: 9
   description: Neuro-symbolic architecture benchmarking platform
 
 paths:
@@ -26,4 +26,4 @@ storage:
   sqlite_path: results/experiment_registry.sqlite3
 
 notes:
-  status: Phase 8 uses these storage paths for the run registry and per-run artifact layout.
+  status: Phase 9 uses these storage paths for the run registry, per-run artifacts, and backend API access.

@@ -15,9 +15,10 @@ Current scope:
 - LTNtorch model-family integration
 - DeepProbLog model-family integration
 - run management and result storage
+- backend API
 
 Not implemented yet:
-- API or UI behavior
+- frontend UI behavior
 
 Key docs:
 - `docs/architecture.md`
@@ -30,6 +31,7 @@ Key docs:
 - `docs/ltn-model.md`
 - `docs/deepproblog-model.md`
 - `docs/run-management.md`
+- `docs/backend-api.md`
 
 Recommended next step:
-- verify the Phase 8 run-management layer using the instructions in `docs/run-management.md`
+- verify the Phase 9 backend API using the instructions in `docs/backend-api.md`

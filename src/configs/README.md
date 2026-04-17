@@ -9,5 +9,9 @@ Configuration files are grouped by concern so runs can stay explicit and compara
 - `supervision/`: supervision setting placeholders
 - `runs/`: example composed run presets
 
-These files are placeholders only in Phase 0. They document the expected configuration shape but are not executable yet.
+These files started as placeholders in Phase 0.
 
+Current status:
+- `base.yaml` is active for storage and backend API configuration
+- some run presets are executable synthetic smoke presets
+- dataset and benchmark configs still remain partially placeholder-driven until later phases wire the full experiment engine

@@ -7,6 +7,7 @@ from .config import (
     ProjectStorage,
     load_project_config,
 )
+from .catalog import list_available_options
 from .run_manager import RunManager, RunRecord, RunSelection
 
 __all__ = [
@@ -17,5 +18,6 @@ __all__ = [
     "RunManager",
     "RunRecord",
     "RunSelection",
+    "list_available_options",
     "load_project_config",
 ]

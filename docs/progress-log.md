@@ -15,7 +15,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 6 | LTNtorch integration | Completed |
 | 7 | DeepProbLog integration | Completed |
 | 8 | Run management and result storage | Completed |
-| 9 | Backend API | Pending |
+| 9 | Backend API | Completed |
 | 10 | Minimal frontend | Pending |
 | 11 | Benchmark comparison views | Pending |
 | 12 | Ablation and intervention tooling | Pending |
@@ -219,3 +219,24 @@ Completed:
 Notes:
 - Phase 8 intentionally uses synthetic tensor batches for verification because the real dataset-to-training pipeline is not wired yet
 - API access and frontend views over these stored results remain deferred to later phases
+
+## 2026-04-17 - Phase 9
+
+Goal:
+- add a backend API over the existing run registry and stored artifacts
+- expose minimal run-control and result-inspection endpoints
+- keep the launch flow honest by using only synthetic managed runs for now
+- avoid building the frontend yet
+
+Completed:
+- added a FastAPI application with health, option, run list, run detail, snapshot, compare, and synthetic launch endpoints
+- added pydantic request and response schemas for the backend API
+- added config-backed option discovery for datasets, models, benchmarks, supervision settings, and run presets
+- added a reusable synthetic managed-run launcher shared by the API
+- added `scripts/check_backend_api.py` for end-to-end backend verification with `TestClient`
+- added `docs/backend-api.md` with exact verification and manual server commands
+- added `httpx` to the dev dependencies so `TestClient` works in the local environment
+
+Notes:
+- the Phase 9 launch endpoint is intentionally limited to synthetic managed runs
+- real dataset-backed launch remains deferred until the training/data orchestration is wired more completely
