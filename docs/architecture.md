@@ -96,6 +96,7 @@ project/
 ## Folder Responsibilities
 
 - `external/`: third-party libraries or benchmark environments placed locally in predictable paths.
+- `data/`: local raw and prepared dataset storage used by dataset adapters and validation scripts.
 - `src/data/`: dataset adapters and dataset preparation code.
 - `src/models/`: model-family implementations behind a shared interface.
 - `src/logic/`: symbolic rules, logic templates, and logic utilities shared across families.
@@ -115,7 +116,7 @@ project/
 
 - Phase 0: structure, docs, config placeholders
 - Phase 1: environment and dependency setup
-- Phase 2: dataset infrastructure for MNLogic first
+- Phase 2: dataset infrastructure for MNLogic first, using a simple prepared-manifest format
 - Phase 3: shared encoder and common model interfaces
 - Phase 4: custom symbolic pipeline
 - Phase 5: evaluation engine
@@ -129,4 +130,3 @@ project/
 ## Phase 0 Outcome
 
 Phase 0 intentionally stops before any executable experiment logic. The repository is prepared so later phases can add functionality without reshaping the project layout.
-

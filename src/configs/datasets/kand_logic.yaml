@@ -1,17 +1,20 @@
 name: kand-logic
 priority: later
+format: prepared_manifest_v1
 
 paths:
-  dataset_root: null
-  train_split: null
-  val_split: null
-  test_split: null
-  ood_split: null
+  raw_root: data/raw/kand_logic
+  prepared_root: data/processed/kand_logic
+  images_dir: data/processed/kand_logic/images
+  metadata_dir: data/processed/kand_logic/metadata
+  train_split: data/processed/kand_logic/splits/train.csv
+  val_split: data/processed/kand_logic/splits/val.csv
+  test_split: data/processed/kand_logic/splits/test.csv
+  ood_split: data/processed/kand_logic/splits/ood.csv
 
 schema:
-  concept_schema_file: null
-  label_schema_file: null
+  concept_schema_file: data/processed/kand_logic/metadata/concept_schema.json
+  label_schema_file: data/processed/kand_logic/metadata/label_schema.json
 
 notes:
-  status: Placeholder only. Added for future extension after MNLogic stabilizes.
-
+  status: Placeholder path contract only. Added for future extension after MNLogic stabilizes.

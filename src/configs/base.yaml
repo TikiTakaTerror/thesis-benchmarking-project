@@ -4,6 +4,9 @@ project:
   description: Neuro-symbolic architecture benchmarking platform
 
 paths:
+  data_root: data
+  raw_data_root: data/raw
+  processed_data_root: data/processed
   external_root: external
   results_root: results
   runs_root: results/runs
@@ -24,4 +27,3 @@ storage:
 
 notes:
   status: Placeholder only. Wiring begins in later phases.
-

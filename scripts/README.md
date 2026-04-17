@@ -8,4 +8,6 @@ This directory is reserved for small utility scripts such as:
 Current scripts:
 - `bootstrap_env.sh`: create `.venv`, install dependencies, and run the environment smoke check
 - `check_environment.py`: verify Python version, import core dependencies, and confirm required project directories exist
+- `create_mnlogic_demo_dataset.py`: generate a tiny prepared MNLogic-style dataset for infrastructure verification
+- `check_mnlogic_dataset.py`: validate a prepared MNLogic dataset layout and print split-level summary information
 

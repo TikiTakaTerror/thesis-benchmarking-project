@@ -1,17 +1,30 @@
 name: mnlogic
 priority: first
+format: prepared_manifest_v1
 
 paths:
-  dataset_root: null
-  train_split: null
-  val_split: null
-  test_split: null
-  ood_split: null
+  raw_root: data/raw/mnlogic
+  prepared_root: data/processed/mnlogic
+  demo_root: data/processed/mnlogic_demo
+  images_dir: data/processed/mnlogic/images
+  metadata_dir: data/processed/mnlogic/metadata
+  train_split: data/processed/mnlogic/splits/train.csv
+  val_split: data/processed/mnlogic/splits/val.csv
+  test_split: data/processed/mnlogic/splits/test.csv
+  ood_split: data/processed/mnlogic/splits/ood.csv
 
 schema:
-  concept_schema_file: null
-  label_schema_file: null
+  concept_schema_file: data/processed/mnlogic/metadata/concept_schema.json
+  label_schema_file: data/processed/mnlogic/metadata/label_schema.json
+
+manifest_contract:
+  required_columns:
+    - sample_id
+    - image_path
+    - label_id
+  concept_column_prefix: concept__
+  optional_split_files:
+    - ood.csv
 
 notes:
-  status: Placeholder only. Dataset adapter and real paths will be added in Phase 2.
-
+  status: Dataset adapter added in Phase 2. Real MNLogic download and conversion still pending.

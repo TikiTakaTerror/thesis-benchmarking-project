@@ -8,7 +8,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | --- | --- | --- |
 | 0 | Planning and repository skeleton | Completed |
 | 1 | Environment and dependency setup | Completed |
-| 2 | Dataset infrastructure | Pending |
+| 2 | Dataset infrastructure | Completed |
 | 3 | Shared encoder and common model interfaces | Pending |
 | 4 | Custom concept-first symbolic pipeline | Pending |
 | 5 | Evaluation engine and metric computation | Pending |
@@ -58,4 +58,27 @@ Completed:
 Notes:
 - external repositories such as `rsbench-code`, `DeepProbLog`, and `LTNtorch` are still placeholders in this phase
 - no training, dataset loading, or evaluation logic has been added yet
+
+## 2026-04-17 - Phase 2
+
+Goal:
+- implement the dataset infrastructure with MNLogic first
+- define a simple prepared dataset layout that later datasets can reuse
+- add validation and demo scripts so the dataset layer is verifiable now
+- avoid model or training work
+
+Completed:
+- added a common dataset adapter interface and typed dataset records
+- added a prepared-manifest dataset adapter that loads schemas and split CSVs
+- added an `MNLogicDatasetAdapter` and a registry-based dataset factory
+- added local dataset storage folders under `data/raw` and `data/processed`
+- updated the MNLogic config to point to an explicit prepared dataset layout
+- added `scripts/create_mnlogic_demo_dataset.py` to generate a tiny verification dataset
+- added `scripts/check_mnlogic_dataset.py` to validate a prepared MNLogic dataset and print split counts
+- added documentation for the expected dataset layout and verification steps
+
+Notes:
+- the real MNLogic download and conversion flow is not implemented yet
+- the adapter currently targets a simple prepared format based on schema JSON plus split CSV manifests
+- this keeps later Kand-Logic support straightforward because it can reuse the same contract
 
