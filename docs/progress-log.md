@@ -9,7 +9,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 0 | Planning and repository skeleton | Completed |
 | 1 | Environment and dependency setup | Completed |
 | 2 | Dataset infrastructure | Completed |
-| 3 | Shared encoder and common model interfaces | Pending |
+| 3 | Shared encoder and common model interfaces | Completed |
 | 4 | Custom concept-first symbolic pipeline | Pending |
 | 5 | Evaluation engine and metric computation | Pending |
 | 6 | LTNtorch integration | Pending |
@@ -82,3 +82,25 @@ Notes:
 - the adapter currently targets a simple prepared format based on schema JSON plus split CSV manifests
 - this keeps later Kand-Logic support straightforward because it can reuse the same contract
 
+## 2026-04-17 - Phase 3
+
+Goal:
+- add a shared encoder foundation for all model families
+- define a common model adapter interface
+- add reusable prediction heads and generic checkpoint helpers
+- avoid implementing family-specific training or reasoning logic
+
+Completed:
+- added a common model adapter contract and shared `ModelOutputs` structure
+- added a `small_cnn` shared encoder with config parsing and parameter counting helpers
+- added reusable prediction heads for concept and label logits
+- added generic module-bundle checkpoint helpers for shared components
+- added registry helpers to load model configs and instantiate family adapter stubs
+- added family adapter stubs for the pipeline, LTN, and DeepProbLog families
+- updated model configs with explicit shared encoder defaults
+- added `scripts/check_model_foundations.py` to verify config loading, forward shapes, adapter registration, and checkpoint roundtrip
+- added documentation for the Phase 3 model foundation layer
+
+Notes:
+- the family adapters are still stubs and intentionally raise `NotImplementedError` for training and reasoning methods
+- actual pipeline logic is deferred to Phase 4, LTN integration to Phase 6, and DeepProbLog integration to Phase 7

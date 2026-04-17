@@ -1,13 +1,21 @@
 family: pipeline
 
 shared_encoder:
-  backbone: null
-  pretrained: null
-  feature_dim: null
+  name: small_cnn
+  pretrained: false
+  input_channels: 3
+  input_size: [64, 64]
+  conv_channels: [32, 64]
+  feature_dim: 128
+  dropout: 0.1
 
 heads:
-  concept_head: null
-  label_head: null
+  concept_head:
+    hidden_dim: 64
+    dropout: 0.1
+  label_head:
+    hidden_dim: 64
+    dropout: 0.1
 
 symbolic_layer:
   executor_type: rule-based
@@ -19,5 +27,4 @@ training_defaults:
   max_epochs: null
 
 notes:
-  status: Placeholder only. The first real family implementation is planned for Phase 4.
-
+  status: Shared encoder defaults added in Phase 3. The first real family implementation is planned for Phase 4.

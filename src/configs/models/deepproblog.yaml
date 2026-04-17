@@ -1,9 +1,13 @@
 family: deepproblog
 
 shared_encoder:
-  backbone: null
-  pretrained: null
-  feature_dim: null
+  name: small_cnn
+  pretrained: false
+  input_channels: 3
+  input_size: [64, 64]
+  conv_channels: [32, 64]
+  feature_dim: 128
+  dropout: 0.1
 
 logic_program:
   file: null
@@ -15,5 +19,4 @@ training_defaults:
   max_epochs: null
 
 notes:
-  status: Placeholder only. Integration is planned for Phase 7.
-
+  status: Shared encoder defaults added in Phase 3. Integration is planned for Phase 7.

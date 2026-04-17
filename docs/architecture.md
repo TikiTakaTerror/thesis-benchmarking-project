@@ -48,12 +48,19 @@ The core system is the backend experiment engine. The frontend is intentionally 
 
 ### Model Adapter
 
+- Adapter note: this project-level interface is intentionally not the raw `torch.nn.Module` API, because PyTorch already uses `train()` to toggle training mode. Family adapters will wrap neural modules and expose experiment-oriented methods.
 - `train(...)`
 - `predict(...)`
 - `predict_concepts(...)`
 - `evaluate(...)`
 - `save_checkpoint(...)`
 - `load_checkpoint(...)`
+
+## Shared Encoder Policy
+
+- A family adapter may use different reasoning machinery, but all families should be able to use the same shared encoder specification for fair comparison.
+- Phase 3 adds a simple `small_cnn` encoder as the default shared encoder baseline.
+- Future family implementations should load encoder settings from the same config shape so encoder capacity stays aligned across experiments.
 
 ### Benchmark Suite Adapter
 
@@ -99,6 +106,9 @@ project/
 - `data/`: local raw and prepared dataset storage used by dataset adapters and validation scripts.
 - `src/data/`: dataset adapters and dataset preparation code.
 - `src/models/`: model-family implementations behind a shared interface.
+- `src/models/shared_encoder.py`: reusable shared encoder implementation and config parsing.
+- `src/models/heads.py`: reusable prediction heads for concept and label logits.
+- `src/models/base.py`: common adapter contract used by all model families.
 - `src/logic/`: symbolic rules, logic templates, and logic utilities shared across families.
 - `src/train/`: training orchestration, loops, checkpoint handling, and run execution helpers.
 - `src/eval/`: metric computation and evaluation flows.
@@ -117,7 +127,7 @@ project/
 - Phase 0: structure, docs, config placeholders
 - Phase 1: environment and dependency setup
 - Phase 2: dataset infrastructure for MNLogic first, using a simple prepared-manifest format
-- Phase 3: shared encoder and common model interfaces
+- Phase 3: shared encoder and common model interfaces, without family-specific training logic
 - Phase 4: custom symbolic pipeline
 - Phase 5: evaluation engine
 - Phase 6: LTNtorch integration
