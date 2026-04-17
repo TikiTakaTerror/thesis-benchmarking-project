@@ -55,6 +55,40 @@ class ModelAdapter(ABC):
     ) -> "ModelAdapter":
         """Load a model-family checkpoint."""
 
+    def supports_symbolic_ablation(self) -> bool:
+        """Report whether the family exposes a non-symbolic label path."""
+
+        return False
+
+    def predict_without_symbolic_layer(
+        self,
+        images: torch.Tensor,
+        *,
+        reference_outputs: ModelOutputs | None = None,
+    ) -> torch.Tensor:
+        """Predict labels with the symbolic layer removed when supported."""
+
+        raise NotImplementedError(
+            f"{self.__class__.__name__} does not expose a non-symbolic label path."
+        )
+
+    def supports_concept_intervention(self) -> bool:
+        """Report whether the family can infer labels from intervened concepts."""
+
+        return False
+
+    def predict_from_concepts(
+        self,
+        concept_values: torch.Tensor,
+        *,
+        reference_outputs: ModelOutputs | None = None,
+    ) -> torch.Tensor:
+        """Predict labels after replacing model concepts with intervened values."""
+
+        raise NotImplementedError(
+            f"{self.__class__.__name__} does not expose concept-level intervention."
+        )
+
 
 class PhaseStubModelAdapter(ModelAdapter):
     """Stub adapter used until a family reaches its implementation phase."""
@@ -107,4 +141,3 @@ class PhaseStubModelAdapter(ModelAdapter):
             f"{self.__class__.__name__}.{method_name}() is planned for Phase "
             f"{self.implementation_phase}."
         )
-

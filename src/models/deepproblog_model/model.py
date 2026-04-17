@@ -256,6 +256,30 @@ class DeepProbLogModelAdapter(ModelAdapter):
             outputs = self.forward(images)
         return outputs.extras["concept_probs"]
 
+    def supports_concept_intervention(self) -> bool:
+        """The DeepProbLog family can infer labels directly from intervened concepts."""
+
+        return True
+
+    def predict_from_concepts(
+        self,
+        concept_values: torch.Tensor,
+        *,
+        reference_outputs: ModelOutputs | None = None,
+    ) -> torch.Tensor:
+        """Predict labels after replacing concept values in the logic program."""
+
+        del reference_outputs
+        concept_values = concept_values.to(self.device).float()
+        with torch.no_grad():
+            positive_probs = self._evaluate_rule_expression(
+                self.config.logic_program.positive_rule,
+                concept_values,
+            ).clamp(0.0, 1.0)
+            negative_probs = 1.0 - positive_probs
+            label_probs = torch.stack([negative_probs, positive_probs], dim=-1)
+        return label_probs.argmax(dim=-1)
+
     def evaluate(
         self,
         eval_batches: Iterable[dict[str, torch.Tensor]],
@@ -401,6 +425,47 @@ class DeepProbLogModelAdapter(ModelAdapter):
         if len(rendered_args) == 1:
             return rendered_args[0]
         return "(" + joiner.join(rendered_args) + ")"
+
+    def _evaluate_rule_expression(
+        self,
+        expression: Mapping[str, Any],
+        concept_values: torch.Tensor,
+    ) -> torch.Tensor:
+        if "concept" in expression:
+            concept_name = str(expression["concept"])
+            if concept_name not in self.config.concept_names:
+                raise ValueError(f"Unknown concept in DeepProbLog rule: {concept_name}")
+            concept_index = self.config.concept_names.index(concept_name)
+            return concept_values[:, concept_index]
+
+        operator = str(expression.get("op", "")).lower()
+        args = expression.get("args", [])
+        if operator not in {"and", "or", "not"}:
+            raise ValueError(
+                "DeepProbLog positive_rule only supports 'and', 'or', and 'not'"
+            )
+        if not isinstance(args, list) or not args:
+            raise ValueError(
+                f"DeepProbLog rule operator '{operator}' must define a non-empty args list"
+            )
+
+        evaluated_args = [
+            self._evaluate_rule_expression(argument, concept_values) for argument in args
+        ]
+        if operator == "not":
+            if len(evaluated_args) != 1:
+                raise ValueError("DeepProbLog rule operator 'not' requires one argument")
+            return 1.0 - evaluated_args[0]
+        if operator == "and":
+            result = torch.ones_like(evaluated_args[0])
+            for value in evaluated_args:
+                result = result * value
+            return result
+
+        inverse_result = torch.ones_like(evaluated_args[0])
+        for value in evaluated_args:
+            inverse_result = inverse_result * (1.0 - value)
+        return 1.0 - inverse_result
 
     def _solve_label_distribution(self, images: torch.Tensor) -> torch.Tensor:
         tensor_mapping, queries = self._build_runtime_batch(images)

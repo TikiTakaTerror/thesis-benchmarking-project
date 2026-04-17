@@ -167,6 +167,24 @@ class PipelineModelAdapter(ModelAdapter):
             outputs = self.forward(images)
         return outputs.extras["concept_probs"]
 
+    def supports_concept_intervention(self) -> bool:
+        """The pipeline can always infer labels directly from concepts."""
+
+        return True
+
+    def predict_from_concepts(
+        self,
+        concept_values: torch.Tensor,
+        *,
+        reference_outputs: ModelOutputs | None = None,
+    ) -> torch.Tensor:
+        """Predict labels after replacing the concept vector."""
+
+        del reference_outputs
+        concept_values = concept_values.to(self.device).float()
+        with torch.no_grad():
+            return self.symbolic_executor.predict_label_ids(concept_values)
+
     def evaluate(
         self,
         eval_batches: Iterable[dict[str, torch.Tensor]],

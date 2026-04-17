@@ -8,6 +8,7 @@ from typing import Any, Iterable, Mapping
 import torch
 from torch import nn
 
+from .analysis import compute_ablation_and_intervention_metrics
 from .metrics import (
     compute_classification_metrics,
     compute_concept_metrics,
@@ -33,8 +34,6 @@ def evaluate_model(
 
     start_time = time.perf_counter()
     collected = _collect_evaluation_tensors(model, batches)
-    elapsed_seconds = time.perf_counter() - start_time
-
     metrics: dict[str, float] = {}
     metrics.update(
         compute_classification_metrics(
@@ -63,6 +62,8 @@ def evaluate_model(
             concept_loss_weight=concept_loss_weight,
         )
     )
+    metrics.update(compute_ablation_and_intervention_metrics(model, batches))
+    elapsed_seconds = time.perf_counter() - start_time
     metrics.update(
         compute_control_metrics(
             model=model,

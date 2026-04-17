@@ -218,6 +218,64 @@ class LTNModelAdapter(ModelAdapter):
             outputs = self.forward(images)
         return outputs.extras["concept_probs"]
 
+    def supports_symbolic_ablation(self) -> bool:
+        """The LTN family exposes a direct neural label head."""
+
+        return True
+
+    def predict_without_symbolic_layer(
+        self,
+        images: torch.Tensor,
+        *,
+        reference_outputs: ModelOutputs | None = None,
+    ) -> torch.Tensor:
+        """Predict labels from the raw neural label head only."""
+
+        self._set_training_mode(False)
+        if reference_outputs is None:
+            images = images.to(self.device)
+            with torch.no_grad():
+                reference_outputs = self.forward(images)
+
+        if reference_outputs.label_logits is None:
+            raise ValueError("LTN ablation requires label_logits to be available.")
+        return reference_outputs.label_logits.argmax(dim=-1)
+
+    def supports_concept_intervention(self) -> bool:
+        """The LTN family can recompute logic-guided predictions from intervened concepts."""
+
+        return True
+
+    def predict_from_concepts(
+        self,
+        concept_values: torch.Tensor,
+        *,
+        reference_outputs: ModelOutputs | None = None,
+    ) -> torch.Tensor:
+        """Predict labels after replacing concept values and keeping the neural label path fixed."""
+
+        concept_values = concept_values.to(self.device).float()
+        if reference_outputs is not None:
+            label_probs = reference_outputs.extras.get("label_probs")
+        else:
+            label_probs = None
+
+        if label_probs is None:
+            label_probs = torch.full(
+                (concept_values.shape[0], self.config.num_labels),
+                fill_value=1.0 / self.config.num_labels,
+                device=self.device,
+                dtype=concept_values.dtype,
+            )
+        else:
+            label_probs = label_probs.to(self.device).float()
+
+        with torch.no_grad():
+            logic_scores = self._compute_logic_label_scores(concept_values, label_probs)
+            blend = self.config.logic_constraints.final_prediction_logic_blend
+            combined_scores = (1.0 - blend) * label_probs + blend * logic_scores
+        return combined_scores.argmax(dim=-1)
+
     def evaluate(
         self,
         eval_batches: Iterable[dict[str, torch.Tensor]],

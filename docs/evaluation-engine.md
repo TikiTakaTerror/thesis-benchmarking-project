@@ -8,13 +8,13 @@ It provides:
 - common task metrics
 - common concept metrics
 - semantic consistency metrics
+- ablation and intervention metrics when supported by the model family
 - lightweight control metrics
 - split-aware evaluation for ID and OOD-like batches
 
 It does not provide:
 - benchmark storage or run registry
 - plots or comparison dashboards
-- ablation or intervention tooling
 
 ## Implemented Metrics
 
@@ -31,6 +31,14 @@ Semantic view:
 - `rule_satisfaction_rate`
 - `violation_rate`
 - `concept_label_consistency`
+
+Ablation and intervention view when supported:
+- `symbolic_layer_ablated_accuracy`
+- `symbolic_layer_ablated_macro_f1`
+- `symbolic_layer_ablation_gain`
+- `concept_intervention_accuracy`
+- `concept_intervention_macro_f1`
+- `concept_intervention_gain`
 
 Control view:
 - `parameter_count`
@@ -84,4 +92,3 @@ You should see output similar to:
 ```
 
 Exact metric values can differ, but the script should finish successfully and print both ID and OOD-prefixed metrics.
-

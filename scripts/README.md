@@ -19,3 +19,4 @@ Current scripts:
 - `check_backend_api.py`: verify the FastAPI backend endpoints, including synthetic launch, run detail, snapshot access, and comparison
 - `check_minimal_ui.py`: verify the server-rendered frontend dashboard, launch form, run-detail page, and static stylesheet
 - `check_benchmark_views.py`: verify the run comparison page, benchmark summary page, and comparison export generation
+- `check_ablation_tooling.py`: verify concept intervention metrics for all families and symbolic-layer ablation metrics where the family exposes a non-symbolic label path

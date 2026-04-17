@@ -18,10 +18,11 @@ Current scope:
 - backend API
 - minimal frontend
 - comparison pages and benchmark summary pages
+- ablation and intervention tooling
 
 Not implemented yet:
-- ablation and intervention tooling
 - additional benchmark suites beyond the current placeholder path
+- final cleanup, reproducibility hardening, and thesis-facing polish
 
 Key docs:
 - `docs/architecture.md`
@@ -37,6 +38,7 @@ Key docs:
 - `docs/backend-api.md`
 - `docs/minimal-frontend.md`
 - `docs/benchmark-comparison-views.md`
+- `docs/ablation-tooling.md`
 
 Recommended next step:
-- verify the Phase 11 comparison views using the instructions in `docs/benchmark-comparison-views.md`
+- verify the Phase 12 ablation tooling using the instructions in `docs/ablation-tooling.md`

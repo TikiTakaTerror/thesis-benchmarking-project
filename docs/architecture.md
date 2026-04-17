@@ -117,6 +117,7 @@ project/
 - `src/train/runner.py`: Phase 8 managed-run execution helper that ties training, evaluation, and artifact persistence together.
 - `src/eval/`: metric computation and evaluation flows.
 - `src/eval/engine.py`: split-aware common evaluation runner for shared metrics.
+- `src/eval/analysis.py`: Phase 12 ablation and intervention analysis over model predictions and intervened concepts.
 - `src/benchmarks/`: benchmark suite adapters such as rsbench.
 - `src/services/`: application services that coordinate configs, storage, and run metadata.
 - `src/services/config.py`: typed loading of the base project config and resolved storage paths.
@@ -146,7 +147,8 @@ project/
 - Phase 9: backend API over the run registry with synthetic launch support
 - Phase 10: minimal server-rendered frontend over the existing backend API and run registry
 - Phase 11: comparison views and grouped benchmark summaries over stored runs
-- Phase 12+: ablations, extra benchmark suites, cleanup
+- Phase 12: ablation and intervention tooling integrated into the shared evaluator
+- Phase 13+: extra benchmark suites, cleanup
 
 ## Phase 0 Outcome
 

@@ -18,7 +18,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 9 | Backend API | Completed |
 | 10 | Minimal frontend | Completed |
 | 11 | Benchmark comparison views | Completed |
-| 12 | Ablation and intervention tooling | Pending |
+| 12 | Ablation and intervention tooling | Completed |
 | 13 | Additional benchmark suites | Pending |
 | 14 | Cleanup, documentation, reproducibility | Pending |
 
@@ -280,6 +280,28 @@ Notes:
 - the comparison page still compares only already stored runs and uses a fixed shared metric set
 - the benchmark summary page is already grouped by benchmark suite, dataset, model family, and supervision, even though only `rsbench` is configured so far
 - real dataset-backed UI launch remains deferred and is unchanged in this phase
+
+## 2026-04-17 - Phase 12
+
+Goal:
+- add symbolic-layer ablation tooling where the family exposes a non-symbolic label path
+- add concept intervention tooling across the implemented model families
+- integrate these metrics into the shared evaluator and managed run flow
+- avoid additional benchmark-suite work in this phase
+
+Completed:
+- extended the model adapter base with optional symbolic ablation and concept intervention hooks
+- added family-specific concept intervention support for the pipeline, LTN, and DeepProbLog families
+- added symbolic-layer ablation support for the LTN family through its raw neural label head
+- added `src/eval/analysis.py` for shared ablation and intervention metric computation
+- integrated the new metrics into the common evaluation engine so managed runs store them automatically
+- added `scripts/check_ablation_tooling.py` for end-to-end verification through the managed-run path
+- added `docs/ablation-tooling.md` with exact verification and manual inspection steps
+
+Notes:
+- Phase 12 keeps symbolic-layer ablation explicit instead of inventing a fake non-symbolic baseline for families that do not currently expose one
+- concept intervention metrics are available only when evaluation batches include `concept_targets`
+- no new frontend pages were added in this phase
 
 Notes:
 - the frontend intentionally launches the synthetic managed-run flow only
