@@ -71,6 +71,7 @@ The final command should end with output similar to this:
 [OK] Imported pydantic
 [OK] Imported fastapi
 [OK] Imported uvicorn
+[OK] Imported python-multipart
 [OK] Imported jinja2
 [OK] Imported matplotlib
 [OK] Imported tqdm

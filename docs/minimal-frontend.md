@@ -1,0 +1,78 @@
+# Minimal Frontend
+
+## Goal
+
+Phase 10 adds the minimal frontend only.
+
+It provides:
+- one server-rendered dashboard at `/`
+- one stored-run detail page at `/runs/{run_id}`
+- one launch form for the current synthetic managed-run flow
+- a recent-runs table and small metric cards
+
+It does not provide:
+- run comparison pages
+- benchmark summary pages
+- real dataset-backed launch from the UI yet
+
+## Implemented Components
+
+- `src/ui/routes.py`
+  Server-rendered UI routes
+- `src/ui/templates/`
+  Jinja templates for the dashboard and run detail page
+- `src/ui/static/styles.css`
+  Minimal styling
+- `scripts/check_minimal_ui.py`
+  End-to-end UI smoke check with `TestClient`
+
+## Current UI Routes
+
+- `GET /`
+- `POST /ui/launch`
+- `GET /runs/{run_id}`
+- `GET /static/styles.css`
+
+## Exact Verification Steps
+
+Run:
+
+```bash
+cd /Users/abdullahsaeed/thesis-benchmarking-project
+source .venv/bin/activate
+pip install -r requirements-dev.txt
+python scripts/check_minimal_ui.py
+```
+
+Optional manual server run:
+
+```bash
+cd /Users/abdullahsaeed/thesis-benchmarking-project
+source .venv/bin/activate
+uvicorn src.api.app:app --host 127.0.0.1 --port 8000
+```
+
+Then open:
+
+- `http://127.0.0.1:8000/`
+
+## Expected Output
+
+You should see output similar to:
+
+```text
+[OK] Dashboard page rendered
+[OK] Static stylesheet served
+[OK] Launch form redirected to /runs/...
+[OK] Run detail page rendered for ...
+[OK] Dashboard listed the launched run
+[OK] Minimal frontend smoke check passed.
+```
+
+## Current Limitation
+
+The Phase 10 frontend launches the same synthetic managed-run flow used in earlier backend verification.
+
+Reason:
+- the real dataset-backed execution path is still not fully wired
+- this keeps the frontend honest and testable while remaining secondary to the experiment system

@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Phase {{ phase }}</p>
+    <h2>Experiment Control</h2>
+    <p class="muted">
+      This frontend is intentionally minimal. It launches the current synthetic backend flow,
+      shows stored runs, and surfaces the most important metrics without hiding the experiment core.
+    </p>
+  </div>
+  <div class="summary-grid">
+    {% for card in summary %}
+    <article class="metric-card">
+      <span class="metric-label">{{ card.label }}</span>
+      <strong class="metric-value">{{ card.value }}</strong>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% if error_message %}
+<section class="alert error">{{ error_message }}</section>
+{% endif %}
+
+<section class="panel-grid">
+  <section class="panel control-panel">
+    <div class="panel-head">
+      <h3>Launch Run</h3>
+      <p class="muted">Phase 10 launches synthetic managed runs only.</p>
+    </div>
+    <form method="post" action="/ui/launch" class="control-form">
+      <label>
+        <span>Dataset</span>
+        <select name="dataset">
+          <option value="{{ launch_dataset }}">{{ launch_dataset }}</option>
+        </select>
+      </label>
+      <label>
+        <span>Model Family</span>
+        <select name="model_family">
+          {% for option in model_families %}
+          <option value="{{ option }}" {% if option == defaults.model_family %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Benchmark Suite</span>
+        <select name="benchmark_suite">
+          {% for option in benchmark_suites %}
+          <option value="{{ option }}" {% if option == defaults.benchmark_suite %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Supervision</span>
+        <select name="supervision">
+          {% for option in supervision_settings %}
+          <option value="{{ option }}" {% if option == defaults.supervision %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Seed</span>
+        <input type="number" name="seed" value="{{ defaults.seed }}" min="0" step="1">
+      </label>
+      <label>
+        <span>Run Name</span>
+        <input type="text" name="run_name" value="" placeholder="optional custom run name">
+      </label>
+      <div class="button-row">
+        <button type="submit" class="primary-button">Launch Train + Evaluate</button>
+      </div>
+    </form>
+    <div class="note-box">
+      <strong>Configured datasets:</strong>
+      <span>{{ configured_datasets | join(", ") }}</span>
+      <p class="muted small">
+        Real dataset-backed launches remain pending. The UI uses the synthetic backend path so the control loop is verifiable now.
+      </p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h3>Recent Runs</h3>
+      <p class="muted">Latest stored runs from the SQLite registry.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Run</th>
+            <th>Status</th>
+            <th>Model</th>
+            <th>Benchmark</th>
+            <th>Supervision</th>
+            <th>Seed</th>
+            <th>Test Acc.</th>
+            <th>Concept Acc.</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for run in runs %}
+          <tr>
+            <td>
+              <a href="/runs/{{ run.run_id }}" class="run-link">{{ run.run_name }}</a>
+              <div class="small muted">{{ run.created_at }}</div>
+            </td>
+            <td><span class="status status-{{ run.status }}">{{ run.status }}</span></td>
+            <td>{{ run.model_family }}</td>
+            <td>{{ run.benchmark_suite }}</td>
+            <td>{{ run.supervision }}</td>
+            <td>{{ run.seed }}</td>
+            <td>{{ run.test_accuracy }}</td>
+            <td>{{ run.test_concept_accuracy }}</td>
+          </tr>
+          {% endfor %}
+          {% if not runs %}
+          <tr>
+            <td colspan="8" class="muted">No stored runs yet.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+    <p class="muted small">
+      Run comparison pages are deferred to Phase 11.
+    </p>
+  </section>
+</section>
+{% endblock %}

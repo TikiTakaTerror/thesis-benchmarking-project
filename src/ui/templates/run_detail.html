@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="detail-header">
+  <div>
+    <p class="eyebrow">Stored Run</p>
+    <h2>{{ run.run_name }}</h2>
+    <p class="muted">{{ run.run_id }}</p>
+  </div>
+  <a href="/" class="back-link">Back to Dashboard</a>
+</section>
+
+<section class="summary-grid">
+  {% for card in primary_metrics %}
+  <article class="metric-card">
+    <span class="metric-label">{{ card.label }}</span>
+    <strong class="metric-value">{{ card.value }}</strong>
+  </article>
+  {% endfor %}
+</section>
+
+<section class="panel-grid">
+  <section class="panel">
+    <div class="panel-head">
+      <h3>Run Metadata</h3>
+    </div>
+    <dl class="meta-grid">
+      <dt>Status</dt><dd><span class="status status-{{ run.status }}">{{ run.status }}</span></dd>
+      <dt>Dataset</dt><dd>{{ run.dataset }}</dd>
+      <dt>Model Family</dt><dd>{{ run.model_family }}</dd>
+      <dt>Benchmark Suite</dt><dd>{{ run.benchmark_suite }}</dd>
+      <dt>Supervision</dt><dd>{{ run.supervision }}</dd>
+      <dt>Seed</dt><dd>{{ run.seed }}</dd>
+      <dt>Created</dt><dd>{{ run.created_at }}</dd>
+      <dt>Finished</dt><dd>{{ run.finished_at or "n/a" }}</dd>
+      <dt>Run Directory</dt><dd class="mono">{{ run.run_dir }}</dd>
+      <dt>Checkpoint</dt><dd class="mono">{{ run.checkpoint_path or "n/a" }}</dd>
+    </dl>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h3>Artifacts</h3>
+    </div>
+    <ul class="artifact-list">
+      {% for artifact_name, artifact_path in artifacts %}
+      <li><strong>{{ artifact_name }}</strong><span class="mono">{{ artifact_path }}</span></li>
+      {% endfor %}
+      {% if not artifacts %}
+      <li class="muted">No artifacts recorded.</li>
+      {% endif %}
+    </ul>
+  </section>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h3>All Metrics</h3>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for metric in metric_rows %}
+        <tr>
+          <td class="mono">{{ metric.name }}</td>
+          <td>{{ metric.value }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

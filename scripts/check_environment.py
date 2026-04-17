@@ -20,6 +20,7 @@ REQUIRED_IMPORTS = [
     ("pydantic", "pydantic"),
     ("fastapi", "fastapi"),
     ("uvicorn", "uvicorn"),
+    ("multipart", "python-multipart"),
     ("jinja2", "Jinja2"),
     ("matplotlib", "matplotlib"),
     ("tqdm", "tqdm"),

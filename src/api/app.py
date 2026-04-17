@@ -4,16 +4,17 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
-from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
 import yaml
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.staticfiles import StaticFiles
 
-from ..services import RunManager, RunRecord, load_project_config
+from ..services import RunRecord, get_project_config, get_run_manager
 from ..services.catalog import list_available_options
 from ..train.synthetic import execute_synthetic_managed_run
+from ..ui import create_ui_router
 from .schemas import (
     AvailableOptionsResponse,
     HealthResponse,
@@ -33,12 +34,15 @@ def create_app() -> FastAPI:
 
     app = FastAPI(
         title="Thesis Benchmarking Backend API",
-        version="0.9.0",
+        version="0.10.0",
         description=(
             "Minimal API for listing stored runs, inspecting run artifacts, "
             "comparing runs, and launching synthetic managed runs."
         ),
     )
+    static_dir = Path(__file__).resolve().parents[1] / "ui" / "static"
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+    app.include_router(create_ui_router())
 
     @app.get("/api/v1/health", response_model=HealthResponse)
     def health() -> HealthResponse:
@@ -172,17 +176,6 @@ def create_app() -> FastAPI:
         )
 
     return app
-
-
-@lru_cache(maxsize=1)
-def get_project_config():
-    return load_project_config()
-
-
-@lru_cache(maxsize=1)
-def get_run_manager():
-    return RunManager(get_project_config())
-
 
 def _require_run(run_id: str) -> RunRecord:
     try:

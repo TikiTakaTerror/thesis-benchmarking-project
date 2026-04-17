@@ -2,7 +2,10 @@
 
 ## Goal
 
-Phase 9 adds the backend API only.
+Phase 9 added the backend API.
+
+Since Phase 10, the same FastAPI app also serves the minimal frontend.
+This document still focuses only on the API routes.
 
 It provides:
 - health and option endpoints
@@ -12,7 +15,6 @@ It provides:
 - synchronous synthetic run launch endpoint for backend verification
 
 It does not provide:
-- frontend pages
 - background job execution
 - real dataset-to-training launch for MNLogic yet
 

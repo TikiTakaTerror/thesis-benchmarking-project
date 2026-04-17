@@ -16,9 +16,10 @@ Current scope:
 - DeepProbLog model-family integration
 - run management and result storage
 - backend API
+- minimal frontend
 
 Not implemented yet:
-- frontend UI behavior
+- comparison pages and benchmark summary pages
 
 Key docs:
 - `docs/architecture.md`
@@ -32,6 +33,7 @@ Key docs:
 - `docs/deepproblog-model.md`
 - `docs/run-management.md`
 - `docs/backend-api.md`
+- `docs/minimal-frontend.md`
 
 Recommended next step:
-- verify the Phase 9 backend API using the instructions in `docs/backend-api.md`
+- verify the Phase 10 minimal frontend using the instructions in `docs/minimal-frontend.md`

@@ -124,6 +124,7 @@ project/
 - `src/api/`: backend API layer for later run control and results access.
 - `src/api/app.py`: FastAPI application exposing run listing, run detail, comparison, and synthetic launch endpoints.
 - `src/ui/`: minimal user-facing interface, kept intentionally small.
+- `src/ui/routes.py`: server-rendered dashboard and run-detail pages mounted into the FastAPI app.
 - `src/utils/`: shared utility helpers that do not belong to the other modules.
 - `src/configs/`: configuration placeholders for datasets, models, supervision modes, benchmark suites, and run presets.
 - `results/`: run artifacts, summaries, and plots.
@@ -142,7 +143,7 @@ project/
 - Phase 7: DeepProbLog integration with neural predicates and exact probabilistic logic inference
 - Phase 8: run management and result storage with SQLite registry, per-run artifacts, and comparison exports
 - Phase 9: backend API over the run registry with synthetic launch support
-- Phase 10: minimal frontend
+- Phase 10: minimal server-rendered frontend over the existing backend API and run registry
 - Phase 11+: comparison views, ablations, extra benchmark suites, cleanup
 
 ## Phase 0 Outcome

@@ -16,7 +16,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 7 | DeepProbLog integration | Completed |
 | 8 | Run management and result storage | Completed |
 | 9 | Backend API | Completed |
-| 10 | Minimal frontend | Pending |
+| 10 | Minimal frontend | Completed |
 | 11 | Benchmark comparison views | Pending |
 | 12 | Ablation and intervention tooling | Pending |
 | 13 | Additional benchmark suites | Pending |
@@ -240,3 +240,25 @@ Completed:
 Notes:
 - the Phase 9 launch endpoint is intentionally limited to synthetic managed runs
 - real dataset-backed launch remains deferred until the training/data orchestration is wired more completely
+
+## 2026-04-17 - Phase 10
+
+Goal:
+- add a minimal frontend on top of the backend API and run registry
+- keep the UI secondary to the experiment system
+- expose launch controls, recent runs, and run detail pages
+- avoid building comparison pages yet
+
+Completed:
+- added a server-rendered dashboard at `/`
+- added a run-detail page at `/runs/{run_id}`
+- added a launch form for the current synthetic managed-run flow
+- added static styling and Jinja templates for the minimal UI
+- mounted the UI and static files into the existing FastAPI application
+- added `scripts/check_minimal_ui.py` for end-to-end frontend verification
+- added `docs/minimal-frontend.md` with exact verification and manual server steps
+- added `python-multipart` as a runtime dependency for HTML form submission
+
+Notes:
+- the frontend intentionally launches the synthetic managed-run flow only
+- run comparison and benchmark summary pages remain deferred to Phase 11
