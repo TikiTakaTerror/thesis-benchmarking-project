@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# Local environment files
+.env
+.DS_Store
+
+# Generated experiment artifacts
+results/runs/*
+!results/runs/README.md
+results/plots/*
+!results/plots/README.md
+results/*.sqlite3
+

@@ -1,0 +1,10 @@
+name: label_only
+
+signals:
+  labels: true
+  concepts: false
+  logic_constraints: false
+
+notes:
+  status: Placeholder only. Intended for later control and ablation experiments.
+

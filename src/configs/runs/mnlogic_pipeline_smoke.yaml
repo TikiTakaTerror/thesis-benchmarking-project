@@ -1,0 +1,19 @@
+run:
+  name: mnlogic_pipeline_smoke
+  phase: 0_placeholder
+
+selection:
+  dataset: mnlogic
+  model_family: pipeline
+  benchmark_suite: rsbench
+  supervision: full
+  seed: 42
+
+overrides:
+  dataset_root: null
+  output_dir: null
+  checkpoint_dir: null
+
+notes:
+  status: Configuration shape example only. This run is not executable in Phase 0.
+

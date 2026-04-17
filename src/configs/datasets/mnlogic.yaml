@@ -1,0 +1,17 @@
+name: mnlogic
+priority: first
+
+paths:
+  dataset_root: null
+  train_split: null
+  val_split: null
+  test_split: null
+  ood_split: null
+
+schema:
+  concept_schema_file: null
+  label_schema_file: null
+
+notes:
+  status: Placeholder only. Dataset adapter and real paths will be added in Phase 2.
+

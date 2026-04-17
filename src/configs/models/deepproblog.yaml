@@ -1,0 +1,19 @@
+family: deepproblog
+
+shared_encoder:
+  backbone: null
+  pretrained: null
+  feature_dim: null
+
+logic_program:
+  file: null
+  neural_predicates: []
+
+training_defaults:
+  batch_size: null
+  learning_rate: null
+  max_epochs: null
+
+notes:
+  status: Placeholder only. Integration is planned for Phase 7.
+

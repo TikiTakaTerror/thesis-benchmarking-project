@@ -1,0 +1,27 @@
+project:
+  name: thesis-benchmarking-project
+  phase: 0
+  description: Neuro-symbolic architecture benchmarking platform
+
+paths:
+  external_root: external
+  results_root: results
+  runs_root: results/runs
+  summaries_root: results/summaries
+  plots_root: results/plots
+
+defaults:
+  benchmark_suite: rsbench
+  dataset: mnlogic
+  model_family: pipeline
+  supervision: full
+  seed: 42
+  device: cpu
+
+storage:
+  run_registry_backend: sqlite
+  sqlite_path: results/experiment_registry.sqlite3
+
+notes:
+  status: Placeholder only. Wiring begins in later phases.
+

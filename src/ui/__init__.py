@@ -1,0 +1,2 @@
+"""Minimal UI package placeholder."""
+

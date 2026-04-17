@@ -1,0 +1,23 @@
+family: pipeline
+
+shared_encoder:
+  backbone: null
+  pretrained: null
+  feature_dim: null
+
+heads:
+  concept_head: null
+  label_head: null
+
+symbolic_layer:
+  executor_type: rule-based
+  rules_file: null
+
+training_defaults:
+  batch_size: null
+  learning_rate: null
+  max_epochs: null
+
+notes:
+  status: Placeholder only. The first real family implementation is planned for Phase 4.
+

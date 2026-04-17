@@ -1,0 +1,10 @@
+name: full
+
+signals:
+  labels: true
+  concepts: true
+  logic_constraints: true
+
+notes:
+  status: Placeholder only. Exact semantics will be defined once the training pipeline exists.
+

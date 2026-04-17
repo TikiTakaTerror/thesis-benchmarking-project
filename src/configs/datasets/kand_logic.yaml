@@ -1,0 +1,17 @@
+name: kand-logic
+priority: later
+
+paths:
+  dataset_root: null
+  train_split: null
+  val_split: null
+  test_split: null
+  ood_split: null
+
+schema:
+  concept_schema_file: null
+  label_schema_file: null
+
+notes:
+  status: Placeholder only. Added for future extension after MNLogic stabilizes.
+
