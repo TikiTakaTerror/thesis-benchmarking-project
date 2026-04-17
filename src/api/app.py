@@ -1,4 +1,4 @@
-"""Minimal FastAPI backend for run control and stored-result inspection."""
+"""Minimal FastAPI backend for run control, stored-result inspection, and UI serving."""
 
 from __future__ import annotations
 
@@ -30,14 +30,14 @@ from .schemas import (
 
 
 def create_app() -> FastAPI:
-    """Create the Phase 9 backend API application."""
+    """Create the Phase 11 backend and UI application."""
 
     app = FastAPI(
         title="Thesis Benchmarking Backend API",
-        version="0.10.0",
+        version="0.11.0",
         description=(
             "Minimal API for listing stored runs, inspecting run artifacts, "
-            "comparing runs, and launching synthetic managed runs."
+            "comparing runs, launching synthetic managed runs, and serving the minimal UI."
         ),
     )
     static_dir = Path(__file__).resolve().parents[1] / "ui" / "static"

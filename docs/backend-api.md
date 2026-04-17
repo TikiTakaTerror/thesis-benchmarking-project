@@ -5,6 +5,7 @@
 Phase 9 added the backend API.
 
 Since Phase 10, the same FastAPI app also serves the minimal frontend.
+Since Phase 11, that same app also serves the comparison and benchmark summary pages.
 This document still focuses only on the API routes.
 
 It provides:
@@ -70,7 +71,7 @@ curl http://127.0.0.1:8000/api/v1/options
 You should see output similar to:
 
 ```text
-[OK] Health endpoint responded for phase 9
+[OK] Health endpoint responded for phase 11
 [OK] Options endpoint returned 3 model families
 [OK] Synthetic launch completed: ...
 [OK] Synthetic launch completed: ...

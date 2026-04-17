@@ -85,48 +85,58 @@
   <section class="panel">
     <div class="panel-head">
       <h3>Recent Runs</h3>
-      <p class="muted">Latest stored runs from the SQLite registry.</p>
+      <p class="muted">Latest stored runs from the SQLite registry. Select at least two to compare.</p>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Run</th>
-            <th>Status</th>
-            <th>Model</th>
-            <th>Benchmark</th>
-            <th>Supervision</th>
-            <th>Seed</th>
-            <th>Test Acc.</th>
-            <th>Concept Acc.</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for run in runs %}
-          <tr>
-            <td>
-              <a href="/runs/{{ run.run_id }}" class="run-link">{{ run.run_name }}</a>
-              <div class="small muted">{{ run.created_at }}</div>
-            </td>
-            <td><span class="status status-{{ run.status }}">{{ run.status }}</span></td>
-            <td>{{ run.model_family }}</td>
-            <td>{{ run.benchmark_suite }}</td>
-            <td>{{ run.supervision }}</td>
-            <td>{{ run.seed }}</td>
-            <td>{{ run.test_accuracy }}</td>
-            <td>{{ run.test_concept_accuracy }}</td>
-          </tr>
-          {% endfor %}
-          {% if not runs %}
-          <tr>
-            <td colspan="8" class="muted">No stored runs yet.</td>
-          </tr>
-          {% endif %}
-        </tbody>
-      </table>
-    </div>
+    <form method="get" action="/compare">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Run</th>
+              <th>Status</th>
+              <th>Model</th>
+              <th>Benchmark</th>
+              <th>Supervision</th>
+              <th>Seed</th>
+              <th>Test Acc.</th>
+              <th>Concept Acc.</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for run in runs %}
+            <tr>
+              <td>
+                <input type="checkbox" name="run_id" value="{{ run.run_id }}" aria-label="Select {{ run.run_name }}">
+              </td>
+              <td>
+                <a href="/runs/{{ run.run_id }}" class="run-link">{{ run.run_name }}</a>
+                <div class="small muted">{{ run.created_at }}</div>
+              </td>
+              <td><span class="status status-{{ run.status }}">{{ run.status }}</span></td>
+              <td>{{ run.model_family }}</td>
+              <td>{{ run.benchmark_suite }}</td>
+              <td>{{ run.supervision }}</td>
+              <td>{{ run.seed }}</td>
+              <td>{{ run.test_accuracy }}</td>
+              <td>{{ run.test_concept_accuracy }}</td>
+            </tr>
+            {% endfor %}
+            {% if not runs %}
+            <tr>
+              <td colspan="9" class="muted">No stored runs yet.</td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+      <div class="button-row">
+        <button type="submit" class="primary-button">Compare Selected Runs</button>
+        <a href="/benchmarks" class="back-link">Open Benchmark Summary</a>
+      </div>
+    </form>
     <p class="muted small">
-      Run comparison pages are deferred to Phase 11.
+      Benchmark summary groups runs by benchmark suite, dataset, model family, and supervision setting.
     </p>
   </section>
 </section>

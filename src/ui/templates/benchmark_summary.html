@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Phase {{ phase }}</p>
+    <h2>Benchmark Summary</h2>
+    <p class="muted">
+      This page groups stored runs by benchmark suite, dataset, model family, and supervision
+      setting so you can inspect the current comparison surface without leaving the experiment system.
+    </p>
+  </div>
+  <div class="summary-grid">
+    {% for card in summary_cards %}
+    <article class="metric-card">
+      <span class="metric-label">{{ card.label }}</span>
+      <strong class="metric-value">{{ card.value }}</strong>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h3>Grouped Benchmark View</h3>
+    <p class="muted">One row per benchmark suite + dataset + model family + supervision combination.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Benchmark</th>
+          <th>Dataset</th>
+          <th>Model</th>
+          <th>Supervision</th>
+          <th>Runs</th>
+          <th>Completed</th>
+          <th>Failed</th>
+          <th>Best Test Acc.</th>
+          <th>Mean Test Acc.</th>
+          <th>Mean Concept Acc.</th>
+          <th>Mean Run Time (s)</th>
+          <th>Latest Run</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in summary_rows %}
+        <tr>
+          <td>{{ row.benchmark_suite }}</td>
+          <td>{{ row.dataset }}</td>
+          <td>{{ row.model_family }}</td>
+          <td>{{ row.supervision }}</td>
+          <td>{{ row.run_count }}</td>
+          <td>{{ row.completed_runs }}</td>
+          <td>{{ row.failed_runs }}</td>
+          <td>{{ row.best_test_accuracy }}</td>
+          <td>{{ row.mean_test_accuracy }}</td>
+          <td>{{ row.mean_concept_accuracy }}</td>
+          <td>{{ row.mean_runtime_seconds }}</td>
+          <td>
+            <a href="/runs/{{ row.latest_run_id }}" class="run-link">{{ row.latest_run_name }}</a>
+            <div class="small muted">{{ row.latest_created_at }}</div>
+          </td>
+          <td>
+            {% if row.compare_href %}
+            <a href="{{ row.compare_href }}" class="table-action">Compare Recent</a>
+            {% else %}
+            <span class="muted small">Need 2 completed runs</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+        {% if not summary_rows %}
+        <tr>
+          <td colspan="13" class="muted">No stored runs yet.</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

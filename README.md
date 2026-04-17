@@ -17,9 +17,11 @@ Current scope:
 - run management and result storage
 - backend API
 - minimal frontend
+- comparison pages and benchmark summary pages
 
 Not implemented yet:
-- comparison pages and benchmark summary pages
+- ablation and intervention tooling
+- additional benchmark suites beyond the current placeholder path
 
 Key docs:
 - `docs/architecture.md`
@@ -34,6 +36,7 @@ Key docs:
 - `docs/run-management.md`
 - `docs/backend-api.md`
 - `docs/minimal-frontend.md`
+- `docs/benchmark-comparison-views.md`
 
 Recommended next step:
-- verify the Phase 10 minimal frontend using the instructions in `docs/minimal-frontend.md`
+- verify the Phase 11 comparison views using the instructions in `docs/benchmark-comparison-views.md`

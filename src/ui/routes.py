@@ -1,15 +1,21 @@
-"""Minimal server-rendered UI routes for Phase 10."""
+"""Server-rendered UI routes for the minimal frontend and comparison views."""
 
 from __future__ import annotations
 
 from pathlib import Path
+from urllib.parse import urlencode
 
-from fastapi import APIRouter, Form, Request, status
+from fastapi import APIRouter, Form, Query, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from ..services.runtime import get_project_config, get_run_manager
 from ..services.catalog import list_available_options
+from ..services.reporting import (
+    build_benchmark_summary,
+    build_comparison_export_basename,
+    build_comparison_table,
+)
 from ..train.synthetic import SYNTHETIC_DATASET_NAME, execute_synthetic_managed_run
 
 
@@ -18,7 +24,7 @@ TEMPLATES = Jinja2Templates(directory=str(UI_ROOT / "templates"))
 
 
 def create_ui_router() -> APIRouter:
-    """Create the minimal Phase 10 UI router."""
+    """Create the Phase 11 UI router."""
 
     router = APIRouter(include_in_schema=False)
 
@@ -49,6 +55,86 @@ def create_ui_router() -> APIRouter:
             "error_message": None,
         }
         return TEMPLATES.TemplateResponse(request, "dashboard.html", context)
+
+    @router.get("/compare", response_class=HTMLResponse)
+    def compare_runs(
+        request: Request,
+        run_id: list[str] | None = Query(default=None),
+    ) -> HTMLResponse:
+        project_config = get_project_config()
+        run_manager = get_run_manager()
+        available_runs = run_manager.list_runs()[:20]
+        selected_run_ids = _deduplicate_preserve_order(run_id or [])
+
+        comparison = None
+        export_paths = None
+        error_message = None
+        if selected_run_ids:
+            if len(selected_run_ids) < 2:
+                error_message = "Select at least two runs to open the comparison view."
+            else:
+                try:
+                    records = [
+                        run_manager.get_run(selected_id) for selected_id in selected_run_ids
+                    ]
+                except ValueError as exc:
+                    error_message = str(exc)
+                else:
+                    comparison = build_comparison_table(records)
+                    export_paths = run_manager.compare_runs(
+                        selected_run_ids,
+                        metric_names=[
+                            column["name"] for column in comparison["metric_columns"]
+                        ],
+                        output_basename=build_comparison_export_basename(selected_run_ids),
+                    )
+
+        context = {
+            "request": request,
+            "page_title": "Run Comparison",
+            "project_name": project_config.name,
+            "phase": project_config.phase,
+            "available_runs": [_record_to_ui_row(record) for record in available_runs],
+            "selected_run_ids": selected_run_ids,
+            "comparison": _format_comparison_payload(comparison),
+            "export_paths": export_paths,
+            "error_message": error_message,
+        }
+        return TEMPLATES.TemplateResponse(request, "compare.html", context)
+
+    @router.get("/benchmarks", response_class=HTMLResponse)
+    def benchmark_summary(request: Request) -> HTMLResponse:
+        project_config = get_project_config()
+        records = get_run_manager().list_runs()
+        summary = build_benchmark_summary(records)
+        rows = []
+        for row in summary["rows"]:
+            compare_ids = row["compare_run_ids"]
+            compare_href = None
+            if len(compare_ids) >= 2:
+                compare_href = "/compare?" + urlencode(
+                    [("run_id", run_id) for run_id in compare_ids]
+                )
+            rows.append(
+                {
+                    **row,
+                    "compare_href": compare_href,
+                    "best_test_accuracy": row["best_test_accuracy"],
+                    "mean_test_accuracy": row["mean_test_accuracy"],
+                    "mean_concept_accuracy": row["mean_concept_accuracy"],
+                    "mean_runtime_seconds": row["mean_runtime_seconds"],
+                }
+            )
+
+        context = {
+            "request": request,
+            "page_title": "Benchmark Summary",
+            "project_name": project_config.name,
+            "phase": project_config.phase,
+            "summary_cards": summary["cards"],
+            "summary_rows": rows,
+        }
+        return TEMPLATES.TemplateResponse(request, "benchmark_summary.html", context)
 
     @router.post("/ui/launch", response_model=None)
     def launch_from_ui(
@@ -141,6 +227,29 @@ def _render_dashboard_with_error(request: Request, *, error_message: str) -> HTM
     return TEMPLATES.TemplateResponse(request, "dashboard.html", context, status_code=400)
 
 
+def _format_comparison_payload(comparison: dict | None) -> dict | None:
+    if comparison is None:
+        return None
+
+    rows = []
+    for row in comparison["rows"]:
+        rows.append(
+            {
+                **row,
+                "metrics": {
+                    metric_name: _format_metric_value(metric_value)
+                    for metric_name, metric_value in row["metrics"].items()
+                },
+            }
+        )
+
+    return {
+        "cards": comparison["cards"],
+        "metric_columns": comparison["metric_columns"],
+        "rows": rows,
+    }
+
+
 def _build_dashboard_summary(records) -> list[dict[str, str]]:
     total_runs = len(records)
     completed_runs = sum(1 for record in records if record.status == "completed")
@@ -198,6 +307,17 @@ def _record_to_ui_row(record) -> dict[str, str | dict[str, float]]:
         ),
         "runtime_seconds": _format_metric_value(record.metrics.get("run_runtime_seconds")),
     }
+
+
+def _deduplicate_preserve_order(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        ordered.append(value)
+    return ordered
 
 
 def _format_metric_value(value) -> str:

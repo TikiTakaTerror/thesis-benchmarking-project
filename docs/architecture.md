@@ -121,10 +121,11 @@ project/
 - `src/services/`: application services that coordinate configs, storage, and run metadata.
 - `src/services/config.py`: typed loading of the base project config and resolved storage paths.
 - `src/services/run_manager.py`: SQLite-backed run registry plus per-run filesystem storage helpers.
-- `src/api/`: backend API layer for later run control and results access.
-- `src/api/app.py`: FastAPI application exposing run listing, run detail, comparison, and synthetic launch endpoints.
+- `src/api/`: backend API layer for run control and results access.
+- `src/api/app.py`: FastAPI application exposing run listing, run detail, comparison, synthetic launch, and the mounted server-rendered UI.
 - `src/ui/`: minimal user-facing interface, kept intentionally small.
-- `src/ui/routes.py`: server-rendered dashboard and run-detail pages mounted into the FastAPI app.
+- `src/ui/routes.py`: server-rendered dashboard, run-detail, comparison, and benchmark summary pages mounted into the FastAPI app.
+- `src/services/reporting.py`: thin view-focused reporting helpers for comparison tables and grouped benchmark summaries.
 - `src/utils/`: shared utility helpers that do not belong to the other modules.
 - `src/configs/`: configuration placeholders for datasets, models, supervision modes, benchmark suites, and run presets.
 - `results/`: run artifacts, summaries, and plots.
@@ -144,7 +145,8 @@ project/
 - Phase 8: run management and result storage with SQLite registry, per-run artifacts, and comparison exports
 - Phase 9: backend API over the run registry with synthetic launch support
 - Phase 10: minimal server-rendered frontend over the existing backend API and run registry
-- Phase 11+: comparison views, ablations, extra benchmark suites, cleanup
+- Phase 11: comparison views and grouped benchmark summaries over stored runs
+- Phase 12+: ablations, extra benchmark suites, cleanup
 
 ## Phase 0 Outcome
 

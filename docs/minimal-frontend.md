@@ -2,7 +2,7 @@
 
 ## Goal
 
-Phase 10 adds the minimal frontend only.
+Phase 10 added the minimal frontend foundation.
 
 It provides:
 - one server-rendered dashboard at `/`
@@ -10,9 +10,11 @@ It provides:
 - one launch form for the current synthetic managed-run flow
 - a recent-runs table and small metric cards
 
-It does not provide:
-- run comparison pages
-- benchmark summary pages
+Since Phase 11, the same frontend also exposes:
+- a run comparison page at `/compare`
+- a benchmark summary page at `/benchmarks`
+
+It still does not provide:
 - real dataset-backed launch from the UI yet
 
 ## Implemented Components
@@ -31,6 +33,8 @@ It does not provide:
 - `GET /`
 - `POST /ui/launch`
 - `GET /runs/{run_id}`
+- `GET /compare`
+- `GET /benchmarks`
 - `GET /static/styles.css`
 
 ## Exact Verification Steps
@@ -42,6 +46,7 @@ cd /Users/abdullahsaeed/thesis-benchmarking-project
 source .venv/bin/activate
 pip install -r requirements-dev.txt
 python scripts/check_minimal_ui.py
+python scripts/check_benchmark_views.py
 ```
 
 Optional manual server run:

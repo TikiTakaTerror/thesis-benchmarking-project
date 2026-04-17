@@ -49,6 +49,18 @@ a {
   gap: 16px;
 }
 
+.topnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.topnav a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
 .eyebrow {
   margin: 0 0 6px;
   text-transform: uppercase;
@@ -123,6 +135,10 @@ h3 {
   grid-template-columns: minmax(320px, 380px) 1fr;
 }
 
+.compare-layout {
+  grid-template-columns: minmax(300px, 360px) 1fr;
+}
+
 .panel {
   padding: 22px;
 }
@@ -166,6 +182,12 @@ select {
   border-radius: 12px;
   background: var(--surface-strong);
   color: var(--text);
+}
+
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  padding: 0;
 }
 
 .button-row {
@@ -268,6 +290,17 @@ th {
 .run-link {
   text-decoration: none;
   font-weight: 600;
+}
+
+.table-action {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.compact-table th,
+.compact-table td {
+  padding: 10px 8px;
 }
 
 .artifact-list {

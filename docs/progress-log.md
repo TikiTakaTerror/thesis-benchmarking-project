@@ -17,7 +17,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 8 | Run management and result storage | Completed |
 | 9 | Backend API | Completed |
 | 10 | Minimal frontend | Completed |
-| 11 | Benchmark comparison views | Pending |
+| 11 | Benchmark comparison views | Completed |
 | 12 | Ablation and intervention tooling | Pending |
 | 13 | Additional benchmark suites | Pending |
 | 14 | Cleanup, documentation, reproducibility | Pending |
@@ -258,6 +258,28 @@ Completed:
 - added `scripts/check_minimal_ui.py` for end-to-end frontend verification
 - added `docs/minimal-frontend.md` with exact verification and manual server steps
 - added `python-multipart` as a runtime dependency for HTML form submission
+
+## 2026-04-17 - Phase 11
+
+Goal:
+- add the missing stored-result comparison views
+- keep the frontend server-rendered and minimal
+- expose one simple run comparison page and one grouped benchmark summary page
+- avoid ablation or intervention tooling in this phase
+
+Completed:
+- added a thin reporting helper layer for UI-facing comparison and grouped benchmark summaries
+- added a run comparison page at `/compare`
+- added a benchmark summary page at `/benchmarks`
+- updated the dashboard so runs can be selected and compared directly from the recent-runs table
+- updated the top navigation to include comparison and benchmark pages
+- added `scripts/check_benchmark_views.py` for end-to-end verification of the new pages and comparison export generation
+- added `docs/benchmark-comparison-views.md` with exact verification and manual browser steps
+
+Notes:
+- the comparison page still compares only already stored runs and uses a fixed shared metric set
+- the benchmark summary page is already grouped by benchmark suite, dataset, model family, and supervision, even though only `rsbench` is configured so far
+- real dataset-backed UI launch remains deferred and is unchanged in this phase
 
 Notes:
 - the frontend intentionally launches the synthetic managed-run flow only
