@@ -1,4 +1,6 @@
-# Summary Outputs Placeholder
+# Summary Outputs
 
-Aggregated benchmark summaries will later be written here.
-
+Phase 8 writes summary outputs here, including:
+- `run_registry.csv`
+- `run_registry.json`
+- run-comparison CSV and JSON exports

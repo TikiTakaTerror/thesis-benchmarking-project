@@ -14,9 +14,9 @@ Current scope:
 - shared evaluation engine and metric computation
 - LTNtorch model-family integration
 - DeepProbLog model-family integration
+- run management and result storage
 
 Not implemented yet:
-- run management and result storage
 - API or UI behavior
 
 Key docs:
@@ -29,6 +29,7 @@ Key docs:
 - `docs/evaluation-engine.md`
 - `docs/ltn-model.md`
 - `docs/deepproblog-model.md`
+- `docs/run-management.md`
 
 Recommended next step:
-- verify the Phase 7 DeepProbLog model using the instructions in `docs/deepproblog-model.md`
+- verify the Phase 8 run-management layer using the instructions in `docs/run-management.md`

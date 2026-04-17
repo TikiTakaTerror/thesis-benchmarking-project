@@ -16,6 +16,8 @@ venv/
 # Generated experiment artifacts
 results/runs/*
 !results/runs/README.md
+results/summaries/*
+!results/summaries/README.md
 results/plots/*
 !results/plots/README.md
 results/*.sqlite3

@@ -114,10 +114,13 @@ project/
 - `src/models/ltn_model/`: the LTNtorch-backed model family.
 - `src/logic/`: symbolic rules, logic templates, and logic utilities shared across families.
 - `src/train/`: training orchestration, loops, checkpoint handling, and run execution helpers.
+- `src/train/runner.py`: Phase 8 managed-run execution helper that ties training, evaluation, and artifact persistence together.
 - `src/eval/`: metric computation and evaluation flows.
 - `src/eval/engine.py`: split-aware common evaluation runner for shared metrics.
 - `src/benchmarks/`: benchmark suite adapters such as rsbench.
 - `src/services/`: application services that coordinate configs, storage, and run metadata.
+- `src/services/config.py`: typed loading of the base project config and resolved storage paths.
+- `src/services/run_manager.py`: SQLite-backed run registry plus per-run filesystem storage helpers.
 - `src/api/`: backend API layer for later run control and results access.
 - `src/ui/`: minimal user-facing interface, kept intentionally small.
 - `src/utils/`: shared utility helpers that do not belong to the other modules.
@@ -136,7 +139,7 @@ project/
 - Phase 5: evaluation engine and shared metric computation
 - Phase 6: LTNtorch integration with logical satisfaction loss and logic-influenced prediction
 - Phase 7: DeepProbLog integration with neural predicates and exact probabilistic logic inference
-- Phase 8: run management and result storage
+- Phase 8: run management and result storage with SQLite registry, per-run artifacts, and comparison exports
 - Phase 9: backend API
 - Phase 10: minimal frontend
 - Phase 11+: comparison views, ablations, extra benchmark suites, cleanup

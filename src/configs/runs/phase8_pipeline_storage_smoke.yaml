@@ -1,0 +1,25 @@
+run:
+  name: phase8_pipeline_storage_smoke
+  phase: 8
+
+selection:
+  dataset: synthetic_mnlogic
+  model_family: pipeline
+  benchmark_suite: rsbench
+  supervision: full
+  seed: 11
+
+training:
+  epochs: 12
+  learning_rate: 0.003
+  concept_loss_weight: 6.0
+
+evaluation:
+  splits:
+    - test
+
+storage:
+  comparison_name: phase8_smoke_comparison
+
+notes:
+  status: Executable Phase 8 smoke configuration for run management and result storage.

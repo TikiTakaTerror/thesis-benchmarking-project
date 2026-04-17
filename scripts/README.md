@@ -15,3 +15,4 @@ Current scripts:
 - `check_evaluation_engine.py`: train the pipeline model, evaluate ID and OOD-like splits, and verify the shared metric engine
 - `check_ltn_model.py`: train the LTN model family on synthetic data, validate logic-guided learning, and verify checkpoint reload
 - `check_deepproblog_model.py`: train the DeepProbLog model family on synthetic data, validate exact logic-guided prediction, and verify checkpoint reload
+- `check_run_management.py`: execute two managed synthetic runs, store them in the SQLite registry and per-run folders, and verify comparison exports

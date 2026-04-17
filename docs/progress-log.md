@@ -14,7 +14,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 5 | Evaluation engine and metric computation | Completed |
 | 6 | LTNtorch integration | Completed |
 | 7 | DeepProbLog integration | Completed |
-| 8 | Run management and result storage | Pending |
+| 8 | Run management and result storage | Completed |
 | 9 | Backend API | Pending |
 | 10 | Minimal frontend | Pending |
 | 11 | Benchmark comparison views | Pending |
@@ -197,3 +197,25 @@ Completed:
 Notes:
 - this phase uses the official PyPI `deepproblog` package instead of the placeholder `external/deepproblog/` folder
 - all three planned model families now have working Phase-level implementations
+
+## 2026-04-17 - Phase 8
+
+Goal:
+- add run lifecycle management around the existing model families
+- persist config snapshots, metrics, artifacts, and status in a structured way
+- keep result inspection and comparison simple for later API and UI phases
+- avoid building the API or frontend yet
+
+Completed:
+- added typed project config loading for resolved storage paths and registry settings
+- added a SQLite-backed run registry under `results/experiment_registry.sqlite3`
+- added per-run filesystem storage with `config_snapshot.yaml`, `metadata.json`, `metrics.json`, `artifacts.json`, and `events.jsonl`
+- added run listing and comparison export helpers
+- added a minimal training runner that executes one managed run and persists its outputs
+- added `scripts/check_run_management.py` for end-to-end verification of run creation, storage, listing, and comparison export
+- added `docs/run-management.md` with exact verification steps
+- added an executable Phase 8 smoke run config under `src/configs/runs/phase8_pipeline_storage_smoke.yaml`
+
+Notes:
+- Phase 8 intentionally uses synthetic tensor batches for verification because the real dataset-to-training pipeline is not wired yet
+- API access and frontend views over these stored results remain deferred to later phases

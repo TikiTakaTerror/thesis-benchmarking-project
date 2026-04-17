@@ -1,11 +1,11 @@
-# Run Artifacts Placeholder
+# Run Artifacts
 
-Each executed run will later receive its own folder here.
+Each executed run receives its own folder here.
 
-Planned contents per run:
+Current contents per run:
 - config snapshot
+- metadata JSON
 - metrics JSON
-- checkpoint paths
-- logs
-- plots or artifacts produced by the run
-
+- artifact-path JSON
+- event log
+- checkpoint or other artifacts inside `artifacts/`
