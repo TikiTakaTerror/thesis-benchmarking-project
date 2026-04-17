@@ -11,6 +11,7 @@ Current scope:
 - dataset infrastructure for MNLogic-first development
 - shared encoder and common model foundations
 - custom concept-first symbolic pipeline
+- shared evaluation engine and metric computation
 
 Not implemented yet:
 - model training
@@ -24,6 +25,7 @@ Key docs:
 - `docs/dataset-setup.md`
 - `docs/model-foundations.md`
 - `docs/pipeline-model.md`
+- `docs/evaluation-engine.md`
 
 Recommended next step:
-- verify the Phase 4 custom pipeline using the instructions in `docs/pipeline-model.md`
+- verify the Phase 5 evaluation engine using the instructions in `docs/evaluation-engine.md`

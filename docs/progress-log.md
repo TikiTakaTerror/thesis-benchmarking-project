@@ -11,7 +11,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 2 | Dataset infrastructure | Completed |
 | 3 | Shared encoder and common model interfaces | Completed |
 | 4 | Custom concept-first symbolic pipeline | Completed |
-| 5 | Evaluation engine and metric computation | Pending |
+| 5 | Evaluation engine and metric computation | Completed |
 | 6 | LTNtorch integration | Pending |
 | 7 | DeepProbLog integration | Pending |
 | 8 | Run management and result storage | Pending |
@@ -127,3 +127,26 @@ Notes:
 - the pipeline currently trains on tensor batches, not yet directly from the dataset adapter
 - the common evaluation engine is still deferred to Phase 5
 - the LTN and DeepProbLog families remain untouched in this phase
+
+## 2026-04-17 - Phase 5
+
+Goal:
+- add a shared evaluation engine for common metrics
+- compute task, concept, semantic, and control metrics in one place
+- support split-aware evaluation for ID and OOD-style batches
+- keep the implementation family-agnostic where possible
+
+Completed:
+- added shared evaluation tensor containers and metric helpers under `src/eval/`
+- implemented common task metrics including `accuracy` and `macro_f1`
+- implemented concept metrics including `concept_accuracy`, `concept_macro_f1`, and `exact_concept_vector_match`
+- implemented semantic metrics including `rule_satisfaction_rate`, `violation_rate`, and `concept_label_consistency`
+- implemented control metrics including `parameter_count`, `num_examples`, `num_batches`, and `evaluation_time_seconds`
+- added split-aware evaluation helpers for evaluating multiple named splits such as ID and OOD
+- updated the pipeline model to use the common evaluation engine
+- added `scripts/check_evaluation_engine.py` to verify the evaluator on synthetic ID and OOD-like data
+- preserved compatibility with the existing pipeline smoke-check output
+
+Notes:
+- run storage, summaries, and comparison tables are still deferred to Phase 8
+- ablation and intervention metrics are still deferred to Phase 12

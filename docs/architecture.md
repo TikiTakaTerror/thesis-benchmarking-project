@@ -113,6 +113,7 @@ project/
 - `src/logic/`: symbolic rules, logic templates, and logic utilities shared across families.
 - `src/train/`: training orchestration, loops, checkpoint handling, and run execution helpers.
 - `src/eval/`: metric computation and evaluation flows.
+- `src/eval/engine.py`: split-aware common evaluation runner for shared metrics.
 - `src/benchmarks/`: benchmark suite adapters such as rsbench.
 - `src/services/`: application services that coordinate configs, storage, and run metadata.
 - `src/api/`: backend API layer for later run control and results access.
@@ -130,7 +131,7 @@ project/
 - Phase 2: dataset infrastructure for MNLogic first, using a simple prepared-manifest format
 - Phase 3: shared encoder and common model interfaces, without family-specific training logic
 - Phase 4: custom concept-first symbolic pipeline with soft-logic training and hard symbolic prediction
-- Phase 5: evaluation engine
+- Phase 5: evaluation engine and shared metric computation
 - Phase 6: LTNtorch integration
 - Phase 7: DeepProbLog integration
 - Phase 8: run management and result storage

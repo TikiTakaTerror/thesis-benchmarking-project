@@ -8,6 +8,7 @@ from typing import Any, Iterable, Sequence
 import torch
 from torch import nn
 
+from ...eval import evaluate_model
 from ...logic import SoftLogicRuleExecutor
 from ..base import ModelAdapter, ModelOutputs
 from ..checkpoints import load_module_bundle, save_module_bundle
@@ -190,12 +191,11 @@ class PipelineModelAdapter(ModelAdapter):
             else float(concept_loss_weight)
         )
 
-        return self._run_epoch(
+        return evaluate_model(
+            self,
             materialized_eval_batches,
-            optimizer=None,
             label_loss_weight=label_loss_weight,
             concept_loss_weight=concept_loss_weight,
-            shuffle=False,
         )
 
     def save_checkpoint(self, checkpoint_path: str | Path) -> None:
@@ -359,4 +359,3 @@ class PipelineModelAdapter(ModelAdapter):
         if isinstance(batches, list):
             return batches
         return list(batches)
-
