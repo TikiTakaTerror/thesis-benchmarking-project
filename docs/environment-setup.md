@@ -13,8 +13,7 @@ Phase 1 covers:
 Phase 1 does not cover:
 - dataset downloads
 - `rsbench-code` checkout
-- DeepProbLog checkout
-- LTNtorch checkout
+- later neuro-symbolic model implementation
 - model training
 
 ## Python Version
@@ -63,6 +62,8 @@ The final command should end with output similar to this:
 [OK] Python version: 3.10.x
 [OK] Imported torch
 [OK] Imported torchvision
+[OK] Imported deepproblog
+[OK] Imported problog
 [OK] Imported numpy
 [OK] Imported pandas
 [OK] Imported sklearn
@@ -100,5 +101,4 @@ Do not clone or download anything into these folders yet:
 - `/Users/abdullahsaeed/thesis-benchmarking-project/external/deepproblog`
 - `/Users/abdullahsaeed/thesis-benchmarking-project/external/LTNtorch`
 
-Those integrations are intentionally deferred to later phases.
-
+Those paths remain placeholders in the repository layout. Later phases use pinned Python packages for DeepProbLog and LTNtorch instead of local checkouts.

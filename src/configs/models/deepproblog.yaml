@@ -10,13 +10,39 @@ shared_encoder:
   dropout: 0.1
 
 logic_program:
-  file: null
-  neural_predicates: []
+  tensor_source_name: runtime
+  positive_label: positive
+  positive_rule:
+    op: and
+    args:
+      - concept: has_triangle
+      - concept: is_red
+      - concept: count_is_two
+
+heads:
+  concept_head:
+    hidden_dim: 64
+    dropout: 0.1
+
+concepts:
+  - has_triangle
+  - is_red
+  - count_is_two
+
+labels:
+  - id: 0
+    name: negative
+    description: Example negative label used for DeepProbLog smoke checks.
+  - id: 1
+    name: positive
+    description: Example positive label used for DeepProbLog smoke checks.
 
 training_defaults:
-  batch_size: null
-  learning_rate: null
-  max_epochs: null
+  batch_size: 16
+  learning_rate: 0.01
+  max_epochs: 8
+  label_loss_weight: 1.0
+  concept_loss_weight: 4.0
 
 notes:
-  status: Shared encoder defaults added in Phase 3. Integration is planned for Phase 7.
+  status: Implemented in Phase 7 using the official DeepProbLog package and exact probabilistic logic inference.

@@ -11,6 +11,8 @@ import sys
 REQUIRED_IMPORTS = [
     ("torch", "torch"),
     ("torchvision", "torchvision"),
+    ("deepproblog", "deepproblog"),
+    ("problog", "problog"),
     ("numpy", "numpy"),
     ("pandas", "pandas"),
     ("sklearn", "scikit-learn"),
@@ -71,4 +73,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

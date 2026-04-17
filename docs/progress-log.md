@@ -13,7 +13,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 4 | Custom concept-first symbolic pipeline | Completed |
 | 5 | Evaluation engine and metric computation | Completed |
 | 6 | LTNtorch integration | Completed |
-| 7 | DeepProbLog integration | Pending |
+| 7 | DeepProbLog integration | Completed |
 | 8 | Run management and result storage | Pending |
 | 9 | Backend API | Pending |
 | 10 | Minimal frontend | Pending |
@@ -174,3 +174,26 @@ Completed:
 Notes:
 - this phase uses the official PyPI `LTNtorch` package instead of the placeholder `external/LTNtorch/` folder
 - DeepProbLog remains deferred to Phase 7
+
+## 2026-04-17 - Phase 7
+
+Goal:
+- integrate the DeepProbLog model family
+- keep the shared encoder policy aligned with the other families
+- use neural predicates and a probabilistic logic program for final inference
+- keep the implementation compatible with the shared training and evaluation interfaces
+
+Completed:
+- installed and pinned the official `deepproblog` dependency
+- added typed DeepProbLog model-family config parsing for concepts, labels, logic-program settings, and training defaults
+- replaced the DeepProbLog family stub with a real `DeepProbLogModelAdapter`
+- implemented one shared encoder plus one binary neural predicate head per concept
+- implemented exact probabilistic logic inference with the real `deepproblog` package
+- implemented DeepProbLog-specific training with logic-program label loss and optional concept supervision
+- implemented checkpoint save/load for the DeepProbLog family
+- added `scripts/check_deepproblog_model.py` for end-to-end synthetic verification
+- added `docs/deepproblog-model.md` with exact installation and verification instructions
+
+Notes:
+- this phase uses the official PyPI `deepproblog` package instead of the placeholder `external/deepproblog/` folder
+- all three planned model families now have working Phase-level implementations

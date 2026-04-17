@@ -110,6 +110,7 @@ project/
 - `src/models/heads.py`: reusable prediction heads for concept and label logits.
 - `src/models/base.py`: common adapter contract used by all model families.
 - `src/models/pipeline/`: the custom concept-first symbolic pipeline family.
+- `src/models/deepproblog_model/`: the DeepProbLog-backed model family.
 - `src/models/ltn_model/`: the LTNtorch-backed model family.
 - `src/logic/`: symbolic rules, logic templates, and logic utilities shared across families.
 - `src/train/`: training orchestration, loops, checkpoint handling, and run execution helpers.
@@ -134,7 +135,7 @@ project/
 - Phase 4: custom concept-first symbolic pipeline with soft-logic training and hard symbolic prediction
 - Phase 5: evaluation engine and shared metric computation
 - Phase 6: LTNtorch integration with logical satisfaction loss and logic-influenced prediction
-- Phase 7: DeepProbLog integration
+- Phase 7: DeepProbLog integration with neural predicates and exact probabilistic logic inference
 - Phase 8: run management and result storage
 - Phase 9: backend API
 - Phase 10: minimal frontend

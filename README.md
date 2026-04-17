@@ -13,9 +13,9 @@ Current scope:
 - custom concept-first symbolic pipeline
 - shared evaluation engine and metric computation
 - LTNtorch model-family integration
+- DeepProbLog model-family integration
 
 Not implemented yet:
-- DeepProbLog integration
 - run management and result storage
 - API or UI behavior
 
@@ -28,6 +28,7 @@ Key docs:
 - `docs/pipeline-model.md`
 - `docs/evaluation-engine.md`
 - `docs/ltn-model.md`
+- `docs/deepproblog-model.md`
 
 Recommended next step:
-- verify the Phase 6 LTN model using the instructions in `docs/ltn-model.md`
+- verify the Phase 7 DeepProbLog model using the instructions in `docs/deepproblog-model.md`

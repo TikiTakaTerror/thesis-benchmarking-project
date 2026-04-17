@@ -62,7 +62,7 @@ def create_model_adapter(family_name: str) -> ModelAdapter:
 
     canonical_name = family_name.strip().lower()
     adapter_cls = get_model_adapter_class(canonical_name)
-    if canonical_name in {"pipeline", "ltn"}:
+    if canonical_name in {"pipeline", "ltn", "deepproblog"}:
         model_config = load_model_config(canonical_name)
         return adapter_cls.from_config_dict(model_config)
 

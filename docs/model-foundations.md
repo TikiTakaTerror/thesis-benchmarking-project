@@ -15,7 +15,6 @@ It does not provide:
 - training loops
 - symbolic rule execution
 - LTN constraint optimization
-- DeepProbLog inference
 - benchmark evaluation
 
 ## Important Design Decision
@@ -65,7 +64,7 @@ Added stubs:
 Current status:
 - `PipelineModelAdapter` was implemented in Phase 4
 - `LTNModelAdapter` was implemented in Phase 6
-- `DeepProbLogModelAdapter` still intentionally raises `NotImplementedError` until Phase 7
+- `DeepProbLogModelAdapter` was implemented in Phase 7
 
 ## Exact Verification Steps
 
