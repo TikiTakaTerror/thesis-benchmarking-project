@@ -109,6 +109,7 @@ project/
 - `src/models/shared_encoder.py`: reusable shared encoder implementation and config parsing.
 - `src/models/heads.py`: reusable prediction heads for concept and label logits.
 - `src/models/base.py`: common adapter contract used by all model families.
+- `src/models/pipeline/`: the custom concept-first symbolic pipeline family.
 - `src/logic/`: symbolic rules, logic templates, and logic utilities shared across families.
 - `src/train/`: training orchestration, loops, checkpoint handling, and run execution helpers.
 - `src/eval/`: metric computation and evaluation flows.
@@ -128,7 +129,7 @@ project/
 - Phase 1: environment and dependency setup
 - Phase 2: dataset infrastructure for MNLogic first, using a simple prepared-manifest format
 - Phase 3: shared encoder and common model interfaces, without family-specific training logic
-- Phase 4: custom symbolic pipeline
+- Phase 4: custom concept-first symbolic pipeline with soft-logic training and hard symbolic prediction
 - Phase 5: evaluation engine
 - Phase 6: LTNtorch integration
 - Phase 7: DeepProbLog integration

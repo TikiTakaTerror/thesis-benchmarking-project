@@ -10,7 +10,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 1 | Environment and dependency setup | Completed |
 | 2 | Dataset infrastructure | Completed |
 | 3 | Shared encoder and common model interfaces | Completed |
-| 4 | Custom concept-first symbolic pipeline | Pending |
+| 4 | Custom concept-first symbolic pipeline | Completed |
 | 5 | Evaluation engine and metric computation | Pending |
 | 6 | LTNtorch integration | Pending |
 | 7 | DeepProbLog integration | Pending |
@@ -104,3 +104,26 @@ Completed:
 Notes:
 - the family adapters are still stubs and intentionally raise `NotImplementedError` for training and reasoning methods
 - actual pipeline logic is deferred to Phase 4, LTN integration to Phase 6, and DeepProbLog integration to Phase 7
+
+## 2026-04-17 - Phase 4
+
+Goal:
+- implement the custom concept-first symbolic pipeline
+- connect the shared encoder to a concept head and symbolic rule executor
+- support batch-level training, prediction, evaluation, and checkpointing
+- avoid touching the LTN and DeepProbLog families
+
+Completed:
+- added a reusable soft-logic rule executor with `and`, `or`, and `not`
+- added typed pipeline config parsing for concepts, labels, symbolic rules, and training defaults
+- replaced the pipeline family stub with a real `PipelineModelAdapter`
+- implemented differentiable soft-rule supervision and hard symbolic prediction
+- implemented pipeline-specific `train(...)`, `predict(...)`, `predict_concepts(...)`, `evaluate(...)`, `save_checkpoint(...)`, and `load_checkpoint(...)`
+- updated the pipeline model config with example concepts, labels, rules, and working smoke-test defaults
+- added `scripts/check_pipeline_model.py` to train the pipeline end to end on a synthetic concept dataset and verify checkpoint reload
+- added `docs/pipeline-model.md` with the exact Phase 4 verification flow
+
+Notes:
+- the pipeline currently trains on tensor batches, not yet directly from the dataset adapter
+- the common evaluation engine is still deferred to Phase 5
+- the LTN and DeepProbLog families remain untouched in this phase

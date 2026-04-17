@@ -60,11 +60,12 @@ It can be used for:
 ## Family Adapter Status
 
 Added stubs:
-- `PipelineModelAdapter`
 - `LTNModelAdapter`
 - `DeepProbLogModelAdapter`
 
-These stubs already share the same high-level interface, but their methods intentionally raise `NotImplementedError` until the correct implementation phases.
+Current status:
+- `PipelineModelAdapter` was implemented in Phase 4
+- `LTNModelAdapter` and `DeepProbLogModelAdapter` still intentionally raise `NotImplementedError` until their implementation phases
 
 ## Exact Verification Steps
 
@@ -102,4 +103,3 @@ The verification script writes a temporary checkpoint here:
 - `/Users/abdullahsaeed/thesis-benchmarking-project/results/runs/phase3_shared_encoder_smoke/shared_components.pt`
 
 That file is expected and is part of the verification flow.
-

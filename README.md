@@ -10,6 +10,7 @@ Current scope:
 - environment setup files
 - dataset infrastructure for MNLogic-first development
 - shared encoder and common model foundations
+- custom concept-first symbolic pipeline
 
 Not implemented yet:
 - model training
@@ -22,6 +23,7 @@ Key docs:
 - `docs/environment-setup.md`
 - `docs/dataset-setup.md`
 - `docs/model-foundations.md`
+- `docs/pipeline-model.md`
 
 Recommended next step:
-- verify the Phase 3 model foundation layer using the instructions in `docs/model-foundations.md`
+- verify the Phase 4 custom pipeline using the instructions in `docs/pipeline-model.md`

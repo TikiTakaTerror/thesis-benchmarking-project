@@ -13,18 +13,46 @@ heads:
   concept_head:
     hidden_dim: 64
     dropout: 0.1
-  label_head:
-    hidden_dim: 64
-    dropout: 0.1
+
+concepts:
+  - has_triangle
+  - is_red
+  - count_is_two
+
+labels:
+  - id: 0
+    name: negative
+    description: Example negative label used for pipeline smoke checks.
+  - id: 1
+    name: positive
+    description: Example positive label used for pipeline smoke checks.
 
 symbolic_layer:
-  executor_type: rule-based
-  rules_file: null
+  executor_type: soft_logic
+  threshold: 0.5
+  epsilon: 1.0e-6
+  rules:
+    negative:
+      op: or
+      args:
+        - op: not
+          args:
+            - concept: has_triangle
+        - op: not
+          args:
+            - concept: is_red
+    positive:
+      op: and
+      args:
+        - concept: has_triangle
+        - concept: is_red
 
 training_defaults:
-  batch_size: null
-  learning_rate: null
-  max_epochs: null
+  batch_size: 16
+  learning_rate: 0.003
+  max_epochs: 20
+  label_loss_weight: 1.0
+  concept_loss_weight: 2.0
 
 notes:
-  status: Shared encoder defaults added in Phase 3. The first real family implementation is planned for Phase 4.
+  status: Implemented in Phase 4 with a concept-first symbolic pipeline and example smoke-test rules.

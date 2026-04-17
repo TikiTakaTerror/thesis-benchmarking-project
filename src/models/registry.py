@@ -57,10 +57,20 @@ def get_model_adapter_class(family_name: str) -> type[ModelAdapter]:
     return MODEL_ADAPTERS[canonical_name]
 
 
-def create_model_adapter_stub(family_name: str) -> ModelAdapter:
-    """Instantiate the currently available stub for a model family."""
+def create_model_adapter(family_name: str) -> ModelAdapter:
+    """Instantiate the best currently available adapter for a model family."""
 
-    adapter_cls = get_model_adapter_class(family_name)
-    shared_encoder_config = load_shared_encoder_config(family_name)
+    canonical_name = family_name.strip().lower()
+    adapter_cls = get_model_adapter_class(canonical_name)
+    if canonical_name == "pipeline":
+        model_config = load_model_config(canonical_name)
+        return adapter_cls.from_config_dict(model_config)
+
+    shared_encoder_config = load_shared_encoder_config(canonical_name)
     return adapter_cls(shared_encoder_config=shared_encoder_config)
 
+
+def create_model_adapter_stub(family_name: str) -> ModelAdapter:
+    """Backward-compatible alias used by earlier smoke-check scripts."""
+
+    return create_model_adapter(family_name)

@@ -4,6 +4,7 @@ from .base import ModelAdapter, ModelOutputs, PhaseStubModelAdapter
 from .checkpoints import load_module_bundle, save_module_bundle
 from .heads import PredictionHead, PredictionHeadConfig, build_prediction_head
 from .registry import (
+    create_model_adapter,
     create_model_adapter_stub,
     get_model_adapter_class,
     load_model_config,
@@ -27,6 +28,7 @@ __all__ = [
     "build_prediction_head",
     "build_shared_encoder",
     "count_trainable_parameters",
+    "create_model_adapter",
     "create_model_adapter_stub",
     "get_model_adapter_class",
     "load_model_config",
