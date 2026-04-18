@@ -32,6 +32,10 @@ def execute_synthetic_managed_run(
     """Execute one synthetic managed run for a supported model family."""
 
     benchmark_adapter = create_benchmark_adapter(benchmark_suite)
+    external_environment = benchmark_adapter.build_external_environment(
+        dataset_name=SYNTHETIC_DATASET_NAME,
+        model_family=model_family,
+    )
     selection = RunSelection(
         dataset=SYNTHETIC_DATASET_NAME,
         model_family=model_family,
@@ -87,6 +91,7 @@ def execute_synthetic_managed_run(
         "benchmark": {
             "suite": benchmark_suite,
             "config": benchmark_adapter.config.to_dict(),
+            "external_environment": external_environment,
             "prepared_dataset": {
                 key: value
                 for key, value in prepared_suite.items()
@@ -115,6 +120,7 @@ def execute_synthetic_managed_run(
             seed=seed,
             label_loss_weight=float(effective_training_payload.get("label_loss_weight", 1.0)),
             concept_loss_weight=float(effective_training_payload.get("concept_loss_weight", 1.0)),
+            external_environment=external_environment,
         ),
         train_kwargs=effective_training_payload,
     )

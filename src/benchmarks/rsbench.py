@@ -7,12 +7,34 @@ from typing import Any, Mapping
 import torch
 
 from .base import BenchmarkSuiteAdapter
+from .rsbench_external import (
+    extract_rsbench_external_metrics,
+    inspect_rsbench_external_environment,
+)
 
 
 class RSBenchBenchmarkAdapter(BenchmarkSuiteAdapter):
     """Benchmark adapter that mimics an rsbench-style ID/OOD evaluation surface."""
 
     suite_name = "rsbench"
+
+    def build_external_environment(
+        self,
+        *,
+        dataset_name: str,
+        model_family: str,
+    ) -> dict[str, Any]:
+        return inspect_rsbench_external_environment(
+            benchmark_root=self.root_dir,
+            dataset_name=dataset_name,
+            model_family=model_family,
+        )
+
+    def compute_external_environment_metrics(
+        self,
+        environment: Mapping[str, Any],
+    ) -> dict[str, float]:
+        return extract_rsbench_external_metrics(dict(environment))
 
     def _prepare_dataset(
         self,

@@ -89,6 +89,10 @@ def main() -> int:
                 "Benchmark Adapters",
                 [python_executable, "scripts/check_benchmark_adapters.py"],
             ),
+            (
+                "rsbench External Integration",
+                [python_executable, "scripts/check_rsbench_external_integration.py"],
+            ),
         ]
 
         for label, command in checks:

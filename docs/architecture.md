@@ -125,6 +125,7 @@ project/
 - `src/benchmarks/`: benchmark suite adapters such as `rsbench` and `core_eval`.
 - `src/benchmarks/base.py`: shared benchmark adapter contract and typed config parsing.
 - `src/benchmarks/registry.py`: adapter lookup and config loading for benchmark suites.
+- `src/benchmarks/rsbench_external.py`: R7 inspection helpers for the local official `external/rsbench-code/` checkout, including git metadata, official XOR reference models, and rsscount availability probing.
 - `src/services/`: application services that coordinate configs, storage, and run metadata.
 - `src/services/config.py`: typed loading of the base project config and resolved storage paths.
 - `src/services/run_manager.py`: SQLite-backed run registry plus per-run filesystem storage helpers.

@@ -54,6 +54,10 @@ def execute_real_mnlogic_managed_run(
     )
     runtime_model_config = runtime_context["model_config"]
     source_info = runtime_context["source_info"]
+    external_environment = benchmark_adapter.build_external_environment(
+        dataset_name=REAL_MNLOGIC_DATASET_NAME,
+        model_family=model_family,
+    )
 
     selection = RunSelection(
         dataset=REAL_MNLOGIC_DATASET_NAME,
@@ -137,6 +141,7 @@ def execute_real_mnlogic_managed_run(
         "benchmark": {
             "suite": benchmark_suite,
             "config": benchmark_adapter.config.to_dict(),
+            "external_environment": external_environment,
             "evaluation_splits": list(evaluation_splits.keys()),
         },
         "supervision_policy": supervision_result.summary,
@@ -162,6 +167,7 @@ def execute_real_mnlogic_managed_run(
             seed=seed,
             label_loss_weight=float(effective_training_payload.get("label_loss_weight", 1.0)),
             concept_loss_weight=float(effective_training_payload.get("concept_loss_weight", 1.0)),
+            external_environment=external_environment,
         ),
         train_kwargs={
             **effective_training_payload,

@@ -462,3 +462,24 @@ Notes:
 Notes:
 - the frontend intentionally launches the synthetic managed-run flow only
 - run comparison and benchmark summary pages remain deferred to Phase 11
+
+## 2026-04-18 - Phase R7
+
+Goal:
+- make `rsbench` runs depend on the real local `external/rsbench-code/` checkout in a concrete way
+- capture official benchmark-environment metadata inside stored runs
+- stay honest about what is still not executed from the external stack
+
+Completed:
+- added `src/benchmarks/rsbench_external.py`
+- extended the benchmark adapter contract so suites can attach external-environment metadata and numeric metrics
+- updated the `rsbench` adapter to inspect the official local repo, capture git metadata, discover official XOR reference models, and probe `rsscount` availability
+- wired that metadata into both synthetic and real MNLogic managed runs
+- added `scripts/check_rsbench_external_integration.py`
+- updated the full project smoke-check suite to include the new integration check
+- documented the new behavior in `docs/rsbench-external-integration.md`
+
+Notes:
+- R7 does not claim full external `rsseval` execution
+- the current local environment still reports `rsscount` exact counting as unavailable because `pyeda.inter` is not importable
+- that limitation is now stored explicitly in `rsbench` run snapshots and metrics instead of being hidden

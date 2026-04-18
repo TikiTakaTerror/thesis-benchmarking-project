@@ -16,6 +16,7 @@ Experiment-first platform for a Bachelor's thesis comparing selected neuro-symbo
 - minimal server-rendered frontend
 - run comparison and benchmark summary pages
 - benchmark-suite adapter support for `core_eval` and `rsbench`
+- official local `rsbench-code` environment capture for `rsbench` runs
 - config-driven supervision modes for `label_only`, `concept_50`, and `full`
 - multi-seed managed-run orchestration with aggregate CSV/JSON seed-sweep summaries
 - reproducibility snapshot export and final project-wide verification
@@ -24,7 +25,7 @@ Experiment-first platform for a Bachelor's thesis comparing selected neuro-symbo
 
 - the real MNLogic dataset is wired into managed runs, but its current upstream rsbench XOR `val/test/ood` splits are degenerate and carry explicit warnings
 - Kand-Logic is not wired into managed runs yet
-- real external benchmark execution through `external/rsbench-code/` is not integrated yet
+- the local official `external/rsbench-code/` checkout is now inspected and attached to `rsbench` runs, but the full external `rsseval` training stack is still not executed from this project
 - final thesis-specific plot/report generation is still lightweight
 
 ## Fast Start
@@ -48,6 +49,7 @@ python scripts/export_repro_snapshot.py
 - [docs/real-mnlogic-runs.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/real-mnlogic-runs.md)
 - [docs/supervision-modes.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/supervision-modes.md)
 - [docs/multi-seed-sweeps.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/multi-seed-sweeps.md)
+- [docs/rsbench-external-integration.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/rsbench-external-integration.md)
 - [docs/evaluation-engine.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/evaluation-engine.md)
 - [docs/run-management.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/run-management.md)
 - [docs/backend-api.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/backend-api.md)

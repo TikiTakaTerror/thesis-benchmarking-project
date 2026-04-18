@@ -93,6 +93,7 @@ class BenchmarkSuiteAdapter(ABC):
         seed: int | None = None,
         label_loss_weight: float = 1.0,
         concept_loss_weight: float = 1.0,
+        external_environment: Mapping[str, Any] | None = None,
     ) -> dict[str, float]:
         """Run shared evaluation and attach suite-specific metrics."""
 
@@ -104,7 +105,27 @@ class BenchmarkSuiteAdapter(ABC):
             concept_loss_weight=concept_loss_weight,
         )
         metrics.update(self.compute_suite_specific_metrics(metrics))
+        if external_environment:
+            metrics.update(self.compute_external_environment_metrics(external_environment))
         return metrics
+
+    def build_external_environment(
+        self,
+        *,
+        dataset_name: str,
+        model_family: str,
+    ) -> dict[str, Any]:
+        """Return optional benchmark-environment metadata for one run."""
+
+        return {}
+
+    def compute_external_environment_metrics(
+        self,
+        environment: Mapping[str, Any],
+    ) -> dict[str, float]:
+        """Convert benchmark-environment metadata into numeric stored metrics."""
+
+        return {}
 
     @abstractmethod
     def _prepare_dataset(
@@ -134,4 +155,7 @@ class BenchmarkSuiteAdapter(ABC):
 
         if not self.config.root_dir:
             return None
-        return Path(self.config.root_dir)
+        path = Path(self.config.root_dir).expanduser()
+        if path.is_absolute():
+            return path.resolve()
+        return (Path(__file__).resolve().parents[2] / path).resolve()

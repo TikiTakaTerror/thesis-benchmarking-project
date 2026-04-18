@@ -4,7 +4,7 @@ paths:
   root_dir: external/rsbench-code
 
 dataset_support:
-  mnlogic: supported_for_synthetic_smoke
+  mnlogic: supported_with_local_adapter_and_external_repo_snapshot
   kand_logic: planned
 
 suite_metrics:
@@ -13,6 +13,15 @@ suite_metrics:
   - id_performance
   - ood_performance
   - benchmark_primary_score
+  - rsbench_external_repo_present
+  - rsbench_official_xor_model_count
+  - rsbench_reference_model_available
+  - rsbench_rsscount_exact_available
 
 notes:
-  status: Implemented in Phase 13 with rsbench-style ID/OOD split handling for the current synthetic benchmark flow.
+  status: Implemented with rsbench-style ID/OOD split handling plus official local rsbench-code environment capture.
+  official_repo_url: https://github.com/unitn-sml/rsbench-code
+  external_components:
+    - rssgen
+    - rsseval
+    - rsscount

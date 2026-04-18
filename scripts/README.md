@@ -15,6 +15,7 @@ Current scripts:
 - `check_real_mnlogic_run.py`: verify the new real MNLogic managed-run path across the runner, backend API, and UI launch route
 - `check_supervision_modes.py`: verify that `full`, `label_only`, and `concept_50` supervision settings actually change the managed-run training behavior
 - `check_seed_sweeps.py`: verify multi-seed managed-run orchestration and aggregate summary exports
+- `check_rsbench_external_integration.py`: verify that rsbench runs capture the real local `external/rsbench-code/` environment and store official-reference metadata
 - `check_model_foundations.py`: verify shared encoder config loading, forward-pass shapes, adapter registration, and checkpoint roundtrip
 - `check_pipeline_model.py`: train the custom symbolic pipeline on synthetic data, validate it, and verify checkpoint reload
 - `check_evaluation_engine.py`: train the pipeline model, evaluate ID and OOD-like splits, and verify the shared metric engine
@@ -26,5 +27,6 @@ Current scripts:
 - `check_benchmark_views.py`: verify the run comparison page, benchmark summary page, and comparison export generation
 - `check_ablation_tooling.py`: verify concept intervention metrics for all families and symbolic-layer ablation metrics where the family exposes a non-symbolic label path
 - `check_benchmark_adapters.py`: verify the benchmark adapter registry, the new `core_eval` suite, and rsbench-style ID/OOD metric storage
+- `check_rsbench_external_integration.py`: verify external rsbench-code inspection, official XOR model discovery, rsscount availability capture, and storage of that metadata in real MNLogic rsbench runs
 - `check_project_ready.py`: run the full end-to-end smoke-check suite used for the final Phase 14 handoff
 - `export_repro_snapshot.py`: export a timestamped reproducibility snapshot with environment, package, git, config, and option metadata

@@ -86,10 +86,21 @@ def main() -> int:
         "benchmark_primary_score",
         "rsbench benchmark_primary_score",
     )
+    _require_metric(
+        rsbench_metrics,
+        "rsbench_external_repo_present",
+        "rsbench external repo presence metric",
+    )
+    _require_metric(
+        rsbench_metrics,
+        "rsbench_official_xor_model_count",
+        "rsbench official xor model count metric",
+    )
     print(
         "[OK] rsbench run stored ID/OOD metrics: "
         f"id={rsbench_metrics['id_accuracy']:.4f}, "
-        f"ood={rsbench_metrics['ood_accuracy']:.4f}"
+        f"ood={rsbench_metrics['ood_accuracy']:.4f}, "
+        f"xor_models={rsbench_metrics['rsbench_official_xor_model_count']:.0f}"
     )
 
     print("[OK] Benchmark adapter smoke check passed.")
