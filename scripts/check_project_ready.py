@@ -93,6 +93,10 @@ def main() -> int:
                 "rsbench External Integration",
                 [python_executable, "scripts/check_rsbench_external_integration.py"],
             ),
+            (
+                "Shortcut Reporting and Plots",
+                [python_executable, "scripts/check_shortcut_reporting.py"],
+            ),
         ]
 
         for label, command in checks:

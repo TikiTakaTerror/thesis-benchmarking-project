@@ -8,6 +8,11 @@ from .config import (
     load_project_config,
 )
 from .catalog import list_available_options
+from .plots import (
+    generate_benchmark_summary_plots,
+    generate_comparison_plots,
+    generate_seed_sweep_plots,
+)
 from .reporting import (
     DEFAULT_COMPARISON_METRICS,
     DEFAULT_SEED_SWEEP_METRICS,
@@ -35,6 +40,9 @@ __all__ = [
     "build_comparison_export_basename",
     "build_comparison_table",
     "build_seed_sweep_summary",
+    "generate_benchmark_summary_plots",
+    "generate_comparison_plots",
+    "generate_seed_sweep_plots",
     "get_project_config",
     "get_run_manager",
     "list_available_options",

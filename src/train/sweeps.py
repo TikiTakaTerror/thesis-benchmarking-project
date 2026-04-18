@@ -14,6 +14,7 @@ from ..services import (
     RunManager,
     RunRecord,
     build_seed_sweep_summary,
+    generate_seed_sweep_plots,
 )
 from .real_data import REAL_MNLOGIC_DATASET_NAME, execute_real_mnlogic_managed_run
 from .runner import RunExecutionResult
@@ -28,6 +29,7 @@ class SeedSweepResult:
     records: list[RunRecord]
     csv_path: str
     json_path: str
+    plot_paths: list[str]
     summary: dict[str, Any]
 
 
@@ -100,12 +102,18 @@ def execute_seed_sweep(
         records=records,
         summary_payload=summary_payload,
     )
+    plot_assets = generate_seed_sweep_plots(
+        summary_payload.get("aggregate_rows", []),
+        output_basename=export_basename,
+        plots_root=project_config.paths.plots_root,
+    )
 
     return SeedSweepResult(
         sweep_name=sweep_name,
         records=records,
         csv_path=str(csv_path),
         json_path=str(json_path),
+        plot_paths=[asset["path"] for asset in plot_assets],
         summary=summary_payload,
     )
 

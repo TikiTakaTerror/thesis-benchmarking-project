@@ -35,6 +35,7 @@ from .schemas import (
 def create_app() -> FastAPI:
     """Create the Phase 11 backend and UI application."""
 
+    project_config = get_project_config()
     app = FastAPI(
         title="Thesis Benchmarking Backend API",
         version="0.12.0",
@@ -46,11 +47,15 @@ def create_app() -> FastAPI:
     )
     static_dir = Path(__file__).resolve().parents[1] / "ui" / "static"
     app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+    app.mount(
+        "/plots",
+        StaticFiles(directory=str(project_config.paths.plots_root)),
+        name="plots",
+    )
     app.include_router(create_ui_router())
 
     @app.get("/api/v1/health", response_model=HealthResponse)
     def health() -> HealthResponse:
-        project_config = get_project_config()
         return HealthResponse(
             status="ok",
             project_name=project_config.name,

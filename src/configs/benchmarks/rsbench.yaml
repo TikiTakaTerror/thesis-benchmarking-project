@@ -13,6 +13,9 @@ suite_metrics:
   - id_performance
   - ood_performance
   - benchmark_primary_score
+  - rsbench_shortcut_gap
+  - rsbench_shortcut_relative_drop
+  - rsbench_concept_gap
   - rsbench_external_repo_present
   - rsbench_official_xor_model_count
   - rsbench_reference_model_available

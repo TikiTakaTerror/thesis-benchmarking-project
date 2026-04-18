@@ -19,6 +19,7 @@ Experiment-first platform for a Bachelor's thesis comparing selected neuro-symbo
 - official local `rsbench-code` environment capture for `rsbench` runs
 - config-driven supervision modes for `label_only`, `concept_50`, and `full`
 - multi-seed managed-run orchestration with aggregate CSV/JSON seed-sweep summaries
+- shortcut-gap reporting and generated plot assets under `results/plots/`
 - reproducibility snapshot export and final project-wide verification
 
 ## Current Limits
@@ -50,6 +51,7 @@ python scripts/export_repro_snapshot.py
 - [docs/supervision-modes.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/supervision-modes.md)
 - [docs/multi-seed-sweeps.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/multi-seed-sweeps.md)
 - [docs/rsbench-external-integration.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/rsbench-external-integration.md)
+- [docs/shortcut-reporting.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/shortcut-reporting.md)
 - [docs/evaluation-engine.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/evaluation-engine.md)
 - [docs/run-management.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/run-management.md)
 - [docs/backend-api.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/backend-api.md)

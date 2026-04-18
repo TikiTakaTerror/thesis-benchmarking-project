@@ -15,6 +15,7 @@ Current scripts:
 - `check_real_mnlogic_run.py`: verify the new real MNLogic managed-run path across the runner, backend API, and UI launch route
 - `check_supervision_modes.py`: verify that `full`, `label_only`, and `concept_50` supervision settings actually change the managed-run training behavior
 - `check_seed_sweeps.py`: verify multi-seed managed-run orchestration and aggregate summary exports
+- `check_shortcut_reporting.py`: verify rsbench shortcut-gap metrics, generated plot files, and plot rendering in the comparison and benchmark pages
 - `check_rsbench_external_integration.py`: verify that rsbench runs capture the real local `external/rsbench-code/` environment and store official-reference metadata
 - `check_model_foundations.py`: verify shared encoder config loading, forward-pass shapes, adapter registration, and checkpoint roundtrip
 - `check_pipeline_model.py`: train the custom symbolic pipeline on synthetic data, validate it, and verify checkpoint reload

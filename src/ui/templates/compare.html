@@ -90,6 +90,19 @@
     {% endif %}
 
     {% if comparison %}
+    {% if plot_assets %}
+    <div class="plot-grid">
+      {% for plot in plot_assets %}
+      <article class="plot-card">
+        <div class="panel-head compact-head">
+          <h4>{{ plot.label }}</h4>
+          <div class="small muted mono">{{ plot.path }}</div>
+        </div>
+        <img src="{{ plot.url }}" alt="{{ plot.label }}" class="plot-image">
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
     <div class="table-wrap">
       <table>
         <thead>

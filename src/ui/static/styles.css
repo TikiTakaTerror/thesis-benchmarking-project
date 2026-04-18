@@ -139,6 +139,36 @@ h3 {
   grid-template-columns: minmax(300px, 360px) 1fr;
 }
 
+.plot-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin-bottom: 18px;
+}
+
+.plot-card {
+  border: 1px solid rgba(29, 26, 23, 0.08);
+  border-radius: 14px;
+  padding: 14px;
+  background: var(--surface-strong);
+}
+
+.compact-head {
+  margin-bottom: 12px;
+}
+
+.compact-head h4 {
+  margin: 0 0 6px;
+}
+
+.plot-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid rgba(29, 26, 23, 0.08);
+}
+
 .panel {
   padding: 22px;
 }

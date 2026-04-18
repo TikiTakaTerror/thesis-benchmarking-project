@@ -49,6 +49,11 @@ def main() -> int:
         _fail(f"Expected 3 seeded runs, got {len(result.records)}")
     if not Path(result.csv_path).exists() or not Path(result.json_path).exists():
         _fail("Seed-sweep exports were not written")
+    if not result.plot_paths:
+        _fail("Seed sweep did not report any generated plot paths")
+    for plot_path in result.plot_paths:
+        if not Path(plot_path).exists():
+            _fail(f"Seed-sweep plot path does not exist: {plot_path}")
     print(
         f"[OK] Seed sweep executed 3 managed runs: "
         f"{[record.selection.seed for record in result.records]}"
@@ -90,6 +95,7 @@ def main() -> int:
     print(
         f"[OK] Seed sweep CSV written: {result.csv_path}"
     )
+    print("[OK] Seed sweep plot assets were written.")
     print("[OK] Multi-seed orchestration check passed.")
     return 0
 

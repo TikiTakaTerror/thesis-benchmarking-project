@@ -135,6 +135,7 @@ project/
 - `src/ui/routes.py`: server-rendered dashboard, run-detail, comparison, and benchmark summary pages mounted into the FastAPI app, now including real MNLogic launch support.
 - `src/services/reporting.py`: thin view-focused reporting helpers for comparison tables and grouped benchmark summaries.
 - `src/services/reporting.py`: also provides R6 seed-sweep aggregation helpers for mean/std/min/max metric summaries.
+- `src/services/plots.py`: R8 plot-generation helpers for comparison views, grouped benchmark summaries, and seed-sweep aggregates.
 - `src/utils/`: shared utility helpers that do not belong to the other modules.
 - `src/configs/`: configuration placeholders for datasets, models, supervision modes, benchmark suites, and run presets.
 - `results/`: run artifacts, summaries, and plots.
@@ -158,6 +159,7 @@ project/
 - Phase 12: ablation and intervention tooling integrated into the shared evaluator
 - Phase 13: benchmark-suite adapter support for `rsbench` and an internal `core_eval` suite
 - Phase 14: final cleanup, reproducibility scripts, and handoff documentation
+- R8: shortcut-gap reporting, generated plot assets, and plot-backed comparison/benchmark views over stored runs
 
 ## Phase 0 Outcome
 

@@ -25,6 +25,19 @@
     <h3>Grouped Benchmark View</h3>
     <p class="muted">One row per benchmark suite + dataset + model family + supervision combination.</p>
   </div>
+  {% if plot_assets %}
+  <div class="plot-grid">
+    {% for plot in plot_assets %}
+    <article class="plot-card">
+      <div class="panel-head compact-head">
+        <h4>{{ plot.label }}</h4>
+        <div class="small muted mono">{{ plot.path }}</div>
+      </div>
+      <img src="{{ plot.url }}" alt="{{ plot.label }}" class="plot-image">
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
   <div class="table-wrap">
     <table>
       <thead>
@@ -39,6 +52,7 @@
           <th>Best Primary Score</th>
           <th>Mean Primary Score</th>
           <th>Mean Concept Acc.</th>
+          <th>Mean Shortcut Gap</th>
           <th>Mean Run Time (s)</th>
           <th>Latest Run</th>
           <th>Actions</th>
@@ -57,6 +71,7 @@
           <td>{{ row.best_primary_score }}</td>
           <td>{{ row.mean_primary_score }}</td>
           <td>{{ row.mean_concept_accuracy }}</td>
+          <td>{{ row.mean_shortcut_gap }}</td>
           <td>{{ row.mean_runtime_seconds }}</td>
           <td>
             <a href="/runs/{{ row.latest_run_id }}" class="run-link">{{ row.latest_run_name }}</a>
@@ -73,7 +88,7 @@
         {% endfor %}
         {% if not summary_rows %}
         <tr>
-          <td colspan="13" class="muted">No stored runs yet.</td>
+          <td colspan="14" class="muted">No stored runs yet.</td>
         </tr>
         {% endif %}
       </tbody>

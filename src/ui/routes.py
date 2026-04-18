@@ -16,6 +16,10 @@ from ..services.reporting import (
     build_comparison_export_basename,
     build_comparison_table,
 )
+from ..services.plots import (
+    generate_benchmark_summary_plots,
+    generate_comparison_plots,
+)
 from ..train.real_data import REAL_MNLOGIC_DATASET_NAME, execute_real_mnlogic_managed_run
 from ..train.synthetic import SYNTHETIC_DATASET_NAME, execute_synthetic_managed_run
 
@@ -80,6 +84,7 @@ def create_ui_router() -> APIRouter:
 
         comparison = None
         export_paths = None
+        plot_assets = []
         error_message = None
         if selected_run_ids:
             if len(selected_run_ids) < 2:
@@ -93,12 +98,19 @@ def create_ui_router() -> APIRouter:
                     error_message = str(exc)
                 else:
                     comparison = build_comparison_table(records)
+                    metric_names = [
+                        column["name"] for column in comparison["metric_columns"]
+                    ]
                     export_paths = run_manager.compare_runs(
                         selected_run_ids,
-                        metric_names=[
-                            column["name"] for column in comparison["metric_columns"]
-                        ],
+                        metric_names=metric_names,
                         output_basename=build_comparison_export_basename(selected_run_ids),
+                    )
+                    plot_assets = generate_comparison_plots(
+                        records,
+                        metric_names=metric_names,
+                        output_basename=build_comparison_export_basename(selected_run_ids),
+                        plots_root=project_config.paths.plots_root,
                     )
 
         context = {
@@ -110,6 +122,7 @@ def create_ui_router() -> APIRouter:
             "selected_run_ids": selected_run_ids,
             "comparison": _format_comparison_payload(comparison),
             "export_paths": export_paths,
+            "plot_assets": plot_assets,
             "error_message": error_message,
         }
         return TEMPLATES.TemplateResponse(request, "compare.html", context)
@@ -119,6 +132,11 @@ def create_ui_router() -> APIRouter:
         project_config = get_project_config()
         records = get_run_manager().list_runs()
         summary = build_benchmark_summary(records)
+        plot_assets = generate_benchmark_summary_plots(
+            summary["rows"],
+            output_basename="benchmark_summary__latest",
+            plots_root=project_config.paths.plots_root,
+        )
         rows = []
         for row in summary["rows"]:
             compare_ids = row["compare_run_ids"]
@@ -134,6 +152,7 @@ def create_ui_router() -> APIRouter:
                     "best_primary_score": row["best_primary_score"],
                     "mean_primary_score": row["mean_primary_score"],
                     "mean_concept_accuracy": row["mean_concept_accuracy"],
+                    "mean_shortcut_gap": row["mean_shortcut_gap"],
                     "mean_runtime_seconds": row["mean_runtime_seconds"],
                 }
             )
@@ -145,6 +164,7 @@ def create_ui_router() -> APIRouter:
             "phase": project_config.phase,
             "summary_cards": summary["cards"],
             "summary_rows": rows,
+            "plot_assets": plot_assets,
         }
         return TEMPLATES.TemplateResponse(request, "benchmark_summary.html", context)
 

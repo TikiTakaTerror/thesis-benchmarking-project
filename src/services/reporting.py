@@ -15,8 +15,11 @@ DEFAULT_COMPARISON_METRICS = [
     "test_accuracy",
     "id_accuracy",
     "ood_accuracy",
+    "rsbench_shortcut_gap",
+    "rsbench_shortcut_relative_drop",
     "test_concept_accuracy",
     "id_concept_accuracy",
+    "rsbench_concept_gap",
     "run_runtime_seconds",
 ]
 
@@ -25,8 +28,11 @@ METRIC_LABELS = {
     "test_accuracy": "Test Accuracy",
     "id_accuracy": "ID Accuracy",
     "ood_accuracy": "OOD Accuracy",
+    "rsbench_shortcut_gap": "Shortcut Gap",
+    "rsbench_shortcut_relative_drop": "Relative OOD Drop",
     "test_concept_accuracy": "Test Concept Accuracy",
     "id_concept_accuracy": "ID Concept Accuracy",
+    "rsbench_concept_gap": "Concept Gap",
     "run_runtime_seconds": "Run Time (s)",
 }
 
@@ -35,8 +41,11 @@ DEFAULT_SEED_SWEEP_METRICS = [
     "test_accuracy",
     "id_accuracy",
     "ood_accuracy",
+    "rsbench_shortcut_gap",
+    "rsbench_shortcut_relative_drop",
     "test_concept_accuracy",
     "id_concept_accuracy",
+    "rsbench_concept_gap",
     "run_runtime_seconds",
 ]
 
@@ -128,7 +137,15 @@ def build_benchmark_summary(records: Sequence[RunRecord]) -> dict[str, Any]:
                     grouped_records,
                     ["benchmark_primary_score", "test_accuracy", "id_accuracy"],
                 ),
+                "best_primary_score_value": _best_metric_any_value(
+                    grouped_records,
+                    ["benchmark_primary_score", "test_accuracy", "id_accuracy"],
+                ),
                 "mean_primary_score": _mean_metric_any(
+                    grouped_records,
+                    ["benchmark_primary_score", "test_accuracy", "id_accuracy"],
+                ),
+                "mean_primary_score_value": _mean_metric_any_value(
                     grouped_records,
                     ["benchmark_primary_score", "test_accuracy", "id_accuracy"],
                 ),
@@ -136,7 +153,22 @@ def build_benchmark_summary(records: Sequence[RunRecord]) -> dict[str, Any]:
                     grouped_records,
                     ["test_concept_accuracy", "id_concept_accuracy"],
                 ),
+                "mean_concept_accuracy_value": _mean_metric_any_value(
+                    grouped_records,
+                    ["test_concept_accuracy", "id_concept_accuracy"],
+                ),
+                "mean_shortcut_gap": _mean_metric_any(
+                    grouped_records,
+                    ["rsbench_shortcut_gap"],
+                ),
+                "mean_shortcut_gap_value": _mean_metric_any_value(
+                    grouped_records,
+                    ["rsbench_shortcut_gap"],
+                ),
                 "mean_runtime_seconds": _mean_metric(
+                    grouped_records, "run_runtime_seconds"
+                ),
+                "mean_runtime_seconds_value": _mean_metric_value(
                     grouped_records, "run_runtime_seconds"
                 ),
                 "latest_run_id": grouped_records[0].run_id,
@@ -253,36 +285,66 @@ def _best_metric(records: Sequence[RunRecord], metric_name: str) -> str:
 
 
 def _best_metric_any(records: Sequence[RunRecord], metric_names: Sequence[str]) -> str:
+    value = _best_metric_any_value(records, metric_names)
+    if value is None:
+        return "n/a"
+    return f"{value:.4f}"
+
+
+def _best_metric_any_value(
+    records: Sequence[RunRecord],
+    metric_names: Sequence[str],
+) -> float | None:
     values = []
     for record in records:
         metric_value = _first_metric_value(record, metric_names)
         if metric_value is not None:
             values.append(metric_value)
     if not values:
-        return "n/a"
-    return f"{max(values):.4f}"
+        return None
+    return float(max(values))
 
 
 def _mean_metric(records: Sequence[RunRecord], metric_name: str) -> str:
+    value = _mean_metric_value(records, metric_name)
+    if value is None:
+        return "n/a"
+    return f"{value:.4f}"
+
+
+def _mean_metric_value(
+    records: Sequence[RunRecord],
+    metric_name: str,
+) -> float | None:
     values = [
         float(record.metrics[metric_name])
         for record in records
         if metric_name in record.metrics
     ]
     if not values:
-        return "n/a"
-    return f"{mean(values):.4f}"
+        return None
+    return float(mean(values))
 
 
 def _mean_metric_any(records: Sequence[RunRecord], metric_names: Sequence[str]) -> str:
+    value = _mean_metric_any_value(records, metric_names)
+    if value is None:
+        return "n/a"
+    return f"{value:.4f}"
+
+
+def _mean_metric_any_value(
+    records: Sequence[RunRecord],
+    metric_names: Sequence[str],
+) -> float | None:
     values = []
     for record in records:
         metric_value = _first_metric_value(record, metric_names)
         if metric_value is not None:
             values.append(metric_value)
     if not values:
-        return "n/a"
-    return f"{mean(values):.4f}"
+        return None
+    return float(mean(values))
 
 
 def _first_metric_value(record: RunRecord, metric_names: Sequence[str]) -> float | None:

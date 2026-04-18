@@ -96,6 +96,10 @@ def main() -> int:
         _fail("Comparison page did not render both selected runs")
     if "Test Accuracy" not in compare_html:
         _fail("Comparison page is missing comparison metrics")
+    if "Shortcut Gap" not in compare_html:
+        _fail("Comparison page is missing the shortcut-gap metric")
+    if "/plots/" not in compare_html:
+        _fail("Comparison page did not render generated plot images")
 
     export_stem = build_comparison_export_basename(compare_ids)
     export_csv = PROJECT_ROOT / "results" / "summaries" / f"{export_stem}.csv"
@@ -115,6 +119,10 @@ def main() -> int:
         _fail("Benchmark summary page did not render the supervision grouping")
     if "Compare Recent" not in benchmark_html:
         _fail("Benchmark summary page did not render the compare shortcut")
+    if "Mean Shortcut Gap" not in benchmark_html:
+        _fail("Benchmark summary page did not render the shortcut-gap column")
+    if "/plots/" not in benchmark_html:
+        _fail("Benchmark summary page did not render generated plot images")
     print("[OK] Benchmark summary page rendered grouped results")
 
     print("[OK] Benchmark comparison views smoke check passed.")

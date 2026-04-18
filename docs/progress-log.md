@@ -483,3 +483,23 @@ Notes:
 - R7 does not claim full external `rsseval` execution
 - the current local environment still reports `rsscount` exact counting as unavailable because `pyeda.inter` is not importable
 - that limitation is now stored explicitly in `rsbench` run snapshots and metrics instead of being hidden
+
+## 2026-04-18 - Phase R8
+
+Goal:
+- make `rsbench` robustness reporting easier to compare across runs
+- generate thesis-friendly plot assets from stored results
+- surface those plots in the existing comparison and benchmark-summary pages
+
+Completed:
+- added shortcut-gap metrics to `rsbench`
+- added `src/services/plots.py`
+- updated the comparison and benchmark-summary pages to render generated plot images
+- mounted `results/plots/` into the FastAPI app at `/plots`
+- updated seed sweeps to write aggregate plot assets
+- added `scripts/check_shortcut_reporting.py`
+- documented the new behavior in `docs/shortcut-reporting.md`
+
+Notes:
+- R8 improves reporting visibility, not the underlying upstream MNLogic split quality
+- generated plot assets now live under `results/plots/`

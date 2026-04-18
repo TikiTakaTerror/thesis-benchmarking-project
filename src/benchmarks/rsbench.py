@@ -85,6 +85,8 @@ class RSBenchBenchmarkAdapter(BenchmarkSuiteAdapter):
     ) -> dict[str, float]:
         id_score = metrics.get("id_accuracy")
         ood_score = metrics.get("ood_accuracy")
+        id_concept_score = metrics.get("id_concept_accuracy")
+        ood_concept_score = metrics.get("ood_concept_accuracy")
 
         suite_metrics = {
             "benchmark_has_ood": 1.0 if ood_score is not None else 0.0,
@@ -96,12 +98,22 @@ class RSBenchBenchmarkAdapter(BenchmarkSuiteAdapter):
             suite_metrics["ood_performance"] = float(ood_score)
 
         if id_score is not None and ood_score is not None:
+            shortcut_gap = float(id_score) - float(ood_score)
             primary_score = 0.5 * (float(id_score) + float(ood_score))
             suite_metrics["benchmark_primary_score"] = primary_score
             suite_metrics["rsbench_primary_score"] = primary_score
+            suite_metrics["rsbench_shortcut_gap"] = shortcut_gap
+            suite_metrics["rsbench_shortcut_relative_drop"] = (
+                shortcut_gap / float(id_score) if float(id_score) > 1e-8 else 0.0
+            )
         elif id_score is not None:
             suite_metrics["benchmark_primary_score"] = float(id_score)
             suite_metrics["rsbench_primary_score"] = float(id_score)
+
+        if id_concept_score is not None and ood_concept_score is not None:
+            suite_metrics["rsbench_concept_gap"] = (
+                float(id_concept_score) - float(ood_concept_score)
+            )
 
         return suite_metrics
 

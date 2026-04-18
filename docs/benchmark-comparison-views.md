@@ -44,6 +44,7 @@ Example:
 Behavior:
 - compares selected runs with one shared metric set
 - writes CSV and JSON comparison exports into `results/summaries/`
+- writes PNG plot assets into `results/plots/`
 - keeps the view aligned with the existing backend comparison export flow
 
 ## Benchmark Summary Page
@@ -60,6 +61,7 @@ Each row shows:
 - completed and failed counts
 - best and mean task metrics
 - mean concept accuracy
+- mean shortcut gap when available
 - mean runtime
 - latest run link
 - compare shortcut when at least two completed runs exist in the same group
