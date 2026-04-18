@@ -275,6 +275,29 @@ Notes:
 - the synthetic launch path remains intact for regression checks
 - the current real MNLogic dataset still carries the upstream single-class split warnings from the official rsbench XOR generator output
 
+## 2026-04-18 - Phase R5
+
+Goal:
+- make the `supervision` setting affect training behavior instead of being stored as metadata only
+- support explicit concept-supervision levels
+- keep the implementation simple and compatible with both synthetic and real managed runs
+
+Completed:
+- activated the supervision configs under `src/configs/supervision/`
+- added `concept_50.yaml`
+- added `src/train/supervision.py`
+- implemented deterministic example-level concept-supervision masking driven by the run seed
+- updated the `pipeline`, `ltn`, and `deepproblog` training loops to support `concept_supervision_mask`
+- wired supervision policies into both the synthetic and real managed-run entry points
+- added `scripts/check_supervision_modes.py`
+- added `docs/supervision-modes.md`
+
+Notes:
+- `label_only` now means 0% concept supervision
+- `concept_50` now means 50% example-level concept supervision
+- `full` now means 100% concept supervision
+- only the LTN family currently exposes a separate logic-constraint loss, so only LTN can fully disable that extra loss term under `label_only`
+
 ## 2026-04-18 - Phase R3
 
 Goal:

@@ -117,6 +117,7 @@ project/
 - `src/train/`: training orchestration, loops, checkpoint handling, and run execution helpers.
 - `src/train/runner.py`: Phase 8 managed-run execution helper that ties training, evaluation, and artifact persistence together.
 - `src/train/real_data.py`: R4 real dataset-backed execution helpers for prepared MNLogic runs, including runtime model-config alignment from dataset metadata.
+- `src/train/supervision.py`: R5 config-driven supervision policies that mask concept supervision and adjust logic-specific loss weights during managed runs.
 - `src/eval/`: metric computation and evaluation flows.
 - `src/eval/engine.py`: split-aware common evaluation runner for shared metrics.
 - `src/eval/analysis.py`: Phase 12 ablation and intervention analysis over model predictions and intervened concepts.

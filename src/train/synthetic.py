@@ -10,6 +10,7 @@ from ..benchmarks import create_benchmark_adapter
 from ..models.registry import load_model_config
 from ..services import ProjectConfig, RunManager, RunSelection
 from .runner import RunExecutionResult, execute_training_run
+from .supervision import apply_supervision
 
 
 SYNTHETIC_DATASET_NAME = "synthetic_mnlogic"
@@ -61,7 +62,15 @@ def execute_synthetic_managed_run(
         train_size=train_size,
         seed=seed,
     )
-    train_batches = prepared_suite["train_batches"]
+    supervision_result = apply_supervision(
+        model_family=model_family,
+        supervision_name=supervision,
+        seed=seed,
+        train_batches=prepared_suite["train_batches"],
+        train_kwargs=training_payload,
+    )
+    train_batches = supervision_result.train_batches
+    effective_training_payload = supervision_result.train_kwargs
     evaluation_splits = prepared_suite["evaluation_splits"]
 
     resolved_run_name = run_name or f"api_{model_family}_seed_{seed}"
@@ -84,7 +93,8 @@ def execute_synthetic_managed_run(
                 if key not in {"train_batches", "evaluation_splits"}
             },
         },
-        "training": training_payload,
+        "training": effective_training_payload,
+        "supervision_policy": supervision_result.summary,
         "synthetic_data": {
             "total_samples": total_samples,
             "train_size": train_size,
@@ -103,10 +113,10 @@ def execute_synthetic_managed_run(
             model,
             split_batches,
             seed=seed,
-            label_loss_weight=float(training_payload.get("label_loss_weight", 1.0)),
-            concept_loss_weight=float(training_payload.get("concept_loss_weight", 1.0)),
+            label_loss_weight=float(effective_training_payload.get("label_loss_weight", 1.0)),
+            concept_loss_weight=float(effective_training_payload.get("concept_loss_weight", 1.0)),
         ),
-        train_kwargs=training_payload,
+        train_kwargs=effective_training_payload,
     )
 
 

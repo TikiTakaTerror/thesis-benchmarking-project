@@ -1,0 +1,12 @@
+name: concept_50
+
+signals:
+  labels: true
+  concepts: true
+  logic_constraints: true
+
+concept_supervision:
+  fraction: 0.5
+
+notes:
+  status: Active in R5. This means 50% example-level concept supervision plus logic-constraint loss where the selected family exposes it.

@@ -5,6 +5,8 @@ signals:
   concepts: true
   logic_constraints: true
 
-notes:
-  status: Placeholder only. Exact semantics will be defined once the training pipeline exists.
+concept_supervision:
+  fraction: 1.0
 
+notes:
+  status: Active in R5. This means 100% concept supervision plus logic-constraint loss where the selected family exposes it.

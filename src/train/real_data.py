@@ -16,6 +16,7 @@ from ..data import build_prepared_dataloaders, create_dataset_adapter
 from ..models import load_model_config
 from ..services import ProjectConfig, RunManager, RunSelection
 from .runner import RunExecutionResult, execute_training_run
+from .supervision import apply_supervision
 
 
 REAL_MNLOGIC_DATASET_NAME = "mnlogic"
@@ -82,7 +83,15 @@ def execute_real_mnlogic_managed_run(
         shuffle_train=True,
         limit_per_split=limit_per_split,
     )
-    train_batches = list(dataloaders.train_loader)
+    supervision_result = apply_supervision(
+        model_family=model_family,
+        supervision_name=supervision,
+        seed=seed,
+        train_batches=list(dataloaders.train_loader),
+        train_kwargs=training_payload,
+    )
+    train_batches = supervision_result.train_batches
+    effective_training_payload = supervision_result.train_kwargs
     val_batches = list(dataloaders.val_loader)
     evaluation_splits = build_real_evaluation_splits(
         benchmark_suite=benchmark_suite,
@@ -130,8 +139,9 @@ def execute_real_mnlogic_managed_run(
             "config": benchmark_adapter.config.to_dict(),
             "evaluation_splits": list(evaluation_splits.keys()),
         },
+        "supervision_policy": supervision_result.summary,
         "training": {
-            **training_payload,
+            **effective_training_payload,
             "batch_size": batch_size,
             "num_workers": num_workers,
             "limit_per_split": limit_per_split,
@@ -150,11 +160,11 @@ def execute_real_mnlogic_managed_run(
             model,
             split_batches,
             seed=seed,
-            label_loss_weight=float(training_payload.get("label_loss_weight", 1.0)),
-            concept_loss_weight=float(training_payload.get("concept_loss_weight", 1.0)),
+            label_loss_weight=float(effective_training_payload.get("label_loss_weight", 1.0)),
+            concept_loss_weight=float(effective_training_payload.get("concept_loss_weight", 1.0)),
         ),
         train_kwargs={
-            **training_payload,
+            **effective_training_payload,
             "val_batches": val_batches,
         },
     )

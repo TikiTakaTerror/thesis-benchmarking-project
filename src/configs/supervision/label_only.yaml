@@ -5,6 +5,8 @@ signals:
   concepts: false
   logic_constraints: false
 
-notes:
-  status: Placeholder only. Intended for later control and ablation experiments.
+concept_supervision:
+  fraction: 0.0
 
+notes:
+  status: Active in R5. This means task-label supervision only, with no concept supervision and no extra logic-constraint loss.

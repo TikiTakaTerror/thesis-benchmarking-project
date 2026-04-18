@@ -293,6 +293,7 @@ class PipelineModelAdapter(ModelAdapter):
             images = prepared_batch["images"]
             label_ids = prepared_batch["label_ids"]
             concept_targets = prepared_batch.get("concept_targets")
+            concept_supervision_mask = prepared_batch.get("concept_supervision_mask")
             batch_size = int(images.shape[0])
 
             if is_training:
@@ -303,14 +304,31 @@ class PipelineModelAdapter(ModelAdapter):
             total_loss = label_loss_weight * label_loss
 
             if concept_targets is not None:
-                concept_loss = concept_loss_fn(outputs.concept_logits, concept_targets)
-                total_loss = total_loss + concept_loss_weight * concept_loss
-                concept_loss_sum += float(concept_loss.item()) * batch_size
-                concept_accuracy = (
-                    outputs.extras["hard_concepts"] == concept_targets
-                ).float().mean()
-                concept_correct_sum += float(concept_accuracy.item()) * batch_size
-                concept_batches += batch_size
+                if concept_supervision_mask is not None:
+                    supervised_mask = concept_supervision_mask.bool()
+                else:
+                    supervised_mask = torch.ones(
+                        concept_targets.shape[0],
+                        dtype=torch.bool,
+                        device=concept_targets.device,
+                    )
+
+                if bool(supervised_mask.any().item()):
+                    supervised_count = int(supervised_mask.sum().item())
+                    concept_loss = concept_loss_fn(
+                        outputs.concept_logits[supervised_mask],
+                        concept_targets[supervised_mask],
+                    )
+                    total_loss = total_loss + concept_loss_weight * concept_loss
+                    concept_loss_sum += float(concept_loss.item()) * supervised_count
+                    concept_accuracy = (
+                        outputs.extras["hard_concepts"][supervised_mask]
+                        == concept_targets[supervised_mask]
+                    ).float().mean()
+                    concept_correct_sum += float(concept_accuracy.item()) * supervised_count
+                    concept_batches += supervised_count
+                else:
+                    concept_loss = None
             else:
                 concept_loss = None
 
@@ -333,6 +351,8 @@ class PipelineModelAdapter(ModelAdapter):
         if concept_batches > 0:
             metrics["concept_loss"] = concept_loss_sum / concept_batches
             metrics["concept_accuracy"] = concept_correct_sum / concept_batches
+        metrics["concept_supervised_examples"] = float(concept_batches)
+        metrics["concept_supervision_fraction"] = concept_batches / total_examples
 
         return metrics
 
@@ -365,6 +385,20 @@ class PipelineModelAdapter(ModelAdapter):
                     f"got {tuple(concept_targets.shape)}"
                 )
             prepared_batch["concept_targets"] = concept_targets
+
+        concept_supervision_mask = batch.get("concept_supervision_mask")
+        if concept_supervision_mask is not None:
+            concept_supervision_mask = concept_supervision_mask.to(self.device).bool()
+            if concept_supervision_mask.ndim != 1:
+                raise ValueError(
+                    "Batch field 'concept_supervision_mask' must have shape [batch]"
+                )
+            if concept_supervision_mask.shape[0] != images.shape[0]:
+                raise ValueError(
+                    f"Expected concept_supervision_mask with length {images.shape[0]}, "
+                    f"got {tuple(concept_supervision_mask.shape)}"
+                )
+            prepared_batch["concept_supervision_mask"] = concept_supervision_mask
 
         return prepared_batch
 
