@@ -151,7 +151,7 @@ project/
 - Phase 11: comparison views and grouped benchmark summaries over stored runs
 - Phase 12: ablation and intervention tooling integrated into the shared evaluator
 - Phase 13: benchmark-suite adapter support for `rsbench` and an internal `core_eval` suite
-- Phase 14: cleanup, documentation, reproducibility
+- Phase 14: final cleanup, reproducibility scripts, and handoff documentation
 
 ## Phase 0 Outcome
 

@@ -20,7 +20,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 11 | Benchmark comparison views | Completed |
 | 12 | Ablation and intervention tooling | Completed |
 | 13 | Additional benchmark suites | Completed |
-| 14 | Cleanup, documentation, reproducibility | Pending |
+| 14 | Cleanup, documentation, reproducibility | Completed |
 
 ## 2026-04-17 - Phase 0
 
@@ -324,6 +324,25 @@ Completed:
 Notes:
 - Phase 13 does not integrate the real external `rsbench-code` repository yet
 - the current implementation uses the benchmark adapter layer to drive the synthetic managed-run path, which keeps the system testable now without pretending the external benchmark environment is already wired
+
+## 2026-04-18 - Phase 14
+
+Goal:
+- clean up the repository handoff surface
+- add one final full-project verification path
+- add one reproducibility snapshot export path
+- finish the top-level documentation so the project is rerunnable without phase-by-phase reconstruction
+
+Completed:
+- added `scripts/check_project_ready.py` to run the full smoke-check suite from one command
+- added `scripts/export_repro_snapshot.py` to export a timestamped reproducibility snapshot into `results/summaries/`
+- added `docs/reproducibility.md` with exact final verification and snapshot export instructions
+- refreshed the top-level `README.md` into a final handoff-oriented quickstart
+- updated architecture and script documentation for the final project state
+
+Notes:
+- the repository now has a single-command final verification path and a single-command reproducibility export path
+- the remaining limitations are about real-data and real external benchmark execution, not about the synthetic verification stack or the implemented comparison framework
 
 Notes:
 - the frontend intentionally launches the synthetic managed-run flow only

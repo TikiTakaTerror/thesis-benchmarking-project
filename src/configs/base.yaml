@@ -1,6 +1,6 @@
 project:
   name: thesis-benchmarking-project
-  phase: 13
+  phase: 14
   description: Neuro-symbolic architecture benchmarking platform
 
 paths:
@@ -26,4 +26,4 @@ storage:
   sqlite_path: results/experiment_registry.sqlite3
 
 notes:
-  status: Phase 13 uses these storage paths for the run registry, backend API, minimal frontend, stored-result comparison views, ablation/intervention metrics, and benchmark-suite adapter outputs.
+  status: Phase 14 uses these storage paths for the full experiment stack, final verification scripts, and reproducibility snapshot outputs.
