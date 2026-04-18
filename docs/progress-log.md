@@ -218,6 +218,25 @@ Completed:
 
 Notes:
 - Phase 8 intentionally uses synthetic tensor batches for verification because the real dataset-to-training pipeline is not wired yet
+
+## 2026-04-18 - Phase R2
+
+Goal:
+- convert the official raw rsbench MNLogic output into the local prepared-manifest format
+- keep the conversion reproducible inside this repository
+- validate the prepared dataset with the existing MNLogic adapter
+- stop before wiring real-data runs into training
+
+Completed:
+- inspected the raw `rsbench-code/rssgen` XOR generator output layout
+- added `scripts/prepare_mnlogic_from_rsbench.py`
+- added `docs/mnlogic-rsbench-conversion.md`
+- updated dataset docs and environment checks for the new conversion dependency
+
+Notes:
+- this phase produces a real prepared MNLogic dataset under `data/processed/mnlogic/`
+- the managed run system is still synthetic until the later real-data wiring phases
+- the upstream raw generator currently produces degenerate single-class `val`, `test`, and `ood` splits with the default `xor.yml` settings; this was surfaced explicitly rather than hidden
 - API access and frontend views over these stored results remain deferred to later phases
 
 ## 2026-04-17 - Phase 9

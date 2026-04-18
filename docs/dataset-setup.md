@@ -17,6 +17,10 @@ It does not provide:
 - Kand-Logic integration
 - model or training code
 
+Since R2, this repository also includes a converter for raw official rsbench MNLogic output:
+
+- [docs/mnlogic-rsbench-conversion.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/mnlogic-rsbench-conversion.md)
+
 ## Prepared Dataset Contract
 
 The dataset adapter expects this layout:
@@ -134,3 +138,6 @@ Without `--dataset-dir`, the script uses the default root from `src/configs/data
 
 The adapter validates file layout and manifest consistency, but it does not decode images into tensors yet. That is intentional and belongs to a later phase.
 
+There is also a known upstream caveat for the official `xor.yml` generator output:
+- default `val`, `test`, and `ood` splits can become single-class
+- this is a raw-data generation issue, not a prepared-dataset conversion issue

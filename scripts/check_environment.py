@@ -16,6 +16,7 @@ REQUIRED_IMPORTS = [
     ("numpy", "numpy"),
     ("pandas", "pandas"),
     ("sklearn", "scikit-learn"),
+    ("joblib", "joblib"),
     ("yaml", "PyYAML"),
     ("pydantic", "pydantic"),
     ("fastapi", "fastapi"),

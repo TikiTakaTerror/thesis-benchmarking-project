@@ -10,6 +10,7 @@ Current scripts:
 - `check_environment.py`: verify Python version, import core dependencies, and confirm required project directories exist
 - `create_mnlogic_demo_dataset.py`: generate a tiny prepared MNLogic-style dataset for infrastructure verification
 - `check_mnlogic_dataset.py`: validate a prepared MNLogic dataset layout and print split-level summary information
+- `prepare_mnlogic_from_rsbench.py`: convert raw official rsbench MNLogic output into the local prepared-manifest dataset format
 - `check_model_foundations.py`: verify shared encoder config loading, forward-pass shapes, adapter registration, and checkpoint roundtrip
 - `check_pipeline_model.py`: train the custom symbolic pipeline on synthetic data, validate it, and verify checkpoint reload
 - `check_evaluation_engine.py`: train the pipeline model, evaluate ID and OOD-like splits, and verify the shared metric engine
