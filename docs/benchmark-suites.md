@@ -9,7 +9,7 @@ Implemented suites:
 - `core_eval`
 
 The implementation stays intentionally small:
-- `rsbench` provides rsbench-style ID/OOD split handling and now inspects the local official `external/rsbench-code/` checkout
+- `rsbench` provides rsbench-style ID/OOD split handling for both `mnlogic` and `kand_logic` and now inspects the local official `external/rsbench-code/` checkout
 - `core_eval` provides a direct internal benchmark suite that uses the shared evaluator without extra external assumptions
 
 ## Implemented Components

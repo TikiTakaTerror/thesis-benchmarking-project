@@ -7,6 +7,7 @@ from pathlib import Path
 import yaml
 
 from .base import DatasetAdapter
+from .kand_logic import KandLogicDatasetAdapter
 from .mnlogic import MNLogicDatasetAdapter
 
 
@@ -36,15 +37,17 @@ def create_dataset_adapter(
 ) -> DatasetAdapter:
     """Instantiate a dataset adapter, using config defaults when needed."""
 
-    canonical_name = dataset_name.strip().lower()
-    if canonical_name != "mnlogic":
+    canonical_name = dataset_name.strip().lower().replace("-", "_")
+    if canonical_name not in {"mnlogic", "kand_logic"}:
         raise ValueError(
-            f"Unsupported dataset '{dataset_name}'. Phase 2 only implements MNLogic."
+            f"Unsupported dataset '{dataset_name}'. Supported prepared datasets are "
+            f"'mnlogic' and 'kand_logic'."
         )
 
     if dataset_root is None:
         config = get_dataset_config(canonical_name)
         dataset_root = PROJECT_ROOT / config["paths"]["prepared_root"]
 
-    return MNLogicDatasetAdapter(dataset_root=dataset_root)
-
+    if canonical_name == "mnlogic":
+        return MNLogicDatasetAdapter(dataset_root=dataset_root)
+    return KandLogicDatasetAdapter(dataset_root=dataset_root)

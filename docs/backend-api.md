@@ -15,10 +15,11 @@ It provides:
 - run comparison endpoint
 - synchronous synthetic run launch endpoint for backend verification
 - synchronous real MNLogic run launch endpoint backed by the prepared dataset
+- synchronous real Kand-Logic run launch endpoint backed by the prepared dataset
 
 It does not provide:
 - background job execution
-- Kand-Logic launch yet
+- background queue orchestration for larger experiment sweeps
 
 ## Implemented Components
 
@@ -31,7 +32,7 @@ It does not provide:
 - `src/train/synthetic.py`
   Synthetic managed-run launcher shared by the API and smoke checks
 - `src/train/real_data.py`
-  Real MNLogic managed-run launcher with dataset-aware runtime config alignment
+  Real prepared-dataset managed-run launcher with dataset-aware runtime config alignment for MNLogic and Kand-Logic
 
 ## Current Endpoint Surface
 
@@ -43,6 +44,7 @@ It does not provide:
 - `POST /api/v1/runs/compare`
 - `POST /api/v1/runs/launch/synthetic`
 - `POST /api/v1/runs/launch/mnlogic`
+- `POST /api/v1/runs/launch/kand_logic`
 
 ## Exact Verification Steps
 
@@ -88,10 +90,14 @@ You should see output similar to:
 
 ## Current Limitation
 
-The API can now launch real MNLogic runs, but the current prepared dataset still carries the upstream rsbench XOR split warning:
+The API can now launch both real MNLogic and real Kand-Logic runs.
 
-- `val` is single-class
-- `test` is single-class
-- `ood` is single-class
+Current dataset-specific caveats:
 
-The API exposes those warnings instead of hiding them.
+- MNLogic still carries the upstream rsbench XOR split warning:
+  - `val` is single-class
+  - `test` is single-class
+  - `ood` is single-class
+- Kand-Logic uses a much larger compiled symbolic rule, so DeepProbLog exact inference is materially slower than on MNLogic
+
+The API exposes dataset warnings instead of hiding them.

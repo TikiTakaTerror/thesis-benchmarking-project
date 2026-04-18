@@ -27,6 +27,8 @@ def main() -> int:
         _fail("Dashboard page is missing the main heading")
     if "Launch Train + Evaluate" not in dashboard_html:
         _fail("Dashboard page is missing the launch button")
+    if "kand_logic" not in dashboard_html:
+        _fail("Dashboard page did not expose kand_logic as a launchable dataset")
     print("[OK] Dashboard page rendered")
 
     styles_response = client.get("/static/styles.css")

@@ -13,7 +13,7 @@ The core system is the backend experiment engine. The frontend is intentionally 
 ## Design Principles
 
 - Keep the experiment engine primary and the UI secondary.
-- Start with MNLogic before adding Kand-Logic.
+- Start with MNLogic before adding Kand-Logic, then keep both datasets on the same prepared-manifest and managed-run path.
 - Use shared interfaces for datasets, models, benchmarks, and evaluation so families remain comparable.
 - Keep the implementation simple, readable, and student-friendly.
 - Add new model families and datasets through adapters, not by rewriting the training pipeline.
@@ -105,7 +105,7 @@ project/
 - `external/`: third-party libraries or benchmark environments placed locally in predictable paths.
 - `data/`: local raw and prepared dataset storage used by dataset adapters and validation scripts.
 - `src/data/`: dataset adapters and dataset preparation code.
-- `src/data/loaders.py`: Phase R3 real image-to-tensor and DataLoader helpers for prepared datasets such as MNLogic.
+- `src/data/loaders.py`: Phase R3 real image-to-tensor and DataLoader helpers for prepared datasets such as MNLogic and Kand-Logic.
 - `src/models/`: model-family implementations behind a shared interface.
 - `src/models/shared_encoder.py`: reusable shared encoder implementation and config parsing.
 - `src/models/heads.py`: reusable prediction heads for concept and label logits.
@@ -116,7 +116,7 @@ project/
 - `src/logic/`: symbolic rules, logic templates, and logic utilities shared across families.
 - `src/train/`: training orchestration, loops, checkpoint handling, and run execution helpers.
 - `src/train/runner.py`: Phase 8 managed-run execution helper that ties training, evaluation, and artifact persistence together.
-- `src/train/real_data.py`: R4 real dataset-backed execution helpers for prepared MNLogic runs, including runtime model-config alignment from dataset metadata.
+- `src/train/real_data.py`: real dataset-backed execution helpers for prepared MNLogic and Kand-Logic runs, including runtime model-config alignment from dataset metadata.
 - `src/train/supervision.py`: R5 config-driven supervision policies that mask concept supervision and adjust logic-specific loss weights during managed runs.
 - `src/train/sweeps.py`: R6 multi-seed orchestration that executes one managed run per seed and writes aggregate summary exports.
 - `src/eval/`: metric computation and evaluation flows.
@@ -130,9 +130,9 @@ project/
 - `src/services/config.py`: typed loading of the base project config and resolved storage paths.
 - `src/services/run_manager.py`: SQLite-backed run registry plus per-run filesystem storage helpers.
 - `src/api/`: backend API layer for run control and results access.
-- `src/api/app.py`: FastAPI application exposing run listing, run detail, comparison, synthetic launch, real MNLogic launch, and the mounted server-rendered UI.
+- `src/api/app.py`: FastAPI application exposing run listing, run detail, comparison, synthetic launch, real MNLogic launch, real Kand-Logic launch, and the mounted server-rendered UI.
 - `src/ui/`: minimal user-facing interface, kept intentionally small.
-- `src/ui/routes.py`: server-rendered dashboard, run-detail, comparison, and benchmark summary pages mounted into the FastAPI app, now including real MNLogic launch support.
+- `src/ui/routes.py`: server-rendered dashboard, run-detail, comparison, and benchmark summary pages mounted into the FastAPI app, now including real MNLogic and Kand-Logic launch support.
 - `src/services/reporting.py`: thin view-focused reporting helpers for comparison tables and grouped benchmark summaries.
 - `src/services/reporting.py`: also provides R6 seed-sweep aggregation helpers for mean/std/min/max metric summaries.
 - `src/services/plots.py`: R8 plot-generation helpers for comparison views, grouped benchmark summaries, and seed-sweep aggregates.
@@ -160,6 +160,7 @@ project/
 - Phase 13: benchmark-suite adapter support for `rsbench` and an internal `core_eval` suite
 - Phase 14: final cleanup, reproducibility scripts, and handoff documentation
 - R8: shortcut-gap reporting, generated plot assets, and plot-backed comparison/benchmark views over stored runs
+- R9: real Kand-Logic generation, prepared-dataset conversion, and managed-run integration through the existing backend/frontend stack
 
 ## Phase 0 Outcome
 

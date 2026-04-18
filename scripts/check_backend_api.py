@@ -34,6 +34,8 @@ def main() -> int:
     required_model_families = {"pipeline", "ltn", "deepproblog"}
     if not required_model_families.issubset(set(options_payload["model_families"])):
         _fail("Options endpoint is missing one or more model families")
+    if "kand_logic" not in options_payload["datasets"]:
+        _fail("Options endpoint is missing kand_logic in the dataset list")
     print(
         f"[OK] Options endpoint returned {len(options_payload['model_families'])} model families"
     )

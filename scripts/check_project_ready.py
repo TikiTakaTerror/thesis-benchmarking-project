@@ -14,6 +14,9 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 def main() -> int:
     python_executable = sys.executable
+    kand_dataset_ready = (
+        PROJECT_ROOT / "data" / "processed" / "kand_logic" / "metadata" / "concept_schema.json"
+    ).exists()
 
     print("[OK] Starting full project verification")
     print(f"[OK] Python executable: {python_executable}")
@@ -103,6 +106,24 @@ def main() -> int:
             print(f"\n[RUN] {label}")
             print("[CMD] " + " ".join(command))
             subprocess.run(command, cwd=PROJECT_ROOT, check=True)
+
+        if kand_dataset_ready:
+            kand_checks = [
+                (
+                    "Kand-Logic Dataset Validation",
+                    [python_executable, "scripts/check_kand_logic_dataset.py"],
+                ),
+                (
+                    "Real Kand-Logic Managed Runs",
+                    [python_executable, "scripts/check_real_kand_logic_run.py"],
+                ),
+            ]
+            for label, command in kand_checks:
+                print(f"\n[RUN] {label}")
+                print("[CMD] " + " ".join(command))
+                subprocess.run(command, cwd=PROJECT_ROOT, check=True)
+        else:
+            print("\n[SKIP] Kand-Logic checks skipped because data/processed/kand_logic is missing.")
 
     print("\n[OK] Full project verification passed.")
     return 0

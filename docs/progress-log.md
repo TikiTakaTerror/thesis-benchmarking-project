@@ -503,3 +503,30 @@ Completed:
 Notes:
 - R8 improves reporting visibility, not the underlying upstream MNLogic split quality
 - generated plot assets now live under `results/plots/`
+
+## 2026-04-18 - Phase R9
+
+Goal:
+- add real Kand-Logic support end to end
+- keep Kand on the same prepared-manifest and managed-run path as MNLogic
+- avoid creating a separate one-off Kand execution stack
+- stay honest about DeepProbLog runtime cost on the larger Kand rule
+
+Completed:
+- added `src/data/kand_logic.py` and extended the dataset registry to support `kand_logic`
+- added `scripts/generate_kand_logic_from_rsbench.py`
+- added `scripts/prepare_kand_logic_from_rsbench.py`
+- added `scripts/check_kand_logic_dataset.py`
+- generated raw Kand-Logic data from the local official `external/rsbench-code/rssgen` checkout
+- converted Kand-Logic into the local prepared-manifest format under `data/processed/kand_logic/`
+- expanded raw categorical object attributes into 54 binary one-hot concepts
+- compiled the official Kand symbolic rule into the local `and/or/not` rule-tree format and stored it in `metadata/source_info.json`
+- generalized `src/train/real_data.py` so both MNLogic and Kand-Logic use the same prepared real-data managed-run path
+- added real Kand-Logic launch support to the backend API and the minimal frontend
+- extended multi-seed sweep support so Kand-Logic can reuse the existing orchestration layer
+- added `scripts/check_real_kand_logic_run.py`
+- documented the new flow in `docs/kand-logic-integration.md`
+
+Notes:
+- the prepared Kand-Logic dataset now has balanced `val` and `test` splits plus a real `ood` split from the official generator output
+- DeepProbLog exact inference is much slower on Kand-Logic than on MNLogic because the Kand rule is larger; the smoke check uses a smaller Kand slice for that family on purpose instead of hiding the cost

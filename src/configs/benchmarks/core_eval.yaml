@@ -5,7 +5,7 @@ paths:
 
 dataset_support:
   mnlogic: supported
-  kand_logic: planned
+  kand_logic: supported
 
 suite_metrics:
   - accuracy

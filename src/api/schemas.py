@@ -108,3 +108,21 @@ class RealMNLogicRunLaunchResponse(BaseModel):
     training_metrics: dict[str, float]
     evaluation_metrics: dict[str, float]
     dataset_warnings: list[str] = Field(default_factory=list)
+
+
+class RealKandLogicRunLaunchRequest(BaseModel):
+    model_family: str = "pipeline"
+    seed: int = 42
+    benchmark_suite: str = "rsbench"
+    supervision: str = "full"
+    run_name: str | None = None
+    training_overrides: dict[str, float] = Field(default_factory=dict)
+    limit_per_split: int | None = Field(default=None, ge=1)
+
+
+class RealKandLogicRunLaunchResponse(BaseModel):
+    run: RunSummaryResponse
+    checkpoint_path: str
+    training_metrics: dict[str, float]
+    evaluation_metrics: dict[str, float]
+    dataset_warnings: list[str] = Field(default_factory=list)

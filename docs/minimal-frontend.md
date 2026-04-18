@@ -7,15 +7,12 @@ Phase 10 added the minimal frontend foundation.
 It provides:
 - one server-rendered dashboard at `/`
 - one stored-run detail page at `/runs/{run_id}`
-- one launch form for the synthetic managed-run flow or the prepared real MNLogic dataset
+- one launch form for the synthetic managed-run flow or the prepared real MNLogic / Kand-Logic datasets
 - a recent-runs table and small metric cards
 
 Since Phase 11, the same frontend also exposes:
 - a run comparison page at `/compare`
 - a benchmark summary page at `/benchmarks`
-
-It still does not provide:
-- Kand-Logic launch from the UI yet
 
 ## Implemented Components
 
@@ -76,4 +73,9 @@ You should see output similar to:
 
 ## Current Limitation
 
-The frontend can now launch real MNLogic runs, but the underlying prepared dataset still carries the upstream rsbench XOR split warning exposed in `source_info.json`.
+The frontend can now launch both real MNLogic and real Kand-Logic runs.
+
+Current practical caveats:
+
+- the real MNLogic dataset still carries the upstream rsbench XOR split warning exposed in `source_info.json`
+- DeepProbLog Kand-Logic runs are slower than MNLogic runs because the Kand rule is much larger

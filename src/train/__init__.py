@@ -3,11 +3,17 @@
 
 from .runner import RunExecutionResult, execute_training_run
 from .real_data import (
+    REAL_KAND_LOGIC_DATASET_NAME,
     REAL_MNLOGIC_DATASET_NAME,
+    REAL_PREPARED_DATASET_NAMES,
+    build_kand_logic_runtime_context,
     build_mnlogic_runtime_context,
+    build_prepared_runtime_context,
     build_real_evaluation_splits,
     default_real_training_kwargs,
+    execute_real_kand_logic_managed_run,
     execute_real_mnlogic_managed_run,
+    execute_real_prepared_managed_run,
 )
 from .supervision import (
     AppliedSupervision,
@@ -28,17 +34,23 @@ from .synthetic import (
 __all__ = [
     "RunExecutionResult",
     "AppliedSupervision",
+    "REAL_KAND_LOGIC_DATASET_NAME",
     "REAL_MNLOGIC_DATASET_NAME",
+    "REAL_PREPARED_DATASET_NAMES",
     "SeedSweepResult",
     "SYNTHETIC_DATASET_NAME",
     "SupervisionConfig",
     "apply_supervision",
+    "build_kand_logic_runtime_context",
     "build_synthetic_dataset",
     "build_mnlogic_runtime_context",
+    "build_prepared_runtime_context",
     "build_real_evaluation_splits",
     "default_real_training_kwargs",
     "default_synthetic_training_kwargs",
+    "execute_real_kand_logic_managed_run",
     "execute_real_mnlogic_managed_run",
+    "execute_real_prepared_managed_run",
     "execute_seed_sweep",
     "execute_synthetic_managed_run",
     "execute_training_run",

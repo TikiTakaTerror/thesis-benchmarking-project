@@ -16,7 +16,12 @@ from ..services import (
     build_seed_sweep_summary,
     generate_seed_sweep_plots,
 )
-from .real_data import REAL_MNLOGIC_DATASET_NAME, execute_real_mnlogic_managed_run
+from .real_data import (
+    REAL_KAND_LOGIC_DATASET_NAME,
+    REAL_MNLOGIC_DATASET_NAME,
+    execute_real_kand_logic_managed_run,
+    execute_real_mnlogic_managed_run,
+)
 from .runner import RunExecutionResult
 from .synthetic import SYNTHETIC_DATASET_NAME, execute_synthetic_managed_run
 
@@ -56,6 +61,18 @@ def execute_seed_sweep(
         run_name = f"{sweep_name}_seed_{seed}"
         if dataset == REAL_MNLOGIC_DATASET_NAME:
             result = execute_real_mnlogic_managed_run(
+                run_manager,
+                project_config=project_config,
+                model_family=model_family,
+                seed=seed,
+                benchmark_suite=benchmark_suite,
+                supervision=supervision,
+                run_name=run_name,
+                training_overrides=training_overrides,
+                limit_per_split=limit_per_split,
+            )
+        elif dataset == REAL_KAND_LOGIC_DATASET_NAME:
+            result = execute_real_kand_logic_managed_run(
                 run_manager,
                 project_config=project_config,
                 model_family=model_family,

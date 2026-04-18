@@ -6,9 +6,9 @@
     <p class="eyebrow">Phase {{ phase }}</p>
     <h2>Experiment Control</h2>
     <p class="muted">
-      This frontend is intentionally minimal. It can now launch the real prepared MNLogic dataset
-      or the older synthetic verification flow, then show stored runs and the most important metrics
-      without hiding the experiment core.
+      This frontend is intentionally minimal. It can now launch the real prepared MNLogic and
+      Kand-Logic datasets or the older synthetic verification flow, then show stored runs and the
+      most important metrics without hiding the experiment core.
     </p>
   </div>
   <div class="summary-grid">
@@ -29,7 +29,7 @@
   <section class="panel control-panel">
     <div class="panel-head">
       <h3>Launch Run</h3>
-      <p class="muted">Real MNLogic launches are now available. Kand-Logic remains pending.</p>
+      <p class="muted">Real prepared MNLogic and Kand-Logic launches are now available.</p>
     </div>
     <form method="post" action="/ui/launch" class="control-form">
       <label>
@@ -80,9 +80,10 @@
       <strong>Configured datasets:</strong>
       <span>{{ configured_datasets | join(", ") }}</span>
       <p class="muted small">
-        Launchable now: `mnlogic` and `synthetic_mnlogic`. `kand_logic` is configured in the repo
-        but is not wired into training yet. The current real MNLogic dataset still carries the upstream
-        rsbench XOR split warning surfaced during dataset conversion.
+        Launchable now: `mnlogic`, `kand_logic`, and `synthetic_mnlogic`. The current real MNLogic
+        dataset still carries the upstream rsbench XOR split warning surfaced during dataset
+        conversion. Kand-Logic uses the official rsbench Kand generator converted into the local
+        prepared-manifest contract with one-hot binary concept expansion.
       </p>
     </div>
   </section>

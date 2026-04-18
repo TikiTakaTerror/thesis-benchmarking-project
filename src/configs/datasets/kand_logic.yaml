@@ -1,5 +1,5 @@
-name: kand-logic
-priority: later
+name: kand_logic
+priority: active
 format: prepared_manifest_v1
 
 paths:
@@ -17,4 +17,4 @@ schema:
   label_schema_file: data/processed/kand_logic/metadata/label_schema.json
 
 notes:
-  status: Placeholder path contract only. Added for future extension after MNLogic stabilizes.
+  status: Real prepared Kand-Logic path contract backed by the official local rsbench kandinsky generator conversion.

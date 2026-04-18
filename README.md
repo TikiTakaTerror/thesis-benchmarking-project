@@ -6,6 +6,7 @@ Experiment-first platform for a Bachelor's thesis comparing selected neuro-symbo
 
 - MNLogic-first dataset infrastructure with a prepared-dataset contract
 - real MNLogic prepared-dataset conversion and real managed-run support
+- real Kand-Logic prepared-dataset conversion and real managed-run support
 - shared encoder and common model adapter interface
 - Family A: custom concept-first symbolic pipeline
 - Family B: DeepProbLog-based model
@@ -25,7 +26,7 @@ Experiment-first platform for a Bachelor's thesis comparing selected neuro-symbo
 ## Current Limits
 
 - the real MNLogic dataset is wired into managed runs, but its current upstream rsbench XOR `val/test/ood` splits are degenerate and carry explicit warnings
-- Kand-Logic is not wired into managed runs yet
+- the real Kand-Logic dataset is wired into managed runs, but DeepProbLog exact inference on Kand is substantially slower than MNLogic and currently needs smaller smoke-test limits
 - the local official `external/rsbench-code/` checkout is now inspected and attached to `rsbench` runs, but the full external `rsseval` training stack is still not executed from this project
 - final thesis-specific plot/report generation is still lightweight
 
@@ -48,6 +49,7 @@ python scripts/export_repro_snapshot.py
 - [docs/environment-setup.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/environment-setup.md)
 - [docs/dataset-setup.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/dataset-setup.md)
 - [docs/real-mnlogic-runs.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/real-mnlogic-runs.md)
+- [docs/kand-logic-integration.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/kand-logic-integration.md)
 - [docs/supervision-modes.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/supervision-modes.md)
 - [docs/multi-seed-sweeps.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/multi-seed-sweeps.md)
 - [docs/rsbench-external-integration.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/rsbench-external-integration.md)

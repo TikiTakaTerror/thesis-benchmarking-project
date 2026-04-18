@@ -5,7 +5,7 @@ paths:
 
 dataset_support:
   mnlogic: supported_with_local_adapter_and_external_repo_snapshot
-  kand_logic: planned
+  kand_logic: supported_with_local_adapter_and_external_repo_snapshot
 
 suite_metrics:
   - accuracy

@@ -14,7 +14,11 @@ These files started as placeholders in Phase 0.
 Current status:
 - `base.yaml` is active for storage and backend API configuration
 - some run presets are executable synthetic smoke presets
-- dataset and benchmark configs still remain partially placeholder-driven until later phases wire the full experiment engine
+- dataset and benchmark configs now actively support:
+  - `mnlogic`
+  - `kand_logic`
+  - `core_eval`
+  - `rsbench`
 - supervision configs are active after R5:
   - `label_only` = 0% concept supervision
   - `concept_50` = 50% concept supervision

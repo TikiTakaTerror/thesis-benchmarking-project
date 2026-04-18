@@ -20,7 +20,12 @@ from ..services.plots import (
     generate_benchmark_summary_plots,
     generate_comparison_plots,
 )
-from ..train.real_data import REAL_MNLOGIC_DATASET_NAME, execute_real_mnlogic_managed_run
+from ..train.real_data import (
+    REAL_KAND_LOGIC_DATASET_NAME,
+    REAL_MNLOGIC_DATASET_NAME,
+    execute_real_kand_logic_managed_run,
+    execute_real_mnlogic_managed_run,
+)
 from ..train.synthetic import SYNTHETIC_DATASET_NAME, execute_synthetic_managed_run
 
 
@@ -41,7 +46,11 @@ def create_ui_router() -> APIRouter:
         options = list_available_options()
         launchable_datasets = [
             dataset_name
-            for dataset_name in [REAL_MNLOGIC_DATASET_NAME, SYNTHETIC_DATASET_NAME]
+            for dataset_name in [
+                REAL_MNLOGIC_DATASET_NAME,
+                REAL_KAND_LOGIC_DATASET_NAME,
+                SYNTHETIC_DATASET_NAME,
+            ]
             if dataset_name == SYNTHETIC_DATASET_NAME
             or dataset_name in options["datasets"]
         ]
@@ -183,7 +192,11 @@ def create_ui_router() -> APIRouter:
         run_manager = get_run_manager()
         options = list_available_options()
 
-        if dataset not in {SYNTHETIC_DATASET_NAME, REAL_MNLOGIC_DATASET_NAME}:
+        if dataset not in {
+            SYNTHETIC_DATASET_NAME,
+            REAL_MNLOGIC_DATASET_NAME,
+            REAL_KAND_LOGIC_DATASET_NAME,
+        }:
             return _render_dashboard_with_error(
                 request,
                 error_message=f"Unsupported launch dataset: {dataset}",
@@ -204,7 +217,7 @@ def create_ui_router() -> APIRouter:
                 supervision=supervision,
                 run_name=run_name.strip() or f"ui_{model_family}_seed_{seed}",
             )
-        else:
+        elif dataset == REAL_MNLOGIC_DATASET_NAME:
             try:
                 result = execute_real_mnlogic_managed_run(
                     run_manager,
@@ -214,6 +227,23 @@ def create_ui_router() -> APIRouter:
                     benchmark_suite=benchmark_suite,
                     supervision=supervision,
                     run_name=run_name.strip() or f"ui_real_mnlogic_{model_family}_seed_{seed}",
+                    limit_per_split=(int(limit_per_split) if int(limit_per_split) > 0 else None),
+                )
+            except ValueError as exc:
+                return _render_dashboard_with_error(
+                    request,
+                    error_message=str(exc),
+                )
+        else:
+            try:
+                result = execute_real_kand_logic_managed_run(
+                    run_manager,
+                    project_config=project_config,
+                    model_family=model_family,
+                    seed=int(seed),
+                    benchmark_suite=benchmark_suite,
+                    supervision=supervision,
+                    run_name=run_name.strip() or f"ui_real_kand_logic_{model_family}_seed_{seed}",
                     limit_per_split=(int(limit_per_split) if int(limit_per_split) > 0 else None),
                 )
             except ValueError as exc:
@@ -255,7 +285,11 @@ def _render_dashboard_with_error(request: Request, *, error_message: str) -> HTM
     options = list_available_options()
     launchable_datasets = [
         dataset_name
-        for dataset_name in [REAL_MNLOGIC_DATASET_NAME, SYNTHETIC_DATASET_NAME]
+        for dataset_name in [
+            REAL_MNLOGIC_DATASET_NAME,
+            REAL_KAND_LOGIC_DATASET_NAME,
+            SYNTHETIC_DATASET_NAME,
+        ]
         if dataset_name == SYNTHETIC_DATASET_NAME or dataset_name in options["datasets"]
     ]
     context = {

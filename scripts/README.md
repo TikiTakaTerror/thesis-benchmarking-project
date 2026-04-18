@@ -11,8 +11,12 @@ Current scripts:
 - `create_mnlogic_demo_dataset.py`: generate a tiny prepared MNLogic-style dataset for infrastructure verification
 - `check_mnlogic_dataset.py`: validate a prepared MNLogic dataset layout and print split-level summary information
 - `prepare_mnlogic_from_rsbench.py`: convert raw official rsbench MNLogic output into the local prepared-manifest dataset format
+- `generate_kand_logic_from_rsbench.py`: generate raw Kand-Logic data from the local official `rsbench-code/rssgen` checkout
+- `prepare_kand_logic_from_rsbench.py`: convert raw official rsbench Kand-Logic output into the local prepared-manifest dataset format
+- `check_kand_logic_dataset.py`: validate a prepared Kand-Logic dataset layout and print split-level summary information
 - `check_mnlogic_tensor_loading.py`: verify that the real prepared MNLogic dataset loads into model-compatible PyTorch batches
 - `check_real_mnlogic_run.py`: verify the new real MNLogic managed-run path across the runner, backend API, and UI launch route
+- `check_real_kand_logic_run.py`: verify the real Kand-Logic managed-run path across the runner, backend API, and UI launch route
 - `check_supervision_modes.py`: verify that `full`, `label_only`, and `concept_50` supervision settings actually change the managed-run training behavior
 - `check_seed_sweeps.py`: verify multi-seed managed-run orchestration and aggregate summary exports
 - `check_shortcut_reporting.py`: verify rsbench shortcut-gap metrics, generated plot files, and plot rendering in the comparison and benchmark pages

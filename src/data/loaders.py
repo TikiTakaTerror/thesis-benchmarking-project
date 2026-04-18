@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Mapping
 
 import torch
 from PIL import Image
@@ -32,12 +33,15 @@ class ImageTensorConfig:
         cls,
         model_family: str,
         *,
+        model_config: Mapping[str, object] | None = None,
         batch_size: int | None = None,
         num_workers: int = 0,
     ) -> "ImageTensorConfig":
-        model_config = load_model_config(model_family)
-        shared_encoder = SharedEncoderConfig.from_dict(model_config.get("shared_encoder"))
-        training_defaults = dict(model_config.get("training_defaults", {}))
+        resolved_model_config = dict(model_config or load_model_config(model_family))
+        shared_encoder = SharedEncoderConfig.from_dict(
+            resolved_model_config.get("shared_encoder")
+        )
+        training_defaults = dict(resolved_model_config.get("training_defaults", {}))
         resolved_batch_size = int(
             batch_size if batch_size is not None else training_defaults.get("batch_size", 16)
         )
@@ -144,6 +148,7 @@ def build_prepared_dataloaders(
     *,
     dataset_name: str,
     model_family: str,
+    model_config: Mapping[str, object] | None = None,
     dataset_root: str | Path | None = None,
     batch_size: int | None = None,
     num_workers: int = 0,
@@ -156,6 +161,7 @@ def build_prepared_dataloaders(
     adapter.validate_layout()
     tensor_config = ImageTensorConfig.from_model_family(
         model_family,
+        model_config=model_config,
         batch_size=batch_size,
         num_workers=num_workers,
     )
@@ -171,8 +177,10 @@ def build_prepared_dataloaders(
     dataset_label_names = tuple(
         label.name for label in adapter.get_label_schema()
     )
-    model_config = load_model_config(model_family)
-    model_concept_names = tuple(str(name) for name in model_config.get("concepts", []))
+    resolved_model_config = dict(model_config or load_model_config(model_family))
+    model_concept_names = tuple(
+        str(name) for name in resolved_model_config.get("concepts", [])
+    )
 
     if len(dataset_concept_names) != len(model_concept_names):
         raise ValueError(

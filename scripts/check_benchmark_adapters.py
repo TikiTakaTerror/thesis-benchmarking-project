@@ -28,8 +28,12 @@ def main() -> int:
     rsbench_adapter = create_benchmark_adapter("rsbench")
     if "mnlogic" not in core_adapter.list_datasets():
         _fail("core_eval adapter does not list mnlogic")
+    if "kand_logic" not in core_adapter.list_datasets():
+        _fail("core_eval adapter does not list kand_logic")
     if "mnlogic" not in rsbench_adapter.list_datasets():
         _fail("rsbench adapter does not list mnlogic")
+    if "kand_logic" not in rsbench_adapter.list_datasets():
+        _fail("rsbench adapter does not list kand_logic")
     print("[OK] Benchmark adapters loaded and reported supported datasets")
 
     project_config = get_project_config()
