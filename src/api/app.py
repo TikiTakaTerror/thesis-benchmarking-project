@@ -13,11 +13,14 @@ from fastapi.staticfiles import StaticFiles
 
 from ..services import RunRecord, get_project_config, get_run_manager
 from ..services.catalog import list_available_options
+from ..train.real_data import execute_real_mnlogic_managed_run
 from ..train.synthetic import execute_synthetic_managed_run
 from ..ui import create_ui_router
 from .schemas import (
     AvailableOptionsResponse,
     HealthResponse,
+    RealMNLogicRunLaunchRequest,
+    RealMNLogicRunLaunchResponse,
     RunCompareRequest,
     RunCompareResponse,
     RunListResponse,
@@ -34,10 +37,11 @@ def create_app() -> FastAPI:
 
     app = FastAPI(
         title="Thesis Benchmarking Backend API",
-        version="0.11.0",
+        version="0.12.0",
         description=(
             "Minimal API for listing stored runs, inspecting run artifacts, "
-            "comparing runs, launching synthetic managed runs, and serving the minimal UI."
+            "comparing runs, launching synthetic or real-MNLogic managed runs, "
+            "and serving the minimal UI."
         ),
     )
     static_dir = Path(__file__).resolve().parents[1] / "ui" / "static"
@@ -173,6 +177,53 @@ def create_app() -> FastAPI:
             checkpoint_path=result.checkpoint_path,
             training_metrics=result.training_metrics,
             evaluation_metrics=result.evaluation_metrics,
+        )
+
+    @app.post(
+        "/api/v1/runs/launch/mnlogic",
+        response_model=RealMNLogicRunLaunchResponse,
+    )
+    def launch_real_mnlogic_run(
+        request: RealMNLogicRunLaunchRequest,
+    ) -> RealMNLogicRunLaunchResponse:
+        manager = get_run_manager()
+        project_config = get_project_config()
+        options = list_available_options()
+        if request.model_family not in options["model_families"]:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Unsupported model_family: {request.model_family}",
+            )
+
+        try:
+            result = execute_real_mnlogic_managed_run(
+                manager,
+                project_config=project_config,
+                model_family=request.model_family,
+                seed=request.seed,
+                benchmark_suite=request.benchmark_suite,
+                supervision=request.supervision,
+                run_name=request.run_name,
+                training_overrides=request.training_overrides,
+                limit_per_split=request.limit_per_split,
+            )
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+        config_payload = _load_snapshot_payload(result.record, "config")
+        dataset_warnings = []
+        if isinstance(config_payload.get("dataset"), dict):
+            dataset_warnings = [
+                str(item)
+                for item in config_payload["dataset"].get("warnings", [])
+            ]
+
+        return RealMNLogicRunLaunchResponse(
+            run=_record_to_summary(result.record),
+            checkpoint_path=result.checkpoint_path,
+            training_metrics=result.training_metrics,
+            evaluation_metrics=result.evaluation_metrics,
+            dataset_warnings=dataset_warnings,
         )
 
     return app

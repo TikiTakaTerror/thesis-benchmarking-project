@@ -116,6 +116,7 @@ project/
 - `src/logic/`: symbolic rules, logic templates, and logic utilities shared across families.
 - `src/train/`: training orchestration, loops, checkpoint handling, and run execution helpers.
 - `src/train/runner.py`: Phase 8 managed-run execution helper that ties training, evaluation, and artifact persistence together.
+- `src/train/real_data.py`: R4 real dataset-backed execution helpers for prepared MNLogic runs, including runtime model-config alignment from dataset metadata.
 - `src/eval/`: metric computation and evaluation flows.
 - `src/eval/engine.py`: split-aware common evaluation runner for shared metrics.
 - `src/eval/analysis.py`: Phase 12 ablation and intervention analysis over model predictions and intervened concepts.
@@ -126,9 +127,9 @@ project/
 - `src/services/config.py`: typed loading of the base project config and resolved storage paths.
 - `src/services/run_manager.py`: SQLite-backed run registry plus per-run filesystem storage helpers.
 - `src/api/`: backend API layer for run control and results access.
-- `src/api/app.py`: FastAPI application exposing run listing, run detail, comparison, synthetic launch, and the mounted server-rendered UI.
+- `src/api/app.py`: FastAPI application exposing run listing, run detail, comparison, synthetic launch, real MNLogic launch, and the mounted server-rendered UI.
 - `src/ui/`: minimal user-facing interface, kept intentionally small.
-- `src/ui/routes.py`: server-rendered dashboard, run-detail, comparison, and benchmark summary pages mounted into the FastAPI app.
+- `src/ui/routes.py`: server-rendered dashboard, run-detail, comparison, and benchmark summary pages mounted into the FastAPI app, now including real MNLogic launch support.
 - `src/services/reporting.py`: thin view-focused reporting helpers for comparison tables and grouped benchmark summaries.
 - `src/utils/`: shared utility helpers that do not belong to the other modules.
 - `src/configs/`: configuration placeholders for datasets, models, supervision modes, benchmark suites, and run presets.

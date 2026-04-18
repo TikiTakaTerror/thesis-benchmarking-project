@@ -241,6 +241,43 @@ Notes:
 ## 2026-04-18 - Phase R3
 
 Goal:
+- make the prepared real MNLogic dataset loadable as actual PyTorch image batches
+- keep the batch contract compatible with the existing model-family adapters
+- stop before changing the managed runner, backend API, or UI launch path
+
+Completed:
+- added `src/data/loaders.py` for prepared-image loading, resizing, tensor conversion, and DataLoader construction
+- added `scripts/check_mnlogic_tensor_loading.py`
+- added `docs/mnlogic-tensor-loading.md`
+- verified that `pipeline`, `ltn`, and `deepproblog` can all consume real MNLogic batch shapes
+
+Notes:
+- R3 made the data path real, but the managed execution path remained synthetic
+- the model-family configs still used smoke-test concept names until R4
+
+## 2026-04-18 - Phase R4
+
+Goal:
+- wire the prepared real MNLogic dataset into the managed runner
+- expose a real MNLogic launch path through the backend API and minimal frontend
+- align model-family runtime configs with the real dataset concepts and logic expression without breaking the earlier synthetic smoke checks
+
+Completed:
+- added `src/train/real_data.py` for real MNLogic managed runs
+- added runtime model-config alignment from dataset metadata and logic expression for all three model families
+- updated the runner so managed runs can instantiate a model from a runtime config payload
+- added a backend API endpoint for `POST /api/v1/runs/launch/mnlogic`
+- updated the UI launch flow so `mnlogic` can be launched directly
+- added `scripts/check_real_mnlogic_run.py`
+- added `docs/real-mnlogic-runs.md`
+
+Notes:
+- the synthetic launch path remains intact for regression checks
+- the current real MNLogic dataset still carries the upstream single-class split warnings from the official rsbench XOR generator output
+
+## 2026-04-18 - Phase R3
+
+Goal:
 - load the real prepared MNLogic dataset as model-compatible PyTorch batches
 - resize raw MNLogic images into the shared encoder input shape
 - stop before changing the managed runner, backend launch flow, or frontend launch flow

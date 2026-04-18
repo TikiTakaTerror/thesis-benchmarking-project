@@ -10,7 +10,7 @@ from typing import Any, Callable, Iterable, Mapping
 import torch
 
 from ..eval import evaluate_named_splits
-from ..models import create_model_adapter
+from ..models import create_model_adapter, create_model_adapter_from_config
 from ..services.run_manager import RunManager, RunRecord, RunSelection
 
 
@@ -30,6 +30,7 @@ def execute_training_run(
     run_name: str,
     selection: RunSelection,
     config_snapshot: Mapping[str, Any],
+    model_config: Mapping[str, Any] | None = None,
     train_batches: Iterable[dict[str, torch.Tensor]],
     evaluation_splits: Mapping[str, Iterable[dict[str, torch.Tensor]]] | None = None,
     evaluation_callback: Callable[[Any, Mapping[str, Iterable[dict[str, torch.Tensor]]]], Mapping[str, Any]]
@@ -47,7 +48,11 @@ def execute_training_run(
 
     try:
         started_at = time.perf_counter()
-        model = create_model_adapter(selection.model_family)
+        model = (
+            create_model_adapter_from_config(dict(model_config))
+            if model_config is not None
+            else create_model_adapter(selection.model_family)
+        )
         training_metrics = _normalize_metrics(
             model.train(train_batches, **dict(train_kwargs or {}))
         )

@@ -6,8 +6,9 @@
     <p class="eyebrow">Phase {{ phase }}</p>
     <h2>Experiment Control</h2>
     <p class="muted">
-      This frontend is intentionally minimal. It launches the current synthetic backend flow,
-      shows stored runs, and surfaces the most important metrics without hiding the experiment core.
+      This frontend is intentionally minimal. It can now launch the real prepared MNLogic dataset
+      or the older synthetic verification flow, then show stored runs and the most important metrics
+      without hiding the experiment core.
     </p>
   </div>
   <div class="summary-grid">
@@ -28,13 +29,15 @@
   <section class="panel control-panel">
     <div class="panel-head">
       <h3>Launch Run</h3>
-      <p class="muted">Phase 10 launches synthetic managed runs only.</p>
+      <p class="muted">Real MNLogic launches are now available. Kand-Logic remains pending.</p>
     </div>
     <form method="post" action="/ui/launch" class="control-form">
       <label>
         <span>Dataset</span>
         <select name="dataset">
-          <option value="{{ launch_dataset }}">{{ launch_dataset }}</option>
+          {% for option in launch_datasets %}
+          <option value="{{ option }}" {% if option == defaults.dataset %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
         </select>
       </label>
       <label>
@@ -77,7 +80,9 @@
       <strong>Configured datasets:</strong>
       <span>{{ configured_datasets | join(", ") }}</span>
       <p class="muted small">
-        Real dataset-backed launches remain pending. The UI uses the synthetic backend path so the control loop is verifiable now.
+        Launchable now: `mnlogic` and `synthetic_mnlogic`. `kand_logic` is configured in the repo
+        but is not wired into training yet. The current real MNLogic dataset still carries the upstream
+        rsbench XOR split warning surfaced during dataset conversion.
       </p>
     </div>
   </section>

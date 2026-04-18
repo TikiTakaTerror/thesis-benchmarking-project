@@ -7,7 +7,7 @@ Phase 10 added the minimal frontend foundation.
 It provides:
 - one server-rendered dashboard at `/`
 - one stored-run detail page at `/runs/{run_id}`
-- one launch form for the current synthetic managed-run flow
+- one launch form for the synthetic managed-run flow or the prepared real MNLogic dataset
 - a recent-runs table and small metric cards
 
 Since Phase 11, the same frontend also exposes:
@@ -15,7 +15,7 @@ Since Phase 11, the same frontend also exposes:
 - a benchmark summary page at `/benchmarks`
 
 It still does not provide:
-- real dataset-backed launch from the UI yet
+- Kand-Logic launch from the UI yet
 
 ## Implemented Components
 
@@ -76,8 +76,4 @@ You should see output similar to:
 
 ## Current Limitation
 
-The Phase 10 frontend launches the same synthetic managed-run flow used in earlier backend verification.
-
-Reason:
-- the real dataset-backed execution path is still not fully wired
-- this keeps the frontend honest and testable while remaining secondary to the experiment system
+The frontend can now launch real MNLogic runs, but the underlying prepared dataset still carries the upstream rsbench XOR split warning exposed in `source_info.json`.

@@ -16,6 +16,7 @@ from ..services.reporting import (
     build_comparison_export_basename,
     build_comparison_table,
 )
+from ..train.real_data import REAL_MNLOGIC_DATASET_NAME, execute_real_mnlogic_managed_run
 from ..train.synthetic import SYNTHETIC_DATASET_NAME, execute_synthetic_managed_run
 
 
@@ -34,17 +35,28 @@ def create_ui_router() -> APIRouter:
         run_manager = get_run_manager()
         runs = run_manager.list_runs()[:12]
         options = list_available_options()
+        launchable_datasets = [
+            dataset_name
+            for dataset_name in [REAL_MNLOGIC_DATASET_NAME, SYNTHETIC_DATASET_NAME]
+            if dataset_name == SYNTHETIC_DATASET_NAME
+            or dataset_name in options["datasets"]
+        ]
         context = {
             "request": request,
             "page_title": "Experiment Control",
             "project_name": project_config.name,
             "phase": project_config.phase,
-            "launch_dataset": SYNTHETIC_DATASET_NAME,
+            "launch_datasets": launchable_datasets,
             "configured_datasets": options["datasets"],
             "model_families": options["model_families"],
             "benchmark_suites": options["benchmark_suites"],
             "supervision_settings": options["supervision_settings"],
             "defaults": {
+                "dataset": (
+                    project_config.defaults.dataset
+                    if project_config.defaults.dataset in launchable_datasets
+                    else launchable_datasets[0]
+                ),
                 "model_family": project_config.defaults.model_family,
                 "benchmark_suite": project_config.defaults.benchmark_suite,
                 "supervision": project_config.defaults.supervision,
@@ -145,18 +157,16 @@ def create_ui_router() -> APIRouter:
         supervision: str = Form(...),
         seed: int = Form(...),
         run_name: str = Form(""),
+        limit_per_split: int = Form(0),
     ) -> RedirectResponse | HTMLResponse:
         project_config = get_project_config()
         run_manager = get_run_manager()
         options = list_available_options()
 
-        if dataset != SYNTHETIC_DATASET_NAME:
+        if dataset not in {SYNTHETIC_DATASET_NAME, REAL_MNLOGIC_DATASET_NAME}:
             return _render_dashboard_with_error(
                 request,
-                error_message=(
-                    "Phase 10 can only launch the synthetic backend dataset. "
-                    "Real dataset-backed launches remain pending."
-                ),
+                error_message=f"Unsupported launch dataset: {dataset}",
             )
         if model_family not in options["model_families"]:
             return _render_dashboard_with_error(
@@ -164,15 +174,34 @@ def create_ui_router() -> APIRouter:
                 error_message=f"Unsupported model family: {model_family}",
             )
 
-        result = execute_synthetic_managed_run(
-            run_manager,
-            project_config=project_config,
-            model_family=model_family,
-            seed=int(seed),
-            benchmark_suite=benchmark_suite,
-            supervision=supervision,
-            run_name=run_name.strip() or f"ui_{model_family}_seed_{seed}",
-        )
+        if dataset == SYNTHETIC_DATASET_NAME:
+            result = execute_synthetic_managed_run(
+                run_manager,
+                project_config=project_config,
+                model_family=model_family,
+                seed=int(seed),
+                benchmark_suite=benchmark_suite,
+                supervision=supervision,
+                run_name=run_name.strip() or f"ui_{model_family}_seed_{seed}",
+            )
+        else:
+            try:
+                result = execute_real_mnlogic_managed_run(
+                    run_manager,
+                    project_config=project_config,
+                    model_family=model_family,
+                    seed=int(seed),
+                    benchmark_suite=benchmark_suite,
+                    supervision=supervision,
+                    run_name=run_name.strip() or f"ui_real_mnlogic_{model_family}_seed_{seed}",
+                    limit_per_split=(int(limit_per_split) if int(limit_per_split) > 0 else None),
+                )
+            except ValueError as exc:
+                return _render_dashboard_with_error(
+                    request,
+                    error_message=str(exc),
+                )
+
         return RedirectResponse(
             url=f"/runs/{result.record.run_id}",
             status_code=status.HTTP_303_SEE_OTHER,
@@ -204,17 +233,27 @@ def _render_dashboard_with_error(request: Request, *, error_message: str) -> HTM
     run_manager = get_run_manager()
     runs = run_manager.list_runs()[:12]
     options = list_available_options()
+    launchable_datasets = [
+        dataset_name
+        for dataset_name in [REAL_MNLOGIC_DATASET_NAME, SYNTHETIC_DATASET_NAME]
+        if dataset_name == SYNTHETIC_DATASET_NAME or dataset_name in options["datasets"]
+    ]
     context = {
         "request": request,
         "page_title": "Experiment Control",
         "project_name": project_config.name,
         "phase": project_config.phase,
-        "launch_dataset": SYNTHETIC_DATASET_NAME,
+        "launch_datasets": launchable_datasets,
         "configured_datasets": options["datasets"],
         "model_families": options["model_families"],
         "benchmark_suites": options["benchmark_suites"],
         "supervision_settings": options["supervision_settings"],
         "defaults": {
+            "dataset": (
+                project_config.defaults.dataset
+                if project_config.defaults.dataset in launchable_datasets
+                else launchable_datasets[0]
+            ),
             "model_family": project_config.defaults.model_family,
             "benchmark_suite": project_config.defaults.benchmark_suite,
             "supervision": project_config.defaults.supervision,

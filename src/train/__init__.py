@@ -2,6 +2,13 @@
 """Training orchestration helpers."""
 
 from .runner import RunExecutionResult, execute_training_run
+from .real_data import (
+    REAL_MNLOGIC_DATASET_NAME,
+    build_mnlogic_runtime_context,
+    build_real_evaluation_splits,
+    default_real_training_kwargs,
+    execute_real_mnlogic_managed_run,
+)
 from .synthetic import (
     SYNTHETIC_DATASET_NAME,
     build_synthetic_dataset,
@@ -13,9 +20,14 @@ from .synthetic import (
 
 __all__ = [
     "RunExecutionResult",
+    "REAL_MNLOGIC_DATASET_NAME",
     "SYNTHETIC_DATASET_NAME",
     "build_synthetic_dataset",
+    "build_mnlogic_runtime_context",
+    "build_real_evaluation_splits",
+    "default_real_training_kwargs",
     "default_synthetic_training_kwargs",
+    "execute_real_mnlogic_managed_run",
     "execute_synthetic_managed_run",
     "execute_training_run",
     "make_batches",

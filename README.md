@@ -5,6 +5,7 @@ Experiment-first platform for a Bachelor's thesis comparing selected neuro-symbo
 ## Implemented Scope
 
 - MNLogic-first dataset infrastructure with a prepared-dataset contract
+- real MNLogic prepared-dataset conversion and real managed-run support
 - shared encoder and common model adapter interface
 - Family A: custom concept-first symbolic pipeline
 - Family B: DeepProbLog-based model
@@ -19,7 +20,8 @@ Experiment-first platform for a Bachelor's thesis comparing selected neuro-symbo
 
 ## Current Limits
 
-- real dataset-backed managed runs are not fully wired yet
+- the real MNLogic dataset is wired into managed runs, but its current upstream rsbench XOR `val/test/ood` splits are degenerate and carry explicit warnings
+- Kand-Logic is not wired into managed runs yet
 - real external benchmark execution through `external/rsbench-code/` is not integrated yet
 - final thesis-specific plot/report generation is still lightweight
 
@@ -41,6 +43,7 @@ python scripts/export_repro_snapshot.py
 - [docs/reproducibility.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/reproducibility.md)
 - [docs/environment-setup.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/environment-setup.md)
 - [docs/dataset-setup.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/dataset-setup.md)
+- [docs/real-mnlogic-runs.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/real-mnlogic-runs.md)
 - [docs/evaluation-engine.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/evaluation-engine.md)
 - [docs/run-management.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/run-management.md)
 - [docs/backend-api.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/backend-api.md)

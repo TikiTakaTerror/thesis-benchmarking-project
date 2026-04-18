@@ -61,13 +61,24 @@ def create_model_adapter(family_name: str) -> ModelAdapter:
     """Instantiate the best currently available adapter for a model family."""
 
     canonical_name = family_name.strip().lower()
-    adapter_cls = get_model_adapter_class(canonical_name)
     if canonical_name in {"pipeline", "ltn", "deepproblog"}:
         model_config = load_model_config(canonical_name)
-        return adapter_cls.from_config_dict(model_config)
+        return create_model_adapter_from_config(model_config)
 
+    adapter_cls = get_model_adapter_class(canonical_name)
     shared_encoder_config = load_shared_encoder_config(canonical_name)
     return adapter_cls(shared_encoder_config=shared_encoder_config)
+
+
+def create_model_adapter_from_config(model_config: dict) -> ModelAdapter:
+    """Instantiate a model adapter from an explicit config payload."""
+
+    if not isinstance(model_config, dict):
+        raise ValueError("model_config must be a dictionary")
+
+    family_name = str(model_config.get("family", "")).strip().lower()
+    adapter_cls = get_model_adapter_class(family_name)
+    return adapter_cls.from_config_dict(model_config)
 
 
 def create_model_adapter_stub(family_name: str) -> ModelAdapter:

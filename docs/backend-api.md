@@ -14,10 +14,11 @@ It provides:
 - stored snapshot access for config, metadata, metrics, and artifacts
 - run comparison endpoint
 - synchronous synthetic run launch endpoint for backend verification
+- synchronous real MNLogic run launch endpoint backed by the prepared dataset
 
 It does not provide:
 - background job execution
-- real dataset-to-training launch for MNLogic yet
+- Kand-Logic launch yet
 
 ## Implemented Components
 
@@ -29,6 +30,8 @@ It does not provide:
   Config-backed option discovery
 - `src/train/synthetic.py`
   Synthetic managed-run launcher shared by the API and smoke checks
+- `src/train/real_data.py`
+  Real MNLogic managed-run launcher with dataset-aware runtime config alignment
 
 ## Current Endpoint Surface
 
@@ -39,6 +42,7 @@ It does not provide:
 - `GET /api/v1/runs/{run_id}/snapshot/{snapshot_type}`
 - `POST /api/v1/runs/compare`
 - `POST /api/v1/runs/launch/synthetic`
+- `POST /api/v1/runs/launch/mnlogic`
 
 ## Exact Verification Steps
 
@@ -84,8 +88,10 @@ You should see output similar to:
 
 ## Current Limitation
 
-The launch endpoint is intentionally limited to synthetic managed runs in Phase 9.
+The API can now launch real MNLogic runs, but the current prepared dataset still carries the upstream rsbench XOR split warning:
 
-Reason:
-- the real dataset-to-training execution flow is not wired yet
-- this still gives a working backend contract for the later frontend phase without pretending the full experiment engine is already complete
+- `val` is single-class
+- `test` is single-class
+- `ood` is single-class
+
+The API exposes those warnings instead of hiding them.
