@@ -99,7 +99,7 @@
               <th>Benchmark</th>
               <th>Supervision</th>
               <th>Seed</th>
-              <th>Test Acc.</th>
+              <th>Primary Score</th>
               <th>Concept Acc.</th>
             </tr>
           </thead>
@@ -118,8 +118,8 @@
               <td>{{ run.benchmark_suite }}</td>
               <td>{{ run.supervision }}</td>
               <td>{{ run.seed }}</td>
-              <td>{{ run.test_accuracy }}</td>
-              <td>{{ run.test_concept_accuracy }}</td>
+              <td>{{ run.primary_score }}</td>
+              <td>{{ run.concept_accuracy }}</td>
             </tr>
             {% endfor %}
             {% if not runs %}

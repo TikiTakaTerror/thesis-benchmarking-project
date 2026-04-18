@@ -119,8 +119,8 @@ def create_ui_router() -> APIRouter:
                 {
                     **row,
                     "compare_href": compare_href,
-                    "best_test_accuracy": row["best_test_accuracy"],
-                    "mean_test_accuracy": row["mean_test_accuracy"],
+                    "best_primary_score": row["best_primary_score"],
+                    "mean_primary_score": row["mean_primary_score"],
                     "mean_concept_accuracy": row["mean_concept_accuracy"],
                     "mean_runtime_seconds": row["mean_runtime_seconds"],
                 }
@@ -255,25 +255,32 @@ def _build_dashboard_summary(records) -> list[dict[str, str]]:
     completed_runs = sum(1 for record in records if record.status == "completed")
     failed_runs = sum(1 for record in records if record.status == "failed")
 
-    latest_test_accuracy = "n/a"
+    latest_primary_score = "n/a"
     for record in records:
-        if "test_accuracy" in record.metrics:
-            latest_test_accuracy = _format_metric_value(record.metrics["test_accuracy"])
+        metric_value = _first_metric(
+            record.metrics,
+            ["benchmark_primary_score", "test_accuracy", "id_accuracy"],
+        )
+        if metric_value is not None:
+            latest_primary_score = _format_metric_value(metric_value)
             break
 
     return [
         {"label": "Visible Runs", "value": str(total_runs)},
         {"label": "Completed", "value": str(completed_runs)},
         {"label": "Failed", "value": str(failed_runs)},
-        {"label": "Latest Test Acc.", "value": latest_test_accuracy},
+        {"label": "Latest Primary Score", "value": latest_primary_score},
     ]
 
 
 def _build_primary_metrics(metrics: dict[str, float]) -> list[dict[str, str]]:
     metric_order = [
+        ("benchmark_primary_score", "Primary Score"),
         ("test_accuracy", "Test Accuracy"),
+        ("id_accuracy", "ID Accuracy"),
+        ("ood_accuracy", "OOD Accuracy"),
         ("test_concept_accuracy", "Test Concept Accuracy"),
-        ("train_label_accuracy", "Train Label Accuracy"),
+        ("id_concept_accuracy", "ID Concept Accuracy"),
         ("run_runtime_seconds", "Run Time (s)"),
     ]
     cards: list[dict[str, str]] = []
@@ -301,9 +308,17 @@ def _record_to_ui_row(record) -> dict[str, str | dict[str, float]]:
         "error_message": record.error_message,
         "metrics": record.metrics,
         "artifacts": record.artifacts,
-        "test_accuracy": _format_metric_value(record.metrics.get("test_accuracy")),
-        "test_concept_accuracy": _format_metric_value(
-            record.metrics.get("test_concept_accuracy")
+        "primary_score": _format_metric_value(
+            _first_metric(
+                record.metrics,
+                ["benchmark_primary_score", "test_accuracy", "id_accuracy"],
+            )
+        ),
+        "concept_accuracy": _format_metric_value(
+            _first_metric(
+                record.metrics,
+                ["test_concept_accuracy", "id_concept_accuracy"],
+            )
         ),
         "runtime_seconds": _format_metric_value(record.metrics.get("run_runtime_seconds")),
     }
@@ -318,6 +333,13 @@ def _deduplicate_preserve_order(values: list[str]) -> list[str]:
         seen.add(value)
         ordered.append(value)
     return ordered
+
+
+def _first_metric(metrics: dict[str, float], names: list[str]) -> float | None:
+    for metric_name in names:
+        if metric_name in metrics:
+            return metrics[metric_name]
+    return None
 
 
 def _format_metric_value(value) -> str:

@@ -1,0 +1,19 @@
+name: core_eval
+
+paths:
+  root_dir:
+
+dataset_support:
+  mnlogic: supported
+  kand_logic: planned
+
+suite_metrics:
+  - accuracy
+  - macro_f1
+  - concept_accuracy
+  - concept_macro_f1
+  - rule_satisfaction_rate
+  - benchmark_primary_score
+
+notes:
+  status: Implemented in Phase 13 as the internal benchmark suite that uses the project's shared evaluator directly.

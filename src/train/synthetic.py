@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Any, Mapping
 
 import torch
 
+from ..benchmarks import create_benchmark_adapter
 from ..models.registry import load_model_config
 from ..services import ProjectConfig, RunManager, RunSelection
 from .runner import RunExecutionResult, execute_training_run
@@ -30,6 +30,7 @@ def execute_synthetic_managed_run(
 ) -> RunExecutionResult:
     """Execute one synthetic managed run for a supported model family."""
 
+    benchmark_adapter = create_benchmark_adapter(benchmark_suite)
     selection = RunSelection(
         dataset=SYNTHETIC_DATASET_NAME,
         model_family=model_family,
@@ -51,25 +52,38 @@ def execute_synthetic_managed_run(
         input_channels=int(model_config["shared_encoder"]["input_channels"]),
         input_size=tuple(model_config["shared_encoder"]["input_size"]),
     )
-    train_batches, test_batches = split_tensor_batches(
-        images,
-        label_ids,
-        concept_targets,
+    prepared_suite = benchmark_adapter.prepare_dataset(
+        SYNTHETIC_DATASET_NAME,
+        images=images,
+        label_ids=label_ids,
+        concept_targets=concept_targets,
         batch_size=batch_size,
         train_size=train_size,
+        seed=seed,
     )
+    train_batches = prepared_suite["train_batches"]
+    evaluation_splits = prepared_suite["evaluation_splits"]
 
     resolved_run_name = run_name or f"api_{model_family}_seed_{seed}"
     config_snapshot = {
         "project": project_config.to_dict(),
         "run": {
             "name": resolved_run_name,
-            "phase": 9,
+            "phase": 13,
             "seed": seed,
-            "source": "phase9_backend_api",
+            "source": "phase13_benchmark_adapters",
         },
         "selection": selection.to_dict(),
         "model": model_config,
+        "benchmark": {
+            "suite": benchmark_suite,
+            "config": benchmark_adapter.config.to_dict(),
+            "prepared_dataset": {
+                key: value
+                for key, value in prepared_suite.items()
+                if key not in {"train_batches", "evaluation_splits"}
+            },
+        },
         "training": training_payload,
         "synthetic_data": {
             "total_samples": total_samples,
@@ -84,7 +98,14 @@ def execute_synthetic_managed_run(
         selection=selection,
         config_snapshot=config_snapshot,
         train_batches=train_batches,
-        evaluation_splits={"test": test_batches},
+        evaluation_splits=evaluation_splits,
+        evaluation_callback=lambda model, split_batches: benchmark_adapter.run_evaluation(
+            model,
+            split_batches,
+            seed=seed,
+            label_loss_weight=float(training_payload.get("label_loss_weight", 1.0)),
+            concept_loss_weight=float(training_payload.get("concept_loss_weight", 1.0)),
+        ),
         train_kwargs=training_payload,
     )
 

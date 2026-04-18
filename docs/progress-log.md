@@ -19,7 +19,7 @@ This file is updated phase by phase so the project history stays explicit and re
 | 10 | Minimal frontend | Completed |
 | 11 | Benchmark comparison views | Completed |
 | 12 | Ablation and intervention tooling | Completed |
-| 13 | Additional benchmark suites | Pending |
+| 13 | Additional benchmark suites | Completed |
 | 14 | Cleanup, documentation, reproducibility | Pending |
 
 ## 2026-04-17 - Phase 0
@@ -302,6 +302,28 @@ Notes:
 - Phase 12 keeps symbolic-layer ablation explicit instead of inventing a fake non-symbolic baseline for families that do not currently expose one
 - concept intervention metrics are available only when evaluation batches include `concept_targets`
 - no new frontend pages were added in this phase
+
+## 2026-04-17 - Phase 13
+
+Goal:
+- add a real benchmark-suite adapter layer
+- support more than one benchmark suite in the current system
+- make benchmark suite selection change evaluation split behavior and stored suite metrics
+- avoid final cleanup work in this phase
+
+Completed:
+- added a shared benchmark adapter contract and typed benchmark config parsing
+- added a benchmark adapter registry under `src/benchmarks/registry.py`
+- implemented `rsbench` as an ID/OOD-style benchmark adapter for the current synthetic managed-run flow
+- implemented `core_eval` as an internal benchmark suite that uses the shared evaluator directly
+- updated synthetic managed runs so benchmark suite selection changes the prepared evaluation splits and stored suite metrics
+- added `src/configs/benchmarks/core_eval.yaml`
+- added `scripts/check_benchmark_adapters.py` for end-to-end verification of both suites
+- added `docs/benchmark-suites.md` with exact verification instructions
+
+Notes:
+- Phase 13 does not integrate the real external `rsbench-code` repository yet
+- the current implementation uses the benchmark adapter layer to drive the synthetic managed-run path, which keeps the system testable now without pretending the external benchmark environment is already wired
 
 Notes:
 - the frontend intentionally launches the synthetic managed-run flow only

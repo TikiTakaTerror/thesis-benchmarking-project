@@ -40,7 +40,7 @@ def main() -> int:
         data={
             "dataset": "synthetic_mnlogic",
             "model_family": "pipeline",
-            "benchmark_suite": "rsbench",
+            "benchmark_suite": "core_eval",
             "supervision": "full",
             "seed": 23,
             "run_name": "phase10_ui_smoke_seed_23",

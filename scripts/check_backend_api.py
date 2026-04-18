@@ -45,6 +45,7 @@ def main() -> int:
             json={
                 "model_family": "pipeline",
                 "seed": seed,
+                "benchmark_suite": "core_eval",
                 "run_name": f"phase9_api_smoke_seed_{seed}",
                 "training_overrides": {
                     "epochs": 12,

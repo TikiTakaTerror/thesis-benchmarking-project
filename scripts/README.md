@@ -20,3 +20,4 @@ Current scripts:
 - `check_minimal_ui.py`: verify the server-rendered frontend dashboard, launch form, run-detail page, and static stylesheet
 - `check_benchmark_views.py`: verify the run comparison page, benchmark summary page, and comparison export generation
 - `check_ablation_tooling.py`: verify concept intervention metrics for all families and symbolic-layer ablation metrics where the family exposes a non-symbolic label path
+- `check_benchmark_adapters.py`: verify the benchmark adapter registry, the new `core_eval` suite, and rsbench-style ID/OOD metric storage

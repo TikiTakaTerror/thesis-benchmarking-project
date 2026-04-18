@@ -11,22 +11,22 @@ from .run_manager import RunRecord
 
 
 DEFAULT_COMPARISON_METRICS = [
+    "benchmark_primary_score",
     "test_accuracy",
-    "test_macro_f1",
+    "id_accuracy",
+    "ood_accuracy",
     "test_concept_accuracy",
-    "test_concept_macro_f1",
-    "test_rule_satisfaction_rate",
-    "test_violation_rate",
+    "id_concept_accuracy",
     "run_runtime_seconds",
 ]
 
 METRIC_LABELS = {
+    "benchmark_primary_score": "Primary Score",
     "test_accuracy": "Test Accuracy",
-    "test_macro_f1": "Test Macro F1",
+    "id_accuracy": "ID Accuracy",
+    "ood_accuracy": "OOD Accuracy",
     "test_concept_accuracy": "Test Concept Accuracy",
-    "test_concept_macro_f1": "Test Concept Macro F1",
-    "test_rule_satisfaction_rate": "Rule Satisfaction",
-    "test_violation_rate": "Violation Rate",
+    "id_concept_accuracy": "ID Concept Accuracy",
     "run_runtime_seconds": "Run Time (s)",
 }
 
@@ -85,13 +85,13 @@ def build_benchmark_summary(records: Sequence[RunRecord]) -> dict[str, Any]:
         )
         benchmark_groups[key].append(record)
 
-    best_test_accuracy = _best_metric(records, "test_accuracy")
+    best_primary_score = _best_metric_any(records, ["benchmark_primary_score", "test_accuracy", "id_accuracy"])
 
     cards = [
         {"label": "Stored Runs", "value": str(total_runs)},
         {"label": "Completed", "value": str(completed_runs)},
         {"label": "Benchmark Groups", "value": str(len(benchmark_groups))},
-        {"label": "Best Test Acc.", "value": best_test_accuracy},
+        {"label": "Best Primary Score", "value": best_primary_score},
     ]
 
     rows: list[dict[str, Any]] = []
@@ -114,10 +114,17 @@ def build_benchmark_summary(records: Sequence[RunRecord]) -> dict[str, Any]:
                     1 for record in grouped_records if record.status == "completed"
                 ),
                 "failed_runs": sum(1 for record in grouped_records if record.status == "failed"),
-                "best_test_accuracy": _best_metric(grouped_records, "test_accuracy"),
-                "mean_test_accuracy": _mean_metric(grouped_records, "test_accuracy"),
-                "mean_concept_accuracy": _mean_metric(
-                    grouped_records, "test_concept_accuracy"
+                "best_primary_score": _best_metric_any(
+                    grouped_records,
+                    ["benchmark_primary_score", "test_accuracy", "id_accuracy"],
+                ),
+                "mean_primary_score": _mean_metric_any(
+                    grouped_records,
+                    ["benchmark_primary_score", "test_accuracy", "id_accuracy"],
+                ),
+                "mean_concept_accuracy": _mean_metric_any(
+                    grouped_records,
+                    ["test_concept_accuracy", "id_concept_accuracy"],
                 ),
                 "mean_runtime_seconds": _mean_metric(
                     grouped_records, "run_runtime_seconds"
@@ -151,10 +158,13 @@ def _build_comparison_cards(records: Sequence[RunRecord]) -> list[dict[str, str]
     ]
     return [
         {"label": "Selected Runs", "value": str(len(records))},
-        {"label": "Best Test Acc.", "value": _best_metric(records, "test_accuracy")},
+        {
+            "label": "Best Primary Score",
+            "value": _best_metric_any(records, ["benchmark_primary_score", "test_accuracy", "id_accuracy"]),
+        },
         {
             "label": "Best Concept Acc.",
-            "value": _best_metric(records, "test_concept_accuracy"),
+            "value": _best_metric_any(records, ["test_concept_accuracy", "id_concept_accuracy"]),
         },
         {
             "label": "Fastest Run (s)",
@@ -176,6 +186,17 @@ def _best_metric(records: Sequence[RunRecord], metric_name: str) -> str:
     return f"{max(values):.4f}"
 
 
+def _best_metric_any(records: Sequence[RunRecord], metric_names: Sequence[str]) -> str:
+    values = []
+    for record in records:
+        metric_value = _first_metric_value(record, metric_names)
+        if metric_value is not None:
+            values.append(metric_value)
+    if not values:
+        return "n/a"
+    return f"{max(values):.4f}"
+
+
 def _mean_metric(records: Sequence[RunRecord], metric_name: str) -> str:
     values = [
         float(record.metrics[metric_name])
@@ -185,3 +206,21 @@ def _mean_metric(records: Sequence[RunRecord], metric_name: str) -> str:
     if not values:
         return "n/a"
     return f"{mean(values):.4f}"
+
+
+def _mean_metric_any(records: Sequence[RunRecord], metric_names: Sequence[str]) -> str:
+    values = []
+    for record in records:
+        metric_value = _first_metric_value(record, metric_names)
+        if metric_value is not None:
+            values.append(metric_value)
+    if not values:
+        return "n/a"
+    return f"{mean(values):.4f}"
+
+
+def _first_metric_value(record: RunRecord, metric_names: Sequence[str]) -> float | None:
+    for metric_name in metric_names:
+        if metric_name in record.metrics:
+            return float(record.metrics[metric_name])
+    return None

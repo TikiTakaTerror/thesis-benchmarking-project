@@ -118,7 +118,9 @@ project/
 - `src/eval/`: metric computation and evaluation flows.
 - `src/eval/engine.py`: split-aware common evaluation runner for shared metrics.
 - `src/eval/analysis.py`: Phase 12 ablation and intervention analysis over model predictions and intervened concepts.
-- `src/benchmarks/`: benchmark suite adapters such as rsbench.
+- `src/benchmarks/`: benchmark suite adapters such as `rsbench` and `core_eval`.
+- `src/benchmarks/base.py`: shared benchmark adapter contract and typed config parsing.
+- `src/benchmarks/registry.py`: adapter lookup and config loading for benchmark suites.
 - `src/services/`: application services that coordinate configs, storage, and run metadata.
 - `src/services/config.py`: typed loading of the base project config and resolved storage paths.
 - `src/services/run_manager.py`: SQLite-backed run registry plus per-run filesystem storage helpers.
@@ -148,7 +150,8 @@ project/
 - Phase 10: minimal server-rendered frontend over the existing backend API and run registry
 - Phase 11: comparison views and grouped benchmark summaries over stored runs
 - Phase 12: ablation and intervention tooling integrated into the shared evaluator
-- Phase 13+: extra benchmark suites, cleanup
+- Phase 13: benchmark-suite adapter support for `rsbench` and an internal `core_eval` suite
+- Phase 14: cleanup, documentation, reproducibility
 
 ## Phase 0 Outcome
 

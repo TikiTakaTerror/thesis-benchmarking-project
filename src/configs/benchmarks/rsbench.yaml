@@ -4,15 +4,15 @@ paths:
   root_dir: external/rsbench-code
 
 dataset_support:
-  mnlogic: planned
-  kand-logic: planned
+  mnlogic: supported_for_synthetic_smoke
+  kand_logic: planned
 
 suite_metrics:
   - accuracy
   - macro_f1
   - id_performance
   - ood_performance
+  - benchmark_primary_score
 
 notes:
-  status: Placeholder only. The adapter will be added in later phases.
-
+  status: Implemented in Phase 13 with rsbench-style ID/OOD split handling for the current synthetic benchmark flow.

@@ -5,7 +5,7 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping
 
 import torch
 
@@ -32,6 +32,8 @@ def execute_training_run(
     config_snapshot: Mapping[str, Any],
     train_batches: Iterable[dict[str, torch.Tensor]],
     evaluation_splits: Mapping[str, Iterable[dict[str, torch.Tensor]]] | None = None,
+    evaluation_callback: Callable[[Any, Mapping[str, Iterable[dict[str, torch.Tensor]]]], Mapping[str, Any]]
+    | None = None,
     train_kwargs: Mapping[str, Any] | None = None,
 ) -> RunExecutionResult:
     """Train one model-family run and persist its artifacts and metrics."""
@@ -50,7 +52,13 @@ def execute_training_run(
             model.train(train_batches, **dict(train_kwargs or {}))
         )
         evaluation_metrics = (
-            _normalize_metrics(evaluate_named_splits(model, evaluation_splits))
+            _normalize_metrics(
+                (
+                    evaluation_callback(model, evaluation_splits)
+                    if evaluation_callback is not None
+                    else evaluate_named_splits(model, evaluation_splits)
+                )
+            )
             if evaluation_splits
             else {}
         )

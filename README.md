@@ -19,9 +19,10 @@ Current scope:
 - minimal frontend
 - comparison pages and benchmark summary pages
 - ablation and intervention tooling
+- benchmark-suite adapter support for multiple suites
 
 Not implemented yet:
-- additional benchmark suites beyond the current placeholder path
+- real dataset-backed external benchmark execution
 - final cleanup, reproducibility hardening, and thesis-facing polish
 
 Key docs:
@@ -39,6 +40,7 @@ Key docs:
 - `docs/minimal-frontend.md`
 - `docs/benchmark-comparison-views.md`
 - `docs/ablation-tooling.md`
+- `docs/benchmark-suites.md`
 
 Recommended next step:
-- verify the Phase 12 ablation tooling using the instructions in `docs/ablation-tooling.md`
+- verify the Phase 13 benchmark suite adapters using the instructions in `docs/benchmark-suites.md`
