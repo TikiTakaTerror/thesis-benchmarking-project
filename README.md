@@ -17,6 +17,7 @@ Experiment-first platform for a Bachelor's thesis comparing selected neuro-symbo
 - run comparison and benchmark summary pages
 - benchmark-suite adapter support for `core_eval` and `rsbench`
 - config-driven supervision modes for `label_only`, `concept_50`, and `full`
+- multi-seed managed-run orchestration with aggregate CSV/JSON seed-sweep summaries
 - reproducibility snapshot export and final project-wide verification
 
 ## Current Limits
@@ -46,6 +47,7 @@ python scripts/export_repro_snapshot.py
 - [docs/dataset-setup.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/dataset-setup.md)
 - [docs/real-mnlogic-runs.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/real-mnlogic-runs.md)
 - [docs/supervision-modes.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/supervision-modes.md)
+- [docs/multi-seed-sweeps.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/multi-seed-sweeps.md)
 - [docs/evaluation-engine.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/evaluation-engine.md)
 - [docs/run-management.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/run-management.md)
 - [docs/backend-api.md](/Users/abdullahsaeed/thesis-benchmarking-project/docs/backend-api.md)

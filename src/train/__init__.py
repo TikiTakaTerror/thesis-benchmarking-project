@@ -15,6 +15,7 @@ from .supervision import (
     apply_supervision,
     load_supervision_config,
 )
+from .sweeps import SeedSweepResult, execute_seed_sweep
 from .synthetic import (
     SYNTHETIC_DATASET_NAME,
     build_synthetic_dataset,
@@ -28,6 +29,7 @@ __all__ = [
     "RunExecutionResult",
     "AppliedSupervision",
     "REAL_MNLOGIC_DATASET_NAME",
+    "SeedSweepResult",
     "SYNTHETIC_DATASET_NAME",
     "SupervisionConfig",
     "apply_supervision",
@@ -37,6 +39,7 @@ __all__ = [
     "default_real_training_kwargs",
     "default_synthetic_training_kwargs",
     "execute_real_mnlogic_managed_run",
+    "execute_seed_sweep",
     "execute_synthetic_managed_run",
     "execute_training_run",
     "load_supervision_config",

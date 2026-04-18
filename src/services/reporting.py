@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from hashlib import sha1
-from statistics import mean
+from statistics import mean, stdev
 from typing import Any, Sequence
 
 from .run_manager import RunRecord
@@ -29,6 +29,16 @@ METRIC_LABELS = {
     "id_concept_accuracy": "ID Concept Accuracy",
     "run_runtime_seconds": "Run Time (s)",
 }
+
+DEFAULT_SEED_SWEEP_METRICS = [
+    "benchmark_primary_score",
+    "test_accuracy",
+    "id_accuracy",
+    "ood_accuracy",
+    "test_concept_accuracy",
+    "id_concept_accuracy",
+    "run_runtime_seconds",
+]
 
 
 def build_comparison_table(
@@ -148,6 +158,62 @@ def build_comparison_export_basename(run_ids: Sequence[str]) -> str:
 
     digest = sha1("|".join(run_ids).encode("utf-8")).hexdigest()[:10]
     return f"ui_compare__{digest}"
+
+
+def build_seed_sweep_summary(
+    records: Sequence[RunRecord],
+    *,
+    metric_names: Sequence[str] | None = None,
+) -> dict[str, Any]:
+    """Aggregate a fixed set of seeded runs into summary statistics."""
+
+    resolved_metric_names = list(metric_names or DEFAULT_SEED_SWEEP_METRICS)
+    aggregate_rows: list[dict[str, Any]] = []
+    for metric_name in resolved_metric_names:
+        values = [
+            float(record.metrics[metric_name])
+            for record in records
+            if metric_name in record.metrics
+        ]
+        if not values:
+            continue
+
+        aggregate_rows.append(
+            {
+                "metric_name": metric_name,
+                "label": METRIC_LABELS.get(metric_name, metric_name.replace("_", " ").title()),
+                "count": len(values),
+                "mean": float(mean(values)),
+                "std": 0.0 if len(values) < 2 else float(stdev(values)),
+                "min": float(min(values)),
+                "max": float(max(values)),
+            }
+        )
+
+    run_rows = []
+    for record in records:
+        run_rows.append(
+            {
+                "run_id": record.run_id,
+                "run_name": record.run_name,
+                "status": record.status,
+                "dataset": record.selection.dataset,
+                "model_family": record.selection.model_family,
+                "benchmark_suite": record.selection.benchmark_suite,
+                "supervision": record.selection.supervision,
+                "seed": record.selection.seed,
+                "metrics": {
+                    metric_name: record.metrics.get(metric_name)
+                    for metric_name in resolved_metric_names
+                },
+            }
+        )
+
+    return {
+        "metric_names": resolved_metric_names,
+        "aggregate_rows": aggregate_rows,
+        "run_rows": run_rows,
+    }
 
 
 def _build_comparison_cards(records: Sequence[RunRecord]) -> list[dict[str, str]]:

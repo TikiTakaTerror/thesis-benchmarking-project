@@ -1,0 +1,31 @@
+run:
+  name: r6_mnlogic_pipeline_multiseed
+  phase: R6
+
+selection:
+  dataset: mnlogic
+  model_family: pipeline
+  benchmark_suite: core_eval
+  supervision: concept_50
+
+seeds:
+  - 301
+  - 302
+  - 303
+
+training:
+  epochs: 1
+  learning_rate: 0.003
+  concept_loss_weight: 2.0
+
+data:
+  limit_per_split: 16
+
+metrics:
+  - benchmark_primary_score
+  - test_accuracy
+  - test_concept_accuracy
+  - run_runtime_seconds
+
+notes:
+  status: Executable R6 smoke preset for a real MNLogic multi-seed pipeline sweep.

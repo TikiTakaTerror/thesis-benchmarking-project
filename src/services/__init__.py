@@ -10,10 +10,12 @@ from .config import (
 from .catalog import list_available_options
 from .reporting import (
     DEFAULT_COMPARISON_METRICS,
+    DEFAULT_SEED_SWEEP_METRICS,
     METRIC_LABELS,
     build_benchmark_summary,
     build_comparison_export_basename,
     build_comparison_table,
+    build_seed_sweep_summary,
 )
 from .run_manager import RunManager, RunRecord, RunSelection
 from .runtime import get_project_config, get_run_manager
@@ -27,10 +29,12 @@ __all__ = [
     "RunRecord",
     "RunSelection",
     "DEFAULT_COMPARISON_METRICS",
+    "DEFAULT_SEED_SWEEP_METRICS",
     "METRIC_LABELS",
     "build_benchmark_summary",
     "build_comparison_export_basename",
     "build_comparison_table",
+    "build_seed_sweep_summary",
     "get_project_config",
     "get_run_manager",
     "list_available_options",

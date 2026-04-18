@@ -298,6 +298,24 @@ Notes:
 - `full` now means 100% concept supervision
 - only the LTN family currently exposes a separate logic-constraint loss, so only LTN can fully disable that extra loss term under `label_only`
 
+## 2026-04-18 - Phase R6
+
+Goal:
+- add deterministic multi-seed orchestration for managed runs
+- write aggregated seed-level summaries for thesis reporting
+- keep the implementation compatible with the current real MNLogic run path
+
+Completed:
+- added `src/train/sweeps.py`
+- added seed-sweep aggregation helpers in `src/services/reporting.py`
+- added executable run preset `src/configs/runs/r6_mnlogic_pipeline_multiseed.yaml`
+- added `scripts/check_seed_sweeps.py`
+- added `docs/multi-seed-sweeps.md`
+
+Notes:
+- current sweep support covers `mnlogic` and `synthetic_mnlogic`
+- each sweep writes one aggregate CSV and one detailed JSON summary under `results/summaries/`
+
 ## 2026-04-18 - Phase R3
 
 Goal:

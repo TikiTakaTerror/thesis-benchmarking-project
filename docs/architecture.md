@@ -118,6 +118,7 @@ project/
 - `src/train/runner.py`: Phase 8 managed-run execution helper that ties training, evaluation, and artifact persistence together.
 - `src/train/real_data.py`: R4 real dataset-backed execution helpers for prepared MNLogic runs, including runtime model-config alignment from dataset metadata.
 - `src/train/supervision.py`: R5 config-driven supervision policies that mask concept supervision and adjust logic-specific loss weights during managed runs.
+- `src/train/sweeps.py`: R6 multi-seed orchestration that executes one managed run per seed and writes aggregate summary exports.
 - `src/eval/`: metric computation and evaluation flows.
 - `src/eval/engine.py`: split-aware common evaluation runner for shared metrics.
 - `src/eval/analysis.py`: Phase 12 ablation and intervention analysis over model predictions and intervened concepts.
@@ -132,6 +133,7 @@ project/
 - `src/ui/`: minimal user-facing interface, kept intentionally small.
 - `src/ui/routes.py`: server-rendered dashboard, run-detail, comparison, and benchmark summary pages mounted into the FastAPI app, now including real MNLogic launch support.
 - `src/services/reporting.py`: thin view-focused reporting helpers for comparison tables and grouped benchmark summaries.
+- `src/services/reporting.py`: also provides R6 seed-sweep aggregation helpers for mean/std/min/max metric summaries.
 - `src/utils/`: shared utility helpers that do not belong to the other modules.
 - `src/configs/`: configuration placeholders for datasets, models, supervision modes, benchmark suites, and run presets.
 - `results/`: run artifacts, summaries, and plots.
