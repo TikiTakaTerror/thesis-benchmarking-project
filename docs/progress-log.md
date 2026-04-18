@@ -237,6 +237,24 @@ Notes:
 - this phase produces a real prepared MNLogic dataset under `data/processed/mnlogic/`
 - the managed run system is still synthetic until the later real-data wiring phases
 - the upstream raw generator currently produces degenerate single-class `val`, `test`, and `ood` splits with the default `xor.yml` settings; this was surfaced explicitly rather than hidden
+
+## 2026-04-18 - Phase R3
+
+Goal:
+- load the real prepared MNLogic dataset as model-compatible PyTorch batches
+- resize raw MNLogic images into the shared encoder input shape
+- stop before changing the managed runner, backend launch flow, or frontend launch flow
+
+Completed:
+- added `src/data/loaders.py` with a PyTorch dataset wrapper and split-based DataLoader builders
+- added model-family-aware image tensor config resolution from the shared encoder settings
+- added `scripts/check_mnlogic_tensor_loading.py`
+- added `docs/mnlogic-tensor-loading.md`
+
+Notes:
+- after this phase, the real prepared MNLogic dataset can be loaded into batches that match the model `train(...)` contract
+- the project still does not launch real-data managed runs yet
+- model-family concept names are still smoke-test placeholders and do not yet match the real MNLogic concept names `a`, `b`, `c`
 - API access and frontend views over these stored results remain deferred to later phases
 
 ## 2026-04-17 - Phase 9

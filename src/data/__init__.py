@@ -2,6 +2,13 @@
 
 from .base import DatasetAdapter
 from .exceptions import DatasetValidationError
+from .loaders import (
+    ImageTensorConfig,
+    PreparedDataLoaders,
+    PreparedImageTensorDataset,
+    build_prepared_dataloaders,
+    build_split_dataloader,
+)
 from .mnlogic import MNLogicDatasetAdapter
 from .registry import create_dataset_adapter, get_dataset_config
 from .types import ConceptDefinition, DatasetRecord, DatasetSplit, LabelDefinition
@@ -12,9 +19,13 @@ __all__ = [
     "DatasetRecord",
     "DatasetSplit",
     "DatasetValidationError",
+    "ImageTensorConfig",
     "LabelDefinition",
     "MNLogicDatasetAdapter",
+    "PreparedDataLoaders",
+    "PreparedImageTensorDataset",
+    "build_prepared_dataloaders",
+    "build_split_dataloader",
     "create_dataset_adapter",
     "get_dataset_config",
 ]
-

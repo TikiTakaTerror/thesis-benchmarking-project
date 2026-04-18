@@ -105,6 +105,7 @@ project/
 - `external/`: third-party libraries or benchmark environments placed locally in predictable paths.
 - `data/`: local raw and prepared dataset storage used by dataset adapters and validation scripts.
 - `src/data/`: dataset adapters and dataset preparation code.
+- `src/data/loaders.py`: Phase R3 real image-to-tensor and DataLoader helpers for prepared datasets such as MNLogic.
 - `src/models/`: model-family implementations behind a shared interface.
 - `src/models/shared_encoder.py`: reusable shared encoder implementation and config parsing.
 - `src/models/heads.py`: reusable prediction heads for concept and label logits.
